@@ -21,8 +21,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover; /* Garante que o vídeo preencha o container sem distorção */
-            z-index: -2; /* Coloca o vídeo atrás de tudo */
-            /* NOVO: Começa o vídeo invisível e adiciona transição para fade-in */
+            z-index: -3; /* Z-index mais baixo, pois o Matrix é -2 */
+            /* Começa o vídeo invisível e adiciona transição para fade-in */
             opacity: 0; 
             transition: opacity 1s ease-in;
         }
@@ -30,9 +30,42 @@
         .content-transition {
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         }
-        /* Garantindo que o overlay esteja sempre visível no início, cobrindo o vídeo */
+        /* Garantindo que o overlay esteja sempre visível no início, cobrindo o vídeo e matrix */
         #overlay {
              z-index: -1; 
+        }
+
+        /* --- Estilo para o Canvas Matrix --- */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2; /* Visível atrás do overlay (-1), à frente do vídeo (-3) */
+            background: #000;
+        }
+
+        /* --- CSS para o Efeito de Digitação (CORRIGIDO) --- */
+        .typing-text {
+            /* Correção: permite quebra de linha para responsividade */
+            white-space: normal; 
+            margin: 0 auto; /* Centraliza o texto */
+            letter-spacing: .10em; /* Espaçamento de letra */
+            display: inline-block; /* Ajuda a conter o texto e centralizar */
+            max-width: 100%; /* Garante que respeite o limite do pai */
+        }
+        
+        /* CORREÇÃO CRÍTICA: O cursor (border-right) agora só aparece quando o elemento tem a classe 'typing-cursor' */
+        .typing-text.typing-cursor {
+            border-right: .15em solid #fde047; /* Cursor piscando (Amarelo) */
+            animation: blink-caret .75s step-end infinite;
+        }
+
+        /* Animação de piscar do cursor */
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #fde047; } /* Cor amarela do cursor */
         }
     </style>
     <script>
@@ -49,7 +82,10 @@
 </head>
 <body class="bg-gray-900">
 
-    <!-- 1. VÍDEO DE FUNDO (DEVE ESTAR MUTADO PARA AUTO-PLAY E PERMANECE MUTADO) -->
+    <!-- CANVAS PARA EFEITO MATRIX (Visível antes do clique) -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- 1. VÍDEO DE FUNDO (Aparece DEPOIS do clique) -->
     <video id="background-video" autoplay loop muted playsinline poster="https://placehold.co/1920x1080/1a1a1a/cccccc?text=Carregando+Video" preload="auto">
         <!-- 
             !!! SUBSTITUA O LINK ABAIXO PELO SEU VÍDEO MP4 HOSPEDADO !!!
@@ -81,23 +117,30 @@
             <!-- ESTADO INICIAL (Aparece no carregamento) -->
             <div id="initial-prompt" class="content-transition">
                 <!-- Títulos otimizados para tamanhos de tela (mobile vs desktop) -->
-                <!-- ALTERADO: Cor do título para Amarelo -->
-                <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 uppercase tracking-wider text-yellow-400">Bem-vindo à</br> DF Celulares</h1>
-                <p class="text-base sm:text-xl md:text-2xl font-light mb-8 text-gray-300">Conheça nossos serviços.</p>
+                <!-- O título agora é um span que será preenchido pelo JS -->
+                <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 uppercase tracking-wider text-yellow-400">
+                    <span id="typed-title" class="typing-text"></span>
+                </h1>
                 
-                <!-- ALTERADO: Cor do botão para Amarelo -->
+                <!-- O subtítulo também será preenchido pelo JS -->
+                <p class="text-base sm:text-xl md:text-2xl font-light mb-8 text-gray-300 flex justify-center">
+                    <!-- O span abaixo é inicialmente vazio, e terá o texto digitado em sequência -->
+                    <span id="typed-text" class="typing-text"></span>
+                </p>
+                
+                <!-- Cor do botão para Amarelo -->
                 <button 
                     id="start-button" 
                     class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl w-full sm:w-auto"
                 >
-                    Conhecer
+                    Click para Entrar
                 </button>
             </div>
 
             <!-- ESTADO DE NAVEGAÇÃO (Aparece APÓS o clique no botão de entrar) -->
             <div id="navigation-buttons" class="content-transition opacity-0 hidden transform scale-95">
                 
-                <!-- O NOVO BLOCO da Imagem agora está aqui, no TOPO -->
+                <!-- O bloco da Imagem no TOPO -->
                 <div class="mb-6 flex justify-center">
                     <img 
                         src="https://placehold.co/150x150/ff69b4/ffffff?text=SEU+LOGO" 
@@ -154,6 +197,108 @@
 
     <!-- 5. LÓGICA JAVASCRIPT -->
     <script>
+        
+        // Dados dos textos a serem digitados
+        const titleText = "Bem-vindo à DF Celulares";
+        const subText = "Prepare-se para uma nova experiência.";
+        const typingSpeed = 75; // Milissegundos por caractere
+
+        /**
+         * Função de utilidade para aplicar o efeito de digitação a um elemento.
+         * @param {string} elementId - ID do elemento HTML alvo.
+         * @param {string} text - O texto completo a ser digitado.
+         * @param {function} [callback] - Função a ser chamada após a conclusão da digitação.
+         */
+        function typeText(elementId, text, callback) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+
+            let i = 0;
+            element.textContent = ''; // Limpa o conteúdo antes de começar
+            element.classList.add('typing-cursor'); // Adiciona o cursor
+
+            function typeWriter() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typingSpeed);
+                } else {
+                    // Remove o cursor assim que a digitação for concluída (AGORA REMOVE A BORDA TAMBÉM)
+                    element.classList.remove('typing-cursor'); 
+                    
+                    if (callback) {
+                        setTimeout(callback, 500); // Pequena pausa (0.5s) antes de chamar o próximo passo
+                    }
+                }
+            }
+            typeWriter();
+        }
+
+        // Função para iniciar a sequência de digitação (Título -> Subtítulo)
+        function startSequentialTyping() {
+            // 1. Inicia a digitação do Título (o cursor desaparece 0.5s depois)
+            typeText('typed-title', titleText, () => {
+                // 2. Após a conclusão do Título, inicia a digitação do Subtítulo (o cursor desaparece ao final)
+                typeText('typed-text', subText);
+            });
+        }
+
+        // --- LÓGICA MATRIX ---
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let matrixInterval;
+        const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
+        let fontSize = 16;
+        let columns;
+        let drops;
+
+        // Função para ajustar o tamanho do Canvas e resetar as gotas
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            columns = Math.floor(canvas.width / fontSize);
+            drops = [];
+            for (let x = 0; x < columns; x++) {
+                drops[x] = 1; 
+            }
+        }
+
+        // Função principal de desenho do Matrix
+        function drawMatrix() {
+            // Fundo semi-transparente preto para rastro (0.05 é a opacidade)
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0'; // Cor verde Matrix
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                
+                // Desenha o caractere
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Envia a "gota" de volta ao topo se atingir a parte inferior ou aleatoriamente
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0; 
+                }
+
+                // Move a "gota" para baixo
+                drops[i]++;
+            }
+        }
+        
+        // Inicia a animação Matrix (30 FPS)
+        function startMatrix() {
+            resizeCanvas();
+            matrixInterval = setInterval(drawMatrix, 33); 
+        }
+        
+        // Adiciona listener para redimensionamento
+        window.addEventListener('resize', resizeCanvas);
+
+
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('background-video');
             const audio = document.getElementById('background-audio');
@@ -166,6 +311,11 @@
             const overlay = document.getElementById('overlay');
             const audioStatus = document.getElementById('audio-status');
             
+            // Inicia o efeito Matrix no carregamento
+            startMatrix();
+            // Inicia a sequência de digitação
+            startSequentialTyping();
+
             // Tenta dar play no vídeo imediatamente (deve funcionar se estiver MUTED), mas ele está invisível
             video.play().catch(error => {
                 console.warn("Autoplay do vídeo falhou, provavelmente por questões de política do navegador. O usuário precisará interagir.");
@@ -174,7 +324,6 @@
             // Função para alternar mudo (AGORA SÓ CONTROLA A MÚSICA CUSTOMIZADA)
             const toggleMute = () => {
                 const isMuted = audio.muted;
-                // O vídeo deve permanecer SEMPRE MUTADO, conforme solicitado.
                 audio.muted = !isMuted; 
 
                 if (!isMuted) {
@@ -187,7 +336,11 @@
             // Lógica disparada ao clicar no botão 'Click para Entrar'
             startButton.addEventListener('click', () => {
                 
-                // NOVO: Faz o vídeo aparecer com um fade-in suave
+                // Para e esconde o Canvas Matrix
+                clearInterval(matrixInterval);
+                canvas.style.display = 'none'; // Esconde o canvas
+
+                // Faz o vídeo aparecer com um fade-in suave
                 video.style.opacity = '1';
 
                 // 1. O vídeo (#background-video) continua MUTADO permanentemente.
@@ -208,8 +361,7 @@
                     navigationButtons.classList.remove('opacity-0', 'scale-95');
                     navigationButtons.classList.add('opacity-100', 'scale-100'); 
                     
-                    // 5. Torna o overlay mais claro (vídeo aparece mais)
-                    // Ajustamos a opacidade do overlay para que o vídeo fique mais visível após o clique.
+                    // 5. Torna o overlay menos opaco (vídeo aparece mais)
                     overlay.classList.remove('bg-black', 'bg-opacity-70', 'bg-opacity-50');
                     overlay.classList.add('bg-black', 'bg-opacity-40'); 
                     
@@ -236,5 +388,3 @@
 
 </body>
 </html>
-
-
