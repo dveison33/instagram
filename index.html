@@ -45,22 +45,20 @@
     <!-- 1. VÍDEO DE FUNDO (DEVE ESTAR MUTADO PARA AUTO-PLAY E PERMANECE MUTADO) -->
     <video id="background-video" autoplay loop muted playsinline poster="https://placehold.co/1920x1080/1a1a1a/cccccc?text=Carregando+Video" preload="auto">
         <!-- 
-            !!! IMPORTANTE: SUBSTITUA OS ATRIBUTOS 'src' ABAIXO !!!
-            Você precisa hospedar seu próprio arquivo de vídeo (MP4 recomendado).
-            O vídeo PERMANECE MUTADO permanentemente para evitar o áudio original.
+            !!! SUBSTITUA O LINK ABAIXO PELO SEU VÍDEO MP4 HOSPEDADO !!!
+            O link abaixo é apenas um vídeo de placeholder para demonstração.
         -->
-         <source src="DF_CURSOS.mp4" type="video/mp4">
+         <source src="https://assets.mixkit.co/videos/preview/mixkit-drone-flying-over-an-empty-highway-5026-large.mp4" type="video/mp4">
         Seu navegador não suporta a tag de vídeo.
     </video>
 
     <!-- 2. MÚSICA DE FUNDO CUSTOMIZADA (OCULTA E INICIA APÓS INTERAÇÃO DO USUÁRIO) -->
     <audio id="background-audio" loop>
         <!-- 
-            !!! AQUI É O PONTO CRÍTICO !!!
-            CERTIFIQUE-SE DE QUE ESTE 'src' APONTA PARA UM LINK VÁLIDO E PÚBLICO DO SEU MP3.
-            EXEMPLO DE CAMINHO RELATIVO (se o arquivo estiver na mesma pasta): ./minha_musica.mp3
+            !!! SUBSTITUA O LINK ABAIXO PELA SUA MÚSICA MP3 HOSPEDADA !!!
+            O áudio DEVE ser um link público para funcionar.
         -->
-        <source src="musica.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         Seu navegador não suporta a tag de áudio.
     </audio>
 
@@ -76,12 +74,14 @@
             <!-- ESTADO INICIAL (Aparece no carregamento) -->
             <div id="initial-prompt" class="content-transition">
                 <!-- Títulos otimizados para tamanhos de tela (mobile vs desktop) -->
-                <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 uppercase tracking-wider text-pink-400">Bem-vindo à Experiência</h1>
+                <!-- ALTERADO: Cor do título para Amarelo -->
+                <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 uppercase tracking-wider text-yellow-400">Bem-vindo à Experiência</h1>
                 <p class="text-base sm:text-xl md:text-2xl font-light mb-8 text-gray-300">Prepare-se para uma experiência imersiva.</p>
                 
+                <!-- ALTERADO: Cor do botão para Amarelo -->
                 <button 
                     id="start-button" 
-                    class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl w-full sm:w-auto"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl w-full sm:w-auto"
                 >
                     Click para Entrar
                 </button>
@@ -89,27 +89,51 @@
 
             <!-- ESTADO DE NAVEGAÇÃO (Aparece APÓS o clique no botão de entrar) -->
             <div id="navigation-buttons" class="content-transition opacity-0 hidden transform scale-95">
+                
+                <!-- O NOVO BLOCO da Imagem agora está aqui, no TOPO -->
+                <div class="mb-6 flex justify-center">
+                    <img 
+                        src="https://placehold.co/150x150/ff69b4/ffffff?text=SEU+LOGO" 
+                        alt="Logo ou Imagem de Perfil"
+                        class="w-32 h-32 rounded-full border-4 border-white shadow-xl object-cover"
+                        onerror="this.onerror=null; this.src='https://placehold.co/150x150/ff69b4/ffffff?text=SEU+LOGO';"
+                    />
+                </div>
+                <!-- FIM DO BLOCO MOVIDO -->
+
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold mb-6 text-gray-100">O que você procura hoje?</h2>
                 
                 <!-- Contêiner para os 3 novos botões (Sempre em coluna) -->
                 <div class="flex flex-col gap-4 justify-center mx-auto max-w-xs w-full">
+                    
+                    <!-- Botão 1: ACESSÓRIOS (Pink/Roxo Gradiente) -->
                     <button 
-                        class="nav-button bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg w-full"
+                        class="nav-button font-extrabold text-white py-4 px-6 rounded-xl shadow-xl transition duration-500 transform hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-lg w-full flex items-center justify-center space-x-3 
+                               bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
                         data-action="acessorios"
                     >
-                        Acessórios para Celular
+                        <span class="text-2xl">🎧</span>
+                        <span>Acessórios para Celular</span>
                     </button>
+                    
+                    <!-- Botão 2: MANUTENÇÕES (Ciano/Azul Gradiente) -->
                     <button 
-                        class="nav-button bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg w-full"
+                        class="nav-button font-extrabold text-white py-4 px-6 rounded-xl shadow-xl transition duration-500 transform hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-lg w-full flex items-center justify-center space-x-3 
+                               bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
                         data-action="manutencoes"
                     >
-                        Manutenções
+                        <span class="text-2xl">🛠️</span>
+                        <span>Manutenções</span>
                     </button>
+                    
+                    <!-- Botão 3: CURSOS (Laranja/Amarelo Gradiente) -->
                     <button 
-                        class="nav-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg w-full"
+                        class="nav-button font-extrabold text-white py-4 px-6 rounded-xl shadow-xl transition duration-500 transform hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-lg w-full flex items-center justify-center space-x-3 
+                               bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
                         data-action="cursos"
                     >
-                        Cursos
+                        <span class="text-2xl">🎓</span>
+                        <span>Cursos</span>
                     </button>
                 </div>
             </div>
@@ -201,5 +225,3 @@
 
 </body>
 </html>
-
-
