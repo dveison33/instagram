@@ -49,7 +49,7 @@
             Você precisa hospedar seu próprio arquivo de vídeo (MP4 recomendado).
             O vídeo PERMANECE MUTADO permanentemente para evitar o áudio original.
         -->
-        <source src="URL_DO_SEU_VIDEO_MP4_AQUI.mp4" type="video/mp4">
+       <iframe width="560" height="315" src="https://www.youtube.com/embed/qtF7hdmR-zo?si=ZBioDTDbMC48OYzM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         Seu navegador não suporta a tag de vídeo.
     </video>
 
@@ -65,20 +65,23 @@
     </audio>
 
     <!-- 3. CAMADA DE SOBREPOSIÇÃO SEMI-TRANSPARENTE (Para legibilidade do texto) -->
-    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-70 z-[-1]"></div>
+    <!-- Opacidade ajustada para bg-opacity-50 em telas pequenas e bg-opacity-70 em telas maiores. -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 md:bg-opacity-70 z-[-1]"></div>
 
     <!-- 4. CONTEÚDO PRINCIPAL (Centralizado na tela) -->
     <main class="flex flex-col items-center justify-center h-screen text-white p-4">
-        <div id="intro-card" class="text-center max-w-3xl bg-white/10 backdrop-blur-sm p-8 md:p-12 rounded-xl shadow-2xl transition duration-500 transform scale-100">
+        <!-- O card agora usa max-w-full no mobile e define o max-w-3xl no desktop -->
+        <div id="intro-card" class="text-center w-full max-w-sm sm:max-w-md lg:max-w-3xl bg-white/10 backdrop-blur-sm p-8 md:p-12 rounded-xl shadow-2xl transition duration-500 transform scale-100">
             
             <!-- ESTADO INICIAL (Aparece no carregamento) -->
             <div id="initial-prompt" class="content-transition">
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 uppercase tracking-wider text-pink-400">Bem-vindo à Experiência</h1>
-                <p class="text-xl md:text-2xl font-light mb-8 text-gray-300">Prepare-se para uma experiência imersiva.</p>
+                <!-- Títulos otimizados para tamanhos de tela (mobile vs desktop) -->
+                <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 uppercase tracking-wider text-pink-400">Bem-vindo à Experiência</h1>
+                <p class="text-base sm:text-xl md:text-2xl font-light mb-8 text-gray-300">Prepare-se para uma experiência imersiva.</p>
                 
                 <button 
                     id="start-button" 
-                    class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl"
+                    class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl w-full sm:w-auto"
                 >
                     Click para Entrar
                 </button>
@@ -86,7 +89,7 @@
 
             <!-- ESTADO DE NAVEGAÇÃO (Aparece APÓS o clique no botão de entrar) -->
             <div id="navigation-buttons" class="content-transition opacity-0 hidden transform scale-95">
-                <h2 class="text-3xl md:text-4xl font-semibold mb-6 text-gray-100">O que você procura hoje?</h2>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold mb-6 text-gray-100">O que você procura hoje?</h2>
                 
                 <!-- Contêiner para os 3 novos botões (Sempre em coluna) -->
                 <div class="flex flex-col gap-4 justify-center mx-auto max-w-xs w-full">
@@ -172,8 +175,8 @@
                     navigationButtons.classList.add('opacity-100', 'scale-100'); 
                     
                     // 5. Torna o overlay mais claro (vídeo aparece mais)
-                    overlay.classList.remove('bg-black', 'bg-opacity-70');
-                    overlay.classList.add('bg-black', 'bg-opacity-50'); 
+                    overlay.classList.remove('bg-black', 'bg-opacity-70', 'bg-opacity-50');
+                    overlay.classList.add('bg-black', 'bg-opacity-50'); // Mantém o valor mais baixo para boa visibilidade do vídeo
                     
                     // 6. Mostra o indicador de status do áudio
                     audioStatus.classList.remove('hidden');
