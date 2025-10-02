@@ -22,10 +22,17 @@
             height: 100%;
             object-fit: cover; /* Garante que o vídeo preencha o container sem distorção */
             z-index: -2; /* Coloca o vídeo atrás de tudo */
+            /* NOVO: Começa o vídeo invisível e adiciona transição para fade-in */
+            opacity: 0; 
+            transition: opacity 1s ease-in;
         }
         /* Classe para transição de estados */
         .content-transition {
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        /* Garantindo que o overlay esteja sempre visível no início, cobrindo o vídeo */
+        #overlay {
+             z-index: -1; 
         }
     </style>
     <script>
@@ -64,7 +71,7 @@
 
     <!-- 3. CAMADA DE SOBREPOSIÇÃO SEMI-TRANSPARENTE (Para legibilidade do texto) -->
     <!-- Opacidade ajustada para bg-opacity-50 em telas pequenas e bg-opacity-70 em telas maiores. -->
-    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 md:bg-opacity-70 z-[-1]"></div>
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 md:bg-opacity-70"></div>
 
     <!-- 4. CONTEÚDO PRINCIPAL (Centralizado na tela) -->
     <main class="flex flex-col items-center justify-center h-screen text-white p-4">
@@ -159,7 +166,7 @@
             const overlay = document.getElementById('overlay');
             const audioStatus = document.getElementById('audio-status');
             
-            // Tenta dar play no vídeo imediatamente (deve funcionar se estiver MUTED)
+            // Tenta dar play no vídeo imediatamente (deve funcionar se estiver MUTED), mas ele está invisível
             video.play().catch(error => {
                 console.warn("Autoplay do vídeo falhou, provavelmente por questões de política do navegador. O usuário precisará interagir.");
             });
@@ -180,6 +187,9 @@
             // Lógica disparada ao clicar no botão 'Click para Entrar'
             startButton.addEventListener('click', () => {
                 
+                // NOVO: Faz o vídeo aparecer com um fade-in suave
+                video.style.opacity = '1';
+
                 // 1. O vídeo (#background-video) continua MUTADO permanentemente.
                 // 2. Toca APENAS a música de fundo customizada (#background-audio).
                 audio.play().catch(error => {
@@ -199,8 +209,9 @@
                     navigationButtons.classList.add('opacity-100', 'scale-100'); 
                     
                     // 5. Torna o overlay mais claro (vídeo aparece mais)
+                    // Ajustamos a opacidade do overlay para que o vídeo fique mais visível após o clique.
                     overlay.classList.remove('bg-black', 'bg-opacity-70', 'bg-opacity-50');
-                    overlay.classList.add('bg-black', 'bg-opacity-50'); // Mantém o valor mais baixo para boa visibilidade do vídeo
+                    overlay.classList.add('bg-black', 'bg-opacity-40'); 
                     
                     // 6. Mostra o indicador de status do áudio
                     audioStatus.classList.remove('hidden');
