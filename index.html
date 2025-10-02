@@ -56,9 +56,9 @@
     <!-- 2. MÚSICA DE FUNDO CUSTOMIZADA (OCULTA E INICIA APÓS INTERAÇÃO DO USUÁRIO) -->
     <audio id="background-audio" loop>
         <!-- 
-            !!! IMPORTANTE: ESTE É O ESPAÇO PARA A SUA MÚSICA CUSTOMIZADA (MP3/OGG) !!!
-            SUBSTITUA O ATRIBUTO 'src' ABAIXO pela URL REAL do seu arquivo MP3.
-            Exemplo: https://seuservidor.com/musica/minha_musica.mp3
+            !!! AQUI É O PONTO CRÍTICO !!!
+            CERTIFIQUE-SE DE QUE ESTE 'src' APONTA PARA UM LINK VÁLIDO E PÚBLICO DO SEU MP3.
+            EXEMPLO DE CAMINHO RELATIVO (se o arquivo estiver na mesma pasta): ./minha_musica.mp3
         -->
         <source src="musica.mp3" type="audio/mpeg">
         Seu navegador não suporta a tag de áudio.
@@ -186,9 +186,8 @@
                     navButtons.forEach(btn => {
                         btn.addEventListener('click', (e) => {
                             const action = e.currentTarget.getAttribute('data-action');
-                            console.log(`Usuário selecionou a navegação: ${action}`);
-                            // Adicione sua lógica de redirecionamento aqui, por exemplo:
-                            // window.location.href = `/${action}.html`;
+                            // Redireciona o usuário para a página correspondente
+                            window.location.href = `${action}.html`; 
                         });
                     });
 
@@ -199,4 +198,3 @@
 
 </body>
 </html>
-
