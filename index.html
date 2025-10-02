@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página com Vídeo e Música de Fundo</title>
+    <!-- Carregando Tailwind CSS para Estilização -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Definindo a fonte Inter e garantindo que o vídeo preencha a tela */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden; /* Evita barras de rolagem desnecessárias */
+        }
+        #background-video {
+            /* Fixa o vídeo na viewport e garante que ele cubra toda a área */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Garante que o vídeo preencha o container sem distorção */
+            z-index: -2; /* Coloca o vídeo atrás de tudo */
+        }
+        /* Classe para transição de estados */
+        .content-transition {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-900">
+
+    <!-- 1. VÍDEO DE FUNDO (DEVE ESTAR MUTADO PARA AUTO-PLAY E PERMANECE MUTADO) -->
+    <video id="background-video" autoplay loop muted poster="https://placehold.co/1920x1080/1a1a1a/cccccc?text=Carregando+Video" preload="auto">
+        <!-- 
+            !!! IMPORTANTE: SUBSTITUA OS ATRIBUTOS 'src' ABAIXO !!!
+            Você precisa hospedar seu próprio arquivo de vídeo (MP4 recomendado).
+            O vídeo PERMANECE MUTADO permanentemente para evitar o áudio original.
+        -->
+        <source src="URL_DO_SEU_VIDEO_MP4_AQUI.mp4" type="video/mp4">
+        Seu navegador não suporta a tag de vídeo.
+    </video>
+
+    <!-- 2. MÚSICA DE FUNDO CUSTOMIZADA (OCULTA E INICIA APÓS INTERAÇÃO DO USUÁRIO) -->
+    <audio id="background-audio" loop>
+        <!-- 
+            !!! IMPORTANTE: ESTE É O ESPAÇO PARA A SUA MÚSICA CUSTOMIZADA (MP3/OGG) !!!
+            SUBSTITUA O ATRIBUTO 'src' ABAIXO pela URL REAL do seu arquivo MP3.
+            Exemplo: https://seuservidor.com/musica/minha_musica.mp3
+        -->
+        <source src="URL_DA_SUA_MUSICA_MP3_AQUI.mp3" type="audio/mpeg">
+        Seu navegador não suporta a tag de áudio.
+    </audio>
+
+    <!-- 3. CAMADA DE SOBREPOSIÇÃO SEMI-TRANSPARENTE (Para legibilidade do texto) -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-70 z-[-1]"></div>
+
+    <!-- 4. CONTEÚDO PRINCIPAL (Centralizado na tela) -->
+    <main class="flex flex-col items-center justify-center h-screen text-white p-4">
+        <div id="intro-card" class="text-center max-w-3xl bg-white/10 backdrop-blur-sm p-8 md:p-12 rounded-xl shadow-2xl transition duration-500 transform scale-100">
+            
+            <!-- ESTADO INICIAL (Aparece no carregamento) -->
+            <div id="initial-prompt" class="content-transition">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 uppercase tracking-wider text-pink-400">Bem-vindo à Experiência</h1>
+                <p class="text-xl md:text-2xl font-light mb-8 text-gray-300">Prepare-se para uma experiência imersiva.</p>
+                
+                <button 
+                    id="start-button" 
+                    class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl"
+                >
+                    Click para Entrar
+                </button>
+            </div>
+
+            <!-- ESTADO DE NAVEGAÇÃO (Aparece APÓS o clique no botão de entrar) -->
+            <div id="navigation-buttons" class="content-transition opacity-0 hidden transform scale-95">
+                <h2 class="text-3xl md:text-4xl font-semibold mb-6 text-gray-100">O que você procura hoje?</h2>
+                
+                <!-- Contêiner para os 3 novos botões (Sempre em coluna) -->
+                <div class="flex flex-col gap-4 justify-center mx-auto max-w-xs w-full">
+                    <button 
+                        class="nav-button bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg w-full"
+                        data-action="acessorios"
+                    >
+                        Acessórios para Celular
+                    </button>
+                    <button 
+                        class="nav-button bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg w-full"
+                        data-action="manutencoes"
+                    >
+                        Manutenções
+                    </button>
+                    <button 
+                        class="nav-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg w-full"
+                        data-action="cursos"
+                    >
+                        Cursos
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Elemento para mostrar o status do áudio (escondido inicialmente) -->
+        <div id="audio-status" class="hidden absolute bottom-4 right-4 bg-gray-800/80 p-2 rounded-lg text-sm transition-opacity duration-500 cursor-pointer">
+            <span>🔇</span> Áudio Mudo
+        </div>
+    </main>
+
+    <!-- 5. LÓGICA JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('background-video');
+            const audio = document.getElementById('background-audio');
+            
+            const startButton = document.getElementById('start-button');
+            const initialPrompt = document.getElementById('initial-prompt');
+            const navigationButtons = document.getElementById('navigation-buttons');
+            const navButtons = document.querySelectorAll('.nav-button'); // Botões de categoria
+            
+            const overlay = document.getElementById('overlay');
+            const audioStatus = document.getElementById('audio-status');
+            
+            // Tenta dar play no vídeo imediatamente (deve funcionar se estiver MUTED)
+            video.play().catch(error => {
+                console.warn("Autoplay do vídeo falhou, provavelmente por questões de política do navegador. O usuário precisará interagir.");
+            });
+
+            // Função para alternar mudo (AGORA SÓ CONTROLA A MÚSICA CUSTOMIZADA)
+            const toggleMute = () => {
+                const isMuted = audio.muted;
+                // O vídeo deve permanecer SEMPRE MUTADO, conforme solicitado.
+                audio.muted = !isMuted; 
+
+                if (!isMuted) {
+                    audioStatus.innerHTML = '<span>🔇</span> Mudo';
+                } else {
+                    audioStatus.innerHTML = '<span>🔊</span> Áudio Ligado';
+                }
+            };
+            
+            // Lógica disparada ao clicar no botão 'Click para Entrar'
+            startButton.addEventListener('click', () => {
+                
+                // 1. O vídeo (#background-video) continua MUTADO permanentemente.
+                // 2. Toca APENAS a música de fundo customizada (#background-audio).
+                audio.play().catch(error => {
+                    console.error("Falha ao iniciar o áudio customizado: ", error);
+                });
+
+                // 3. Transição visual: Esconde o prompt inicial
+                initialPrompt.classList.add('opacity-0', 'scale-90');
+                
+                setTimeout(() => {
+                    initialPrompt.classList.add('hidden'); // Esconde totalmente o elemento inicial
+                    
+                    // 4. Mostra a navegação
+                    navigationButtons.classList.remove('hidden'); // Revela o container de navegação
+                    // Faz o fade-in e scale-up
+                    navigationButtons.classList.remove('opacity-0', 'scale-95');
+                    navigationButtons.classList.add('opacity-100', 'scale-100'); 
+                    
+                    // 5. Torna o overlay mais claro (vídeo aparece mais)
+                    overlay.classList.remove('bg-black', 'bg-opacity-70');
+                    overlay.classList.add('bg-black', 'bg-opacity-50'); 
+                    
+                    // 6. Mostra o indicador de status do áudio
+                    audioStatus.classList.remove('hidden');
+                    audioStatus.innerHTML = '<span>🔊</span> Áudio Ligado';
+
+                    // 7. Adiciona funcionalidade de mudo no status
+                    audioStatus.addEventListener('click', toggleMute);
+
+                    // 8. Adiciona lógica para os botões de navegação
+                    navButtons.forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const action = e.currentTarget.getAttribute('data-action');
+                            console.log(`Usuário selecionou a navegação: ${action}`);
+                            // Adicione sua lógica de redirecionamento aqui, por exemplo:
+                            // window.location.href = `/${action}.html`;
+                        });
+                    });
+
+                }, 300); // Deve ser igual ou maior que a duração da transição do elemento inicial
+            }, { once: true });
+        });
+    </script>
+
+</body>
+</html>
