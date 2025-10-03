@@ -143,15 +143,11 @@
                 
                 <!-- O bloco da Imagem no TOPO -->
                 <div class="mb-6 flex justify-center">
-                    <img 
-                        <!-- ATUALIZAÇÃO: Usando caminho explícito para garantir o diretório: './foto1.png' -->
+                    <img
                         src="./foto1.png" 
                         alt="Logo ou Imagem de Perfil"
-                        <!-- Aumentei o tamanho de 32x32 para 40x40 para melhor visualização -->
                         class="w-40 h-40 rounded-full border-4 border-white shadow-xl object-cover"
-                        <!-- ALTERADO: object-contain -> object-cover para preencher o círculo e aumentar a nitidez -->
-                        <!-- ATUALIZAÇÃO: Mensagem de fallback mais clara com instrução de verificação de nome/caso. -->
-                        onerror="this.onerror=null; this.src='https://placehold.co/400x400/ff69b4/ffffff?text=ERRO:+NOME+OU+FORMATO+DO+ARQUIVO+FOTO1.PNG';"
+                        onerror="this.onerror=null; this.src='foto1.png';"
                     />
                 </div>
                 <!-- FIM DO BLOCO MOVIDO -->
@@ -419,3 +415,4 @@
 
 </body>
 </html>
+
