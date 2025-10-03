@@ -11,7 +11,7 @@
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
-            overflow: hidden; /* Evita barras de rolagem desnecessárias */
+            /* CORREÇÃO: Removido overflow: hidden para evitar problemas em alguns navegadores móveis */
         }
         #background-video {
             /* Fixa o vídeo na viewport e garante que ele cubra toda a área */
@@ -86,6 +86,7 @@
     <canvas id="matrix-canvas"></canvas>
 
     <!-- 1. VÍDEO DE FUNDO (Aparece DEPOIS do clique) -->
+    <!-- CORREÇÃO: playsinline garante que o vídeo toque em navegadores móveis (iOS) -->
     <video id="background-video" autoplay loop muted playsinline poster="https://placehold.co/1920x1080/1a1a1a/cccccc?text=Carregando+Video" preload="auto">
         <!-- 
             !!! SUBSTITUA O LINK ABAIXO PELO SEU VÍDEO MP4 HOSPEDADO !!!
@@ -317,8 +318,9 @@
             startSequentialTyping();
 
             // Tenta dar play no vídeo imediatamente (deve funcionar se estiver MUTED), mas ele está invisível
+            // CORREÇÃO CRÍTICA: Se a reprodução automática falhar, o vídeo tentará tocar ao clicar no botão.
             video.play().catch(error => {
-                console.warn("Autoplay do vídeo falhou, provavelmente por questões de política do navegador. O usuário precisará interagir.");
+                console.warn("Autoplay do vídeo falhou. O vídeo tentará iniciar com o primeiro clique do usuário.");
             });
 
             // Função para alternar mudo (AGORA SÓ CONTROLA A MÚSICA CUSTOMIZADA)
@@ -336,6 +338,11 @@
             // Lógica disparada ao clicar no botão 'Click para Entrar'
             startButton.addEventListener('click', () => {
                 
+                // Tenta dar play no vídeo novamente (agora forçado pela interação do usuário)
+                video.play().catch(e => {
+                    console.error("Falha ao iniciar o vídeo mesmo com interação:", e);
+                });
+
                 // Para e esconde o Canvas Matrix
                 clearInterval(matrixInterval);
                 canvas.style.display = 'none'; // Esconde o canvas
@@ -388,7 +395,3 @@
 
 </body>
 </html>
-
-
-
-
