@@ -143,8 +143,8 @@
                 
                 <!-- O bloco da Imagem no TOPO -->
                 <div class="mb-6 flex justify-center">
-                    <img
-                        src="foto1.png" 
+                    <img 
+                        src="./foto1.png" 
                         alt="Logo ou Imagem de Perfil"
                         class="w-40 h-40 rounded-full border-4 border-white shadow-xl object-contain"
                         onerror="this.onerror=null; this.src='foto1.png';"
@@ -312,6 +312,9 @@
             const overlay = document.getElementById('overlay');
             const audioStatus = document.getElementById('audio-status');
             
+            // NOVO: Flag para rastrear se o áudio foi iniciado pelo usuário (após o clique)
+            let isAudioStarted = false;
+
             // Inicia o efeito Matrix no carregamento
             startMatrix();
             // Inicia a sequência de digitação
@@ -352,7 +355,9 @@
 
                 // 1. O vídeo (#background-video) continua MUTADO permanentemente.
                 // 2. Toca APENAS a música de fundo customizada (#background-audio).
-                audio.play().catch(error => {
+                audio.play().then(() => {
+                    isAudioStarted = true; // Define a flag como verdadeira
+                }).catch(error => {
                     console.error("Falha ao iniciar o áudio customizado: ", error);
                 });
 
@@ -390,9 +395,23 @@
 
                 }, 300); // Deve ser igual ou maior que a duração da transição do elemento inicial
             }, { once: true });
+
+            // NOVO: Listener para pausar/retomar a música ao mudar a aba/janela
+            document.addEventListener('visibilitychange', () => {
+                // Apenas se o áudio já foi iniciado e não está no modo mudo manual
+                if (isAudioStarted && !audio.muted) {
+                    if (document.hidden) {
+                        // Página em segundo plano/minimizada: pausa
+                        audio.pause();
+                    } else {
+                        // Página ativa: tenta retomar a reprodução
+                        // O catch é importante pois o navegador pode bloquear o play() sem interação
+                        audio.play().catch(e => console.log("Áudio não pôde ser retomado sem interação do usuário."));
+                    }
+                }
+            });
         });
     </script>
 
 </body>
 </html>
-
