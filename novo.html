@@ -28,26 +28,41 @@
             width: 100%;
             padding: 1rem;
         }
-        /* Centraliza e limita o tamanho do VÍDEO E SEU CONTAINER */
+        /* Centraliza e limita o tamanho do CONTAINER DO VÍDEO */
         #video-container {
             max-width: 100%;
             width: 800px;
             border-radius: 12px;
-            /* Sombra vermelha de atenção (movida para o container) */
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.7); /* Sombra vermelha mais intensa */
+            /* Sombra vermelha de atenção */
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.7); 
             transition: all 0.3s ease;
+            cursor: pointer; /* Indica que é clicável */
+            aspect-ratio: 16 / 9; /* Garante a proporção de vídeo 16:9 */
+            position: relative;
+            background-color: #2d3748; /* Cor de fundo enquanto não carrega */
+            overflow: hidden;
         }
         #video-container:hover {
-            box-shadow: 10px 40px rgba(255, 0, 0, 1);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 1);
         }
-        #salesVideo {
-            max-width: 100%;
-            max-height: 70vh;
+        /* Estilo para o iframe dentro do container */
+        #main-video-embed iframe {
             width: 100%;
             height: 100%;
-            border-radius: 12px;
+            border: none;
             display: block;
         }
+
+        /* Estilo para o Thumbnail (Imagem de capa) */
+        #video-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+            transition: opacity 0.3s;
+        }
+
         /* Estilo para o botão de ação principal */
         .cta-button {
             background-image: linear-gradient(to right, #ff416c 0%, #ff4b2b  51%, #ff416c  100%);
@@ -78,74 +93,95 @@
         #content-block, #android-video-block, #iphone-video-block, #computer-video-block {
             animation: fadeIn 1s ease-out forwards;
         }
-        /* Estilo específico para o container dos vídeos secundários */
-        #android-video-container {
+        
+        /* Estilo específico para o container dos vídeos secundários (IFRAME) */
+        .secondary-video-container {
+            border-radius: 12px;
+            aspect-ratio: 16 / 9;
+            position: relative;
+            background-color: #2d3748;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        #android-video-block .secondary-video-container {
              box-shadow: 0 10px 30px rgba(0, 255, 0, 0.7); /* Sombra verde para Android */
-             border-radius: 12px;
         }
-        #iphone-video-container {
+        #iphone-video-block .secondary-video-container {
              box-shadow: 0 10px 30px rgba(0, 120, 255, 0.7); /* Sombra azul para iPhone/iOS */
-             border-radius: 12px;
         }
-         #computer-video-container {
+         #computer-video-block .secondary-video-container {
              box-shadow: 0 10px 30px rgba(255, 255, 0, 0.7); /* Sombra amarela para Computador */
-             border-radius: 12px;
+        }
+        /* Estilo para o iframe dentro do container */
+        .video-embed iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- SEÇÃO DO VÍDEO (TOPO DA PÁGINA) --><section id="video-section" class="text-center">
-        <!-- TÍTULO PRINCIPAL --><h1 class="text-5xl sm:text-6xl md:text-8xl font-black mb-10 text-red-500 tracking-tighter uppercase p-2">
+    <!-- SEÇÃO DO VÍDEO (TOPO DA PÁGINA) -->
+    <section id="video-section" class="text-center">
+        <!-- TÍTULO PRINCIPAL -->
+        <h1 class="text-5xl sm:text-6xl md:text-8xl font-black mb-10 text-red-500 tracking-tighter uppercase p-2">
             ATENÇÃO
         </h1>
         
-        <!-- TEXTO DE INSTRUÇÃO --><p id="video-instruction" class="text-2xl text-red-400 font-bold mb-6 max-w-2xl mx-auto text-center uppercase tracking-wide">
+        <!-- TEXTO DE INSTRUÇÃO -->
+        <p id="video-instruction" class="text-2xl text-red-400 font-bold mb-6 max-w-2xl mx-auto text-center uppercase tracking-wide">
             A VERDADE QUE NINGUÉM NUNCA TE CONTOU
         </p>
 
-        <!-- CONTAINER DO VÍDEO E DO OVERLAY DE PLAY --><div id="video-container" class="relative max-w-full w-[800px] mx-auto">
-            <!-- VÍDEO (SEM ATRIBUTO CONTROLS) --><video id="salesVideo" playsinline preload="metadata">
-                <!-- 
-                    IMPORTANTE: 
-                    1. SUBSTITUA o URL abaixo pelo link do seu vídeo de vendas.
-                --><source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4" type="video/mp4">
-                Seu navegador não suporta o elemento de vídeo.
-            </video>
+        <!-- CONTAINER PRINCIPAL DO VÍDEO -->
+        <div id="video-container" class="relative max-w-full w-[800px] mx-auto">
             
-            <!-- NOVO: Play Button Overlay com estilo YouTube --><!-- O clique aqui dispara a função play/pause no JS --><div id="play-overlay" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl cursor-pointer transition-opacity duration-300">
-                
-                <!-- Ícone de Play Estilo YouTube: Triângulo Branco no Fundo Vermelho Arredondado --><div class="w-16 h-16 sm:w-24 sm:h-24 bg-red-700 rounded-full flex items-center justify-center transition-all hover:scale-105">
-                    <!-- White Triangle (Play Icon), aumentado para w-14 h-14 --><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-14 h-14 ml-1">
+            <!-- THUMBNAIL DE PLACEHOLDER -->
+            <img id="video-thumbnail" src="https://placehold.co/800x450/374151/f3f4f6?text=V%C3%ADdeo+Principal+de+Vendas" alt="Thumbnail do vídeo principal" class="absolute inset-0">
+            
+            <!-- Play Button Overlay -->
+            <div id="play-overlay" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl transition-opacity duration-300">
+                <!-- Ícone de Play: Triângulo Branco no Fundo Vermelho Arredondado -->
+                <div class="w-16 h-16 sm:w-24 sm:h-24 bg-red-700 rounded-full flex items-center justify-center transition-all hover:scale-105">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-14 h-14 ml-1">
                         <path d="M8 5v14l11-7z"/>
                     </svg>
                 </div>
-
             </div>
+
+            <!-- CONTAINER PARA O IFRAME PRINCIPAL -->
+            <div id="main-video-embed" class="absolute inset-0 hidden"></div>
+            
         </div>
         
-        <div id="loading-message" class="mt-4 text-red-400">
-            Aguarde, carregando vídeo...
+        <div id="loading-message" class="mt-4 text-red-400 hidden">
+            Aguarde, carregando...
         </div>
 
     </section>
 
-    <!-- CONTEÚDO PRINCIPAL (INICIALMENTE ESCONDIDO) --><main id="content-block" class="hidden w-full max-w-4xl p-8 pt-0 mx-auto">
+    <!-- CONTEÚDO PRINCIPAL (INICIALMENTE ESCONDIDO) -->
+    <main id="content-block" class="hidden w-full max-w-4xl p-8 pt-0 mx-auto">
         <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border-t-4 border-red-500">
             
-            <!-- TÍTULO PRINCIPAL DE REVELAÇÃO --><h2 class="text-3xl sm:text-4xl font-extrabold text-red-500 mb-3 tracking-tight text-center">
+            <!-- TÍTULO PRINCIPAL DE REVELAÇÃO -->
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-red-500 mb-3 tracking-tight text-center">
                 Como você viu no vídeo, o problema é real e afeta milhares de pessoas. Agora que você conhece o perigo, é hora de agir.
             </h2>
 
-            <!-- NOVO SUBTÍTULO DE CHAMADA PARA AÇÃO --><p class="text-xl sm:text-2xl font-bold text-yellow-400 mb-6 max-w-3xl mx-auto text-center tracking-wide">
+            <!-- NOVO SUBTÍTULO DE CHAMADA PARA AÇÃO -->
+            <p class="text-xl sm:text-2xl font-bold text-yellow-400 mb-6 max-w-3xl mx-auto text-center tracking-wide">
                 Se você já sofreu com isso ou se ainda não passou, saiba como se proteger contra esse tipo de golpe!
             </p>
 
-            <!-- NOVO TEXTO DE ESCOLHA DO USUÁRIO --><p class="text-2xl font-bold text-white mb-6 text-center uppercase">
+            <!-- NOVO TEXTO DE ESCOLHA DO USUÁRIO -->
+            <p class="text-2xl font-bold text-white mb-6 text-center uppercase">
                 SAIBA COMO PROTEGER SEU DISPOSITIVO AGORA:
             </p>
 
-            <!-- CHAVES DE PROTEÇÃO (Área 1) - AGORA SÃO BOTÕES CLICÁVEIS E MAIS SIMPLES --><div id="choice-buttons" class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4 mb-10 text-xl font-black">
+            <!-- CHAVES DE PROTEÇÃO (Área 1) - AGORA SÃO BOTÕES CLICÁVEIS E MAIS SIMPLES -->
+            <div id="choice-buttons" class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4 mb-10 text-xl font-black">
                 <button data-device="android" type="button" class="protection-choice text-white bg-red-700 hover:bg-red-600 active:bg-red-800 rounded-full px-4 py-2 shadow-md transition transform hover:scale-105">ANDROID</button>
                 <button data-device="iphone" type="button" class="protection-choice text-white bg-red-700 hover:bg-red-600 active:bg-red-800 rounded-full px-4 py-2 shadow-md transition transform hover:scale-105">IPHONE</button>
                 <button data-device="computer" type="button" class="protection-choice text-white bg-red-700 hover:bg-red-600 active:bg-red-800 rounded-full px-4 py-2 shadow-md transition transform hover:scale-105">COMPUTADOR</button>
@@ -153,21 +189,25 @@
         </div>
     </main>
 
-    <!-- BLOCO CONDICIONAL PARA VÍDEO DE ANDROID -->
+    <!-- BLOCO CONDICIONAL PARA VÍDEO DE ANDROID (IFRAME) -->
     <section id="android-video-block" class="hidden w-full max-w-4xl p-8 pt-0 mx-auto text-center">
         <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border-t-4 border-green-500">
              <h3 class="text-3xl font-bold text-green-400 mb-6 uppercase">Assista: O Guia de Blindagem do Android</h3>
-             <div id="android-video-container" class="relative max-w-full w-[800px] mx-auto mb-6">
-                <!-- VÍDEO DE DETALHE (Placeholder) -->
-                <video id="androidVideo" playsinline preload="metadata" class="w-full h-auto rounded-xl shadow-lg border-4 border-green-500">
-                    <!-- IMPORTANTE: Substitua a URL abaixo pelo vídeo específico do Android -->
-                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4">
-                    Seu navegador não suporta o elemento de vídeo.
-                </video>
+             <div id="android-video-container" class="secondary-video-container max-w-full w-[800px] mx-auto mb-6 border-4 border-green-500">
+                 <!-- THUMBNAIL DE PLACEHOLDER -->
+                 <img src="https://placehold.co/800x450/10B981/000000?text=Guia+de+Android" alt="Guia de Android" class="absolute inset-0 w-full h-full object-cover rounded-xl">
+                 <!-- Play Overlay Padrão para vídeos secundários (clique para carregar o player) -->
+                 <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl transition-opacity duration-300">
+                    <div class="w-16 h-16 sm:w-24 sm:h-24 bg-green-700 rounded-full flex items-center justify-center transition-all hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-14 h-14 ml-1"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>
+                <!-- O player real será carregado aqui via JavaScript -->
+                <div id="android-video-embed" class="video-embed absolute inset-0 hidden"></div>
             </div>
             <p class="text-xl text-gray-300 mb-6">Você está a um passo de proteger seu Android contra 99% das ameaças. Não perca tempo!</p>
 
-            <!-- Botão CTA Pós-Vídeo Android (AGORA COM ID PARA O PRÓXIMO PASSO) -->
+            <!-- Botão CTA Pós-Vídeo Android -->
             <a href="#" id="next-step-computer" class="cta-button text-xl sm:text-2xl">
                 PRÓXIMO PASSO MEU COMPUTADOR
             </a>
@@ -175,21 +215,25 @@
         </div>
     </section>
 
-    <!-- BLOCO CONDICIONAL PARA VÍDEO DE IPHONE -->
+    <!-- BLOCO CONDICIONAL PARA VÍDEO DE IPHONE (IFRAME) -->
     <section id="iphone-video-block" class="hidden w-full max-w-4xl p-8 pt-0 mx-auto text-center">
         <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border-t-4 border-blue-500">
              <h3 class="text-3xl font-bold text-blue-400 mb-6 uppercase">Assista: O Guia de Blindagem do iPhone (iOS)</h3>
-             <div id="iphone-video-container" class="relative max-w-full w-[800px] mx-auto mb-6">
-                <!-- VÍDEO DE DETALHE (Placeholder) -->
-                <video id="iphoneVideo" playsinline preload="metadata" class="w-full h-auto rounded-xl shadow-lg border-4 border-blue-500">
-                    <!-- IMPORTANTE: Substitua a URL abaixo pelo vídeo específico do iPhone -->
-                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-                    Seu navegador não suporta o elemento de vídeo.
-                </video>
+             <div id="iphone-video-container" class="secondary-video-container max-w-full w-[800px] mx-auto mb-6 border-4 border-blue-500">
+                 <!-- THUMBNAIL DE PLACEHOLDER -->
+                 <img src="https://placehold.co/800x450/3B82F6/000000?text=Guia+de+iPhone" alt="Guia de iPhone" class="absolute inset-0 w-full h-full object-cover rounded-xl">
+                 <!-- Play Overlay Padrão para vídeos secundários (clique para carregar o player) -->
+                 <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl transition-opacity duration-300">
+                    <div class="w-16 h-16 sm:w-24 sm:h-24 bg-blue-700 rounded-full flex items-center justify-center transition-all hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-14 h-14 ml-1"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>
+                <!-- O player real será carregado aqui via JavaScript -->
+                <div id="iphone-video-embed" class="video-embed absolute inset-0 hidden"></div>
             </div>
             <p class="text-xl text-gray-300 mb-6">Seu iPhone blindado. Você está a um clique do passo final.</p>
 
-            <!-- Botão CTA Pós-Vídeo iPhone (AGORA COM ID PARA O PRÓXIMO PASSO) -->
+            <!-- Botão CTA Pós-Vídeo iPhone -->
             <a href="#" id="next-step-computer-iphone" class="cta-button text-xl sm:text-2xl">
                 PRÓXIMO PASSO MEU COMPUTADOR
             </a>
@@ -197,18 +241,22 @@
         </div>
     </section>
 
-    <!-- NOVO BLOCO CONDICIONAL PARA VÍDEO DE COMPUTADOR (Final CTA) -->
+    <!-- NOVO BLOCO CONDICIONAL PARA VÍDEO DE COMPUTADOR (Final CTA) (IFRAME) -->
     <section id="computer-video-block" class="hidden w-full max-w-4xl p-8 pt-0 mx-auto text-center">
         <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border-t-4 border-yellow-500">
              <h3 class="text-3xl font-bold text-yellow-400 mb-2 uppercase">Último Passo: A Blindagem Completa do Seu Computador</h3>
              
-             <div id="computer-video-container" class="relative max-w-full w-[800px] mx-auto mb-6">
-                <!-- VÍDEO DE DETALHE (Placeholder) -->
-                <video id="computerVideo" playsinline preload="metadata" class="w-full h-auto rounded-xl shadow-lg border-4 border-yellow-500">
-                    <!-- IMPORTANTE: Substitua a URL abaixo pelo vídeo específico do Computador -->
-                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4" type="video/mp4">
-                    Seu navegador não suporta o elemento de vídeo.
-                </video>
+             <div id="computer-video-container" class="secondary-video-container max-w-full w-[800px] mx-auto mb-6 border-4 border-yellow-500">
+                 <!-- THUMBNAIL DE PLACEHOLDER -->
+                 <img src="https://placehold.co/800x450/FBBF24/000000?text=Guia+de+Computador" alt="Guia de Computador" class="absolute inset-0 w-full h-full object-cover rounded-xl">
+                 <!-- Play Overlay Padrão para vídeos secundários (clique para carregar o player) -->
+                 <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl transition-opacity duration-300">
+                    <div class="w-16 h-16 sm:w-24 sm:h-24 bg-yellow-700 rounded-full flex items-center justify-center transition-all hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-14 h-14 ml-1"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>
+                <!-- O player real será carregado aqui via JavaScript -->
+                <div id="computer-video-embed" class="video-embed absolute inset-0 hidden"></div>
             </div>
             <p class="text-xl text-gray-300 mb-6">Sua segurança nunca foi tão completa. Clique abaixo para garantir sua proteção total agora mesmo.</p>
 
@@ -255,7 +303,7 @@
                 </p>
                 
                 
-                <!-- BLOCO DE COMPARAÇÃO DE SERVIÇOS (REPOSICIONADO AQUI: ABAIXO DA INTRODUÇÃO DA SOLUÇÃO) -->
+                <!-- BLOCO DE COMPARAÇÃO DE SERVIÇOS (POSIÇÃO CORRETA) -->
                 <div class="mb-10 pt-6">
                     <h5 class="text-3xl font-extrabold text-red-500 mb-6 uppercase tracking-wider">
                         Compare as Opções e Decida:
@@ -326,11 +374,14 @@
                      Mais barato que uma pizza para deixar seu computador mais seguro e diminuir o risco de perder dados importantes ou dinheiro para golpistas!
                 </p>
                 
-               
+                <p class="text-xl text-yellow-300 mt-6 font-semibold">
+                    Clique abaixo e destrave a blindagem completa do seu dispositivo, começando agora a proteger e otimizar seu computador!
+                </p>
+                <!-- FIM TEXTOS PROMOCIONAIS FINAIS -->
     
                 <!-- Botão CTA FINAL -->
                 <a href="#" class="cta-button text-xl sm:text-2xl">
-                    EU QUERO!
+                    EU PRECISO!
                 </a>
                 <p class="mt-4 text-sm text-gray-400">Oferta especial válida por tempo limitado.</p>
                 <!-- FIM DO BOTÃO CTA FINAL -->
@@ -339,233 +390,230 @@
             <!-- FIM BLOCO DE VENDA -->
             
         </div>
-    </section>
+    </main>
 
 
     <script>
+        
+        // ======================================================================================================
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CONFIGURAÇÃO DE VÍDEOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        // O Vídeo Principal agora usa IFRAME (preview) com um TIMER fixo para simular o fim.
+        // ======================================================================================================
+        const DRIVE_IFRAME_BASE_URL = 'https://drive.google.com/file/d/';
+        const DRIVE_IFRAME_SUFFIX = '/preview'; 
+        
+        // ID do Vídeo Principal de Vendas (PRECISA SER O ARQUIVO QUE VOCÊ VAI USAR)
+        const MAIN_VIDEO_ID = '1bPoteRtj0XigrJCq0OyQJt5rD2xCz5sw'; 
+        
+        // === VARIÁVEL MAIS IMPORTANTE PARA VOCÊ AJUSTAR ===
+        // Mude este valor para a DURAÇÃO EXATA do seu vídeo principal (em segundos).
+        // Se o seu vídeo tem 1 minuto e 45 segundos, use 105.
+        // Se não for preciso, o áudio continuará (ou sumirá antes).
+        const REVEAL_TIME_SECONDS = 81; // <<<<<<<< AJUSTE AQUI (EX: 105)
+        // =================================================
+
+        // IDs dos Vídeos Secundários (Devem ser usados com o link de preview/iframe)
+        const ANDROID_VIDEO_ID = 'SUA_ID_DO_ARQUIVO_ANDROID'; 
+        const IPHONE_VIDEO_ID = 'SUA_ID_DO_ARQUIVO_IPHONE'; 
+        const COMPUTER_VIDEO_ID = 'SUA_ID_DO_ARQUIVO_COMPUTADOR';
+        // ======================================================================================================
+
+        let timerFallback = null; // Variável para armazenar o timer
+
         document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('salesVideo');
+
+            // Elementos Principais
+            const videoContainer = document.getElementById('video-container');
+            const mainVideoEmbed = document.getElementById('main-video-embed');
+            const playOverlay = document.getElementById('play-overlay'); 
+            const videoThumbnail = document.getElementById('video-thumbnail');
             const contentBlock = document.getElementById('content-block');
             const videoInstruction = document.getElementById('video-instruction');
-            const loadingMessage = document.getElementById('loading-message');
             const videoSection = document.getElementById('video-section');
-            const playOverlay = document.getElementById('play-overlay'); 
-
-            // Variável para rastrear o último tempo de reprodução seguro
-            let lastTime = 0;
-            let seeking = false;
-
-            // 1. Ocultar o conteúdo principal inicialmente
-            contentBlock.classList.add('hidden');
             
-            // Novos elementos
-            const choiceButtonsContainer = document.getElementById('choice-buttons');
+            // Mapeamento dos containers e IDs para carregamento secundário (IFRAMES)
+            const iframeVideoMap = {
+                'android-video-container': { id: ANDROID_VIDEO_ID, embedDivId: 'android-video-embed' },
+                'iphone-video-container': { id: IPHONE_VIDEO_ID, embedDivId: 'iphone-video-embed' },
+                'computer-video-container': { id: COMPUTER_VIDEO_ID, embedDivId: 'computer-video-embed' },
+            };
             
-            // Elementos Android
-            const androidVideoBlock = document.getElementById('android-video-block');
-            const androidVideo = document.getElementById('androidVideo');
-            const nextStepComputerButton = document.getElementById('next-step-computer');
-            
-            // Elementos iPhone (NOVOS)
-            const iphoneVideoBlock = document.getElementById('iphone-video-block');
-            const iphoneVideo = document.getElementById('iphoneVideo');
-            const nextStepComputerIphoneButton = document.getElementById('next-step-computer-iphone');
-
-            // Elementos Computador
-            const computerVideoBlock = document.getElementById('computer-video-block');
-            const computerVideo = document.getElementById('computerVideo');
-
-
-            // 2. Lógica para Play/Pause ao CLICAR no overlay/vídeo
-            const videoClickHandler = () => {
-                if (video.paused) {
-                    // Tenta iniciar a reprodução. Usa catch para lidar com restrições de autoplay.
-                    video.play().catch(error => {
-                        console.error("Erro ao tentar reproduzir o vídeo. Garanta que o usuário interagiu com a página ou use 'muted' se quiser autoplay.", error);
-                        loadingMessage.textContent = 'Erro ao iniciar a reprodução. Tente novamente.';
-                        loadingMessage.classList.remove('hidden');
-                    });
-                } else {
-                    video.pause();
-                }
-            }
-
-            // Atacha o listener de clique ao overlay
-            playOverlay.addEventListener('click', videoClickHandler);
-
-            // 3. Lógica para BLOQUEAR O AVANÇO (SEEKING)
-            video.addEventListener('timeupdate', () => {
-                if (!seeking) {
-                    // Verifica se o tempo atual pulou mais de 2 segundos (indicando avanço manual)
-                    if (video.currentTime > lastTime + 2) {
-                        // Força o vídeo a voltar para o último tempo seguro
-                        video.currentTime = lastTime; 
-                    }
-                    // Atualiza o último tempo seguro
-                    lastTime = video.currentTime;
-                }
-            });
-
-            video.addEventListener('seeking', () => {
-                seeking = true;
-            });
-            
-            video.addEventListener('seeked', () => {
-                seeking = false;
-            });
-
-
-            // 4. Lógica para REVELAR o conteúdo quando o vídeo TERMINAR
-            video.addEventListener('ended', () => {
-                // Remove a classe 'hidden' do bloco de conteúdo
+            // Função para revelar o CTA principal
+            const revealCTA = () => {
+                // Esconde o iframe principal (o video "some")
+                mainVideoEmbed.classList.add('hidden');
+                
+                // Exibe o conteúdo debaixo
                 contentBlock.classList.remove('hidden');
-
-                // Ocultar a instrução do vídeo e o overlay
                 videoInstruction.classList.add('hidden');
+                videoSection.style.minHeight = 'auto'; 
+                
+                // Rola suavemente para o conteúdo
+                contentBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+            
+            // ----------------------------------------------------------------------
+            // Lógica do Vídeo Principal (IFRAME + TIMER)
+            // ----------------------------------------------------------------------
+            const loadAndPlayMainVideo = () => {
+                
+                // Se o iframe já foi carregado, não carrega de novo (apenas garante que o timer não está ativo)
+                if (mainVideoEmbed.querySelector('iframe')) {
+                    // Se o usuário clicar após o timer ter acabado, apenas revela o CTA
+                    if (contentBlock.classList.contains('hidden')) {
+                        revealCTA();
+                    }
+                    return; 
+                }
+
+                // 1. Constrói a URL do Iframe do Google Drive
+                const embedUrl = DRIVE_IFRAME_BASE_URL + MAIN_VIDEO_ID + DRIVE_IFRAME_SUFFIX + '?autoplay=1';
+                
+                // 2. Insere o iframe
+                mainVideoEmbed.innerHTML = `<iframe src="${embedUrl}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+                
+                // 3. Esconde o thumbnail e o overlay
+                videoThumbnail.classList.add('hidden');
                 playOverlay.classList.add('hidden');
                 
-                // Ocultar a mensagem de carregamento/pausa
-                loadingMessage.classList.add('hidden'); 
+                // 4. Mostra o container do iframe
+                mainVideoEmbed.classList.remove('hidden');
                 
-                // Rolar a página automaticamente para o conteúdo principal
-                setTimeout(() => {
-                    // Remove o min-height para que a seção do vídeo não ocupe a tela toda após a revelação
-                    videoSection.style.minHeight = 'auto'; 
-                    contentBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 500); 
-            });
+                // 5. INICIA O TIMER PARA REVELAR O CONTEÚDO
+                if (timerFallback) {
+                    clearTimeout(timerFallback);
+                }
+                timerFallback = setTimeout(revealCTA, REVEAL_TIME_SECONDS * 1000);
+            };
 
-            // Lógica de mensagens e VISIBILIDADE DO OVERLAY (Play/Pause)
-            video.addEventListener('play', () => {
-                loadingMessage.classList.add('hidden');
-                playOverlay.classList.add('hidden'); // Esconde o overlay quando o vídeo toca
-            });
+            // Atacha o listener de clique ao container principal
+            videoContainer.addEventListener('click', loadAndPlayMainVideo);
+            //----------------------------------------------------------------------
+
+
+            // ----------------------------------------------------------------------
+            // Lógica dos Vídeos Secundários (Google Drive IFRAME)
+            // ----------------------------------------------------------------------
             
-            video.addEventListener('pause', () => {
-                if (!contentBlock.classList.contains('hidden')) {
-                     return; // Não mostra mensagem nem overlay se o conteúdo já foi revelado
-                }
-                loadingMessage.textContent = 'Retome o vídeo para liberar o conteúdo...';
-                loadingMessage.classList.remove('hidden');
-                loadingMessage.classList.remove('text-green-400');
-                loadingMessage.classList.add('text-red-400');
-                playOverlay.classList.remove('hidden'); // Mostra o overlay quando pausado
+            // Função genérica para carregar o iframe (usada nos vídeos secundários)
+            const loadEmbedIframeVideo = (containerElement, videoFileId) => {
+                
+                // 1. Constrói a URL do Iframe do Google Drive
+                const embedUrl = DRIVE_IFRAME_BASE_URL + videoFileId + DRIVE_IFRAME_SUFFIX;
+                
+                // 2. Limpa o container e insere o iframe
+                containerElement.innerHTML = `<iframe src="${embedUrl}" allow="autoplay" allowfullscreen></iframe>`;
+                
+                // 3. Mostra o container do iframe
+                containerElement.classList.remove('hidden');
+            }
+
+
+            const secondaryVideoContainers = document.querySelectorAll('.secondary-video-container');
+
+            secondaryVideoContainers.forEach(container => {
+                const containerId = container.id;
+                const config = iframeVideoMap[containerId]; // Pega o ID do arquivo e o ID da div do embed
+                
+                // Pega a div interna onde o iframe será inserido
+                const embedDiv = document.getElementById(config.embedDivId);
+                const thumbnail = container.querySelector('img');
+                const playOverlaySecondary = container.querySelector('.play-overlay');
+
+                container.addEventListener('click', () => {
+                    // Se já tiver iframe, não carrega de novo
+                    if (embedDiv.querySelector('iframe')) return;
+
+                    // 1. Esconde o thumbnail e o overlay
+                    thumbnail.classList.add('hidden');
+                    playOverlaySecondary.classList.add('hidden');
+                    
+                    // 2. Carrega o vídeo (IFRAME)
+                    loadEmbedIframeVideo(embedDiv, config.id);
+                });
             });
 
-            video.addEventListener('waiting', () => {
-                 loadingMessage.textContent = 'Carregando vídeo...';
-                 loadingMessage.classList.remove('hidden');
-                 loadingMessage.classList.remove('text-green-400');
-                 loadingMessage.classList.add('text-red-400');
-            });
 
-            video.addEventListener('loadeddata', () => {
-                // Ao carregar, se estiver pausado, garanta que o overlay está visível
-                if (video.paused) {
-                    loadingMessage.classList.add('hidden');
-                    playOverlay.classList.remove('hidden');
-                }
-            });
-
-            // 5. Lógica para botões de ESCOLHA de proteção
+            // Lógica para botões de ESCOLHA de proteção e Próximo Passo
             const choiceButtons = document.querySelectorAll('.protection-choice');
+            const androidVideoBlock = document.getElementById('android-video-block');
+            const iphoneVideoBlock = document.getElementById('iphone-video-block');
+            const computerVideoBlock = document.getElementById('computer-video-block');
+            const nextStepComputerButton = document.getElementById('next-step-computer');
+            const nextStepComputerIphoneButton = document.getElementById('next-step-computer-iphone');
             
+            
+            // Função auxiliar para resetar e pausar vídeos secundários
+            const hideAndStopAllSecondaryVideos = () => {
+                [androidVideoBlock, iphoneVideoBlock, computerVideoBlock].forEach(block => {
+                    block.classList.add('hidden');
+                });
+                
+                // Oculta e limpa os iframes para que o vídeo pare de tocar
+                for (const key in iframeVideoMap) {
+                    const embedDiv = document.getElementById(iframeVideoMap[key].embedDivId);
+                    const container = document.getElementById(key);
+                    
+                    if (embedDiv) {
+                        embedDiv.classList.add('hidden');
+                        embedDiv.innerHTML = ''; // Remove o iframe, parando a reprodução
+                    }
+                    if (container) {
+                        // Mostra o thumbnail e o overlay novamente para o próximo clique
+                        container.querySelector('img').classList.remove('hidden');
+                        container.querySelector('.play-overlay').classList.remove('hidden');
+                    }
+                }
+            };
+
             choiceButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const device = button.getAttribute('data-device');
                     
-                    // Oculta todos os blocos de vídeo secundários para garantir que apenas um seja exibido
-                    androidVideoBlock.classList.add('hidden');
-                    iphoneVideoBlock.classList.add('hidden'); // Novo
-                    computerVideoBlock.classList.add('hidden');
-                    androidVideo.pause(); 
-                    iphoneVideo.pause(); // Novo
-                    computerVideo.pause();
+                    hideAndStopAllSecondaryVideos(); // Pausa e esconde todos os outros
 
+                    let targetBlock = null;
                     if (device === 'android') {
-                        // 1. Mostrar o bloco do vídeo Android
-                        androidVideoBlock.classList.remove('hidden');
-                        
-                        // 2. Rolar a página suavemente para o novo vídeo
-                        setTimeout(() => {
-                            androidVideoBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            
-                            // 3. Iniciar a reprodução do vídeo Android automaticamente
-                            androidVideo.play().catch(e => console.log("Não foi possível iniciar o vídeo Android automaticamente. O usuário precisa clicar."));
-
-                        }, 200);
-
+                        targetBlock = androidVideoBlock;
                     } else if (device === 'iphone') {
-                         // 1. Mostrar o bloco do vídeo iPhone
-                        iphoneVideoBlock.classList.remove('hidden');
-                        
-                        // 2. Rolar a página suavemente para o novo vídeo
-                        setTimeout(() => {
-                            iphoneVideoBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            
-                            // 3. Iniciar a reprodução do vídeo iPhone automaticamente
-                            iphoneVideo.play().catch(e => console.log("Não foi possível iniciar o vídeo iPhone automaticamente. O usuário precisa clicar."));
-
-                        }, 200);
-
+                        targetBlock = iphoneVideoBlock;
                     } else if (device === 'computer') {
-                         // 1. Mostrar o bloco do vídeo Computador
-                        computerVideoBlock.classList.remove('hidden');
-                        
-                        // 2. Rolar a página suavemente para o novo vídeo
+                        targetBlock = computerVideoBlock;
+                    }
+
+                    if (targetBlock) {
+                        targetBlock.classList.remove('hidden');
                         setTimeout(() => {
-                            computerVideoBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            
-                            // 3. Iniciar a reprodução do vídeo Computador automaticamente
-                            computerVideo.play().catch(e => console.log("Não foi possível iniciar o vídeo do Computador automaticamente. O usuário precisa clicar."));
-
+                            targetBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }, 200);
-
                     }
                 });
             });
 
-            // 6. Lógica para o botão "PROXIMO PASSO MEU COMPUTADOR" (do Android)
+            // Lógica para o botão "PROXIMO PASSO MEU COMPUTADOR" (do Android)
             nextStepComputerButton.addEventListener('click', (e) => {
                 e.preventDefault(); 
                 
-                // 1. Ocultar o bloco do Android e pausar
-                androidVideoBlock.classList.add('hidden');
-                androidVideo.pause();
-
-                // 2. Mostrar o bloco do Computador
+                hideAndStopAllSecondaryVideos();
                 computerVideoBlock.classList.remove('hidden');
 
-                // 3. Rolar a página suavemente para o novo vídeo
                 setTimeout(() => {
                     computerVideoBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    
-                    // 4. Iniciar a reprodução do vídeo do Computador
-                    computerVideo.play().catch(e => console.log("Não foi possível iniciar o vídeo do Computador automaticamente."));
-
                 }, 200);
             });
             
-            // 7. Lógica para o botão "PROXIMO PASSO MEU COMPUTADOR" (do iPhone) (NOVO)
+            // Lógica para o botão "PROXIMO PASSO MEU COMPUTADOR" (do iPhone)
             nextStepComputerIphoneButton.addEventListener('click', (e) => {
                 e.preventDefault(); 
                 
-                // 1. Ocultar o bloco do iPhone e pausar
-                iphoneVideoBlock.classList.add('hidden');
-                iphoneVideo.pause();
-
-                // 2. Mostrar o bloco do Computador
+                hideAndStopAllSecondaryVideos();
                 computerVideoBlock.classList.remove('hidden');
 
-                // 3. Rolar a página suavemente para o novo vídeo
                 setTimeout(() => {
                     computerVideoBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    
-                    // 4. Iniciar a reprodução do vídeo do Computador
-                    computerVideo.play().catch(e => console.log("Não foi possível iniciar o vídeo do Computador automaticamente."));
-
                 }, 200);
             });
+
         });
     </script>
 
