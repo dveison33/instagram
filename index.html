@@ -1,419 +1,304 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página com Vídeo e Música de Fundo</title>
-    <!-- Carregando Tailwind CSS para Estilização -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Definindo a fonte Inter e garantindo que o vídeo preencha a tela */
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            /* CORREÇÃO: Removido overflow: hidden para evitar problemas em alguns navegadores móveis */
-        }
-        #background-video {
-            /* Fixa o vídeo na viewport e garante que ele cubra toda a área */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Garante que o vídeo preencha o container sem distorção */
-            z-index: -3; /* Z-index mais baixo, pois o Matrix é -2 */
-            /* Começa o vídeo invisível e adiciona transição para fade-in */
-            opacity: 0; 
-            transition: opacity 1s ease-in;
-        }
-        /* Classe para transição de estados */
-        .content-transition {
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        }
-        /* Garantindo que o overlay esteja sempre visível no início, cobrindo o vídeo e matrix */
-        #overlay {
-             z-index: -1; 
-        }
-
-        /* --- Estilo para o Canvas Matrix --- */
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2; /* Visível atrás do overlay (-1), à frente do vídeo (-3) */
-            background: #000;
-        }
-
-        /* --- CSS para o Efeito de Digitação (CORRIGIDO) --- */
-        .typing-text {
-            /* Correção: permite quebra de linha para responsividade */
-            white-space: normal; 
-            margin: 0 auto; /* Centraliza o texto */
-            letter-spacing: .10em; /* Espaçamento de letra */
-            display: inline-block; /* Ajuda a conter o texto e centralizar */
-            max-width: 100%; /* Garante que respeite o limite do pai */
-        }
-        
-        /* CORREÇÃO CRÍTICA: O cursor (border-right) agora só aparece quando o elemento tem a classe 'typing-cursor' */
-        .typing-text.typing-cursor {
-            border-right: .15em solid #fde047; /* Cursor piscando (Amarelo) */
-            animation: blink-caret .75s step-end infinite;
-        }
-
-        /* Animação de piscar do cursor */
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: #fde047; } /* Cor amarela do cursor */
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#020617" />
+  <title>Catálogo de Peças para Celulares</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --safe-bottom: env(safe-area-inset-bottom, 0px); }
+    .safe-bottom { padding-bottom: calc(1rem + var(--safe-bottom)); }
+    .sticky-mobile { position: sticky; top: .5rem; z-index: 20; }
+    @media (max-width: 768px) {
+      input, select, button, a { min-height: 44px; }
+    }
+  </style>
 </head>
-<body class="bg-gray-900">
+<body class="min-h-screen bg-slate-950 text-slate-100">
+  <main class="safe-bottom mx-auto max-w-6xl px-4 py-4 md:px-8 md:py-8">
+    <header class="mb-6 rounded-2xl border border-cyan-500/40 bg-slate-900/90 p-5 shadow-xl shadow-cyan-900/20">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="mb-2 inline-flex items-center gap-2 rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cyan-300">🛍️ Catálogo inteligente</p>
+          <h1 class="text-2xl font-extrabold md:text-3xl">Peças para Celulares</h1>
+          <p class="text-sm text-slate-300">Pesquise preços rapidamente e finalize seu pedido no WhatsApp em poucos cliques.</p>
+        </div>
+        <button id="toggleAdmin" class="rounded-xl border border-cyan-400/40 bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500/20">Botão ADM</button>
+      </div>
+    </header>
 
-    <!-- CANVAS PARA EFEITO MATRIX (Visível antes do clique) -->
-    <canvas id="matrix-canvas"></canvas>
+    <section id="initialScreen" class="rounded-2xl border border-slate-700 bg-slate-900/80 p-5">
+      <h2 class="mb-2 text-xl font-bold">Tela inicial do catálogo</h2>
+      <p class="mb-4 text-sm text-slate-300">Antes de mostrar os produtos disponíveis, informe o nome da loja ou do cliente.</p>
+      <div class="flex flex-col gap-3 md:flex-row">
+        <input id="clientName" class="w-full rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-sm outline-none focus:border-cyan-400" placeholder="Ex: Loja Centro Cell" />
+        <button id="enterCatalog" class="rounded-xl bg-cyan-500 px-6 py-3 font-bold text-slate-950 transition hover:bg-cyan-400">Entrar no catálogo</button>
+      </div>
+      <p id="clientError" class="mt-2 hidden text-sm text-red-300">Digite um nome válido para continuar.</p>
+    </section>
 
-    <!-- 1. VÍDEO DE FUNDO (Aparece DEPOIS do clique) -->
-    <!-- CORREÇÃO: playsinline garante que o vídeo toque em navegadores móveis (iOS) -->
-    <video id="background-video" autoplay loop muted playsinline poster="https://placehold.co/1920x1080/1a1a1a/cccccc?text=Carregando+Video" preload="auto">
-        <!-- 
-            !!! SUBSTITUA O LINK ABAIXO PELO SEU VÍDEO MP4 HOSPEDADO !!!
-            O link abaixo é apenas um vídeo de placeholder para demonstração.
-        -->
-         <source src="DF_CURSOS.mp4" type="video/mp4">
-        Seu navegador não suporta a tag de vídeo.
-    </video>
+    <section id="appContent" class="hidden">
+      <section class="mb-5 mt-6 rounded-xl border border-amber-400/40 bg-amber-500/10 p-4 text-sm text-amber-100">
+        <strong class="block text-base">⚠️ Atenção:</strong>
+        Verifique a disponibilidade das peças no fechamento da venda.
+      </section>
 
-    <!-- 2. MÚSICA DE FUNDO CUSTOMIZADA (OCULTA E INICIA APÓS INTERAÇÃO DO USUÁRIO) -->
-    <audio id="background-audio" loop>
-        <!-- 
-            !!! SUBSTITUA O LINK ABAIXO PELA SUA MÚSICA MP3 HOSPEDADA !!!
-            O áudio DEVE ser um link público para funcionar.
-        -->
-        <source src="musica.mp3" type="audio/mpeg">
-        Seu navegador não suporta a tag de áudio.
-    </audio>
-
-    <!-- 3. CAMADA DE SOBREPOSIÇÃO SEMI-TRANSPARENTE (Para legibilidade do texto) -->
-    <!-- Opacidade ajustada para bg-opacity-50 em telas pequenas e bg-opacity-70 em telas maiores. -->
-    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 md:bg-opacity-70"></div>
-
-    <!-- 4. CONTEÚDO PRINCIPAL (Centralizado na tela) -->
-    <main class="flex flex-col items-center justify-center h-screen text-white p-4">
-        <!-- O card agora usa max-w-full no mobile e define o max-w-3xl no desktop -->
-        <div id="intro-card" class="text-center w-full max-w-sm sm:max-w-md lg:max-w-3xl bg-white/10 backdrop-blur-sm p-8 md:p-12 rounded-xl shadow-2xl transition duration-500 transform scale-100">
-            
-            <!-- ESTADO INICIAL (Aparece no carregamento) -->
-            <div id="initial-prompt" class="content-transition">
-                <!-- Títulos otimizados para tamanhos de tela (mobile vs desktop) -->
-                <!-- O título agora é um span que será preenchido pelo JS -->
-                <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 uppercase tracking-wider text-yellow-400">
-                    <span id="typed-title" class="typing-text"></span>
-                </h1>
-                
-                <!-- O subtítulo também será preenchido pelo JS -->
-                <p class="text-base sm:text-xl md:text-2xl font-light mb-8 text-gray-300 flex justify-center">
-                    <!-- O span abaixo é inicialmente vazio, e terá o texto digitado em sequência -->
-                    <span id="typed-text" class="typing-text"></span>
-                </p>
-                
-                <!-- Cor do botão para Amarelo -->
-                <button 
-                    id="start-button" 
-                    class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 active:scale-95 text-lg md:text-xl w-full sm:w-auto"
-                >
-                    Click para Entrar
-                </button>
-            </div>
-
-            <!-- ESTADO DE NAVEGAÇÃO (Aparece APÓS o clique no botão de entrar) -->
-            <div id="navigation-buttons" class="content-transition opacity-0 hidden transform scale-95">
-                
-                <!-- O bloco da Imagem no TOPO -->
-                <div class="mb-6 flex justify-center">
-                    <img 
-                        src="./foto.png" 
-                        alt="Logo ou Imagem de Perfil"
-                        class="w-40 h-40 rounded-full border-4 border-white shadow-xl object-cover"
-                        onerror="this.onerror=null; this.src='foto.png';"
-                    />
-                </div>
-                <!-- FIM DO BLOCO MOVIDO -->
-
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-semibold mb-6 text-gray-100">O que você procura hoje?</h2>
-                
-                <!-- Contêiner para os 3 novos botões (Sempre em coluna) -->
-                <div class="flex flex-col gap-4 justify-center mx-auto max-w-xs w-full">
-                    
-                    <!-- Botão 1: ACESSÓRIOS (Pink/Roxo Gradiente) -->
-                    <button 
-                        class="nav-button font-extrabold text-white py-4 px-6 rounded-xl shadow-xl transition duration-500 transform hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-lg w-full flex items-center justify-center space-x-3 
-                               bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
-                        data-action="acessorios"
-                    >
-                        <span class="text-2xl">🎧</span>
-                        <span>Acessórios para Celular</span>
-                    </button>
-                    
-                    <!-- Botão 2: MANUTENÇÕES (Ciano/Azul Gradiente) -->
-                    <button 
-                        class="nav-button font-extrabold text-white py-4 px-6 rounded-xl shadow-xl transition duration-500 transform hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-lg w-full flex items-center justify-center space-x-3 
-                               bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
-                        data-action="manutencoes"
-                    >
-                        <span class="text-2xl">🛠️</span>
-                        <span>Manutenções</span>
-                    </button>
-                    
-                    <!-- Botão 3: CURSOS (Laranja/Amarelo Gradiente) -->
-                    <button 
-                        class="nav-button font-extrabold text-white py-4 px-6 rounded-xl shadow-xl transition duration-500 transform hover:scale-[1.03] hover:shadow-2xl active:scale-[0.98] text-lg w-full flex items-center justify-center space-x-3 
-                               bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
-                        data-action="cursos"
-                    >
-                        <span class="text-2xl">🎓</span>
-                        <span>Cursos</span>
-                    </button>
-                </div>
-            </div>
+      <section id="catalogSection">
+        <div class="sticky-mobile mb-4 flex flex-col gap-3 rounded-2xl border border-slate-700 bg-slate-900/95 p-4 backdrop-blur md:static md:flex-row md:items-center md:justify-between md:bg-slate-900/80">
+          <p id="welcomeText" class="font-semibold text-cyan-200"></p>
+          <div class="flex w-full flex-col gap-3 md:w-auto md:flex-row">
+            <select id="categoryFilter" class="w-full rounded-xl border border-slate-600 bg-slate-800 px-4 py-2 text-sm md:w-auto">
+              <option value="">Todas as categorias</option>
+            </select>
+            <input id="searchInput" class="w-full rounded-xl border border-slate-600 bg-slate-800 px-4 py-2 text-sm md:w-auto" placeholder="🔍 Buscar peça ou preço" />
+          </div>
         </div>
 
-        <!-- Elemento para mostrar o status do áudio (escondido inicialmente) -->
-        <div id="audio-status" class="hidden absolute bottom-4 right-4 bg-gray-800/80 p-2 rounded-lg text-sm transition-opacity duration-500 cursor-pointer">
-            <span>🔇</span> Áudio Mudo
+        <div id="productGrid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        <p id="emptyState" class="mt-4 hidden rounded-xl border border-slate-700 bg-slate-900 p-4 text-center text-sm text-slate-300">Nenhum produto encontrado.</p>
+      </section>
+
+      <section id="adminSection" class="mt-6 hidden rounded-2xl border border-purple-500/40 bg-slate-900/90 p-5">
+        <h2 class="mb-4 text-xl font-bold text-purple-200">⚙️ Administração</h2>
+        <div class="grid gap-5 md:grid-cols-2">
+          <form id="categoryForm" class="rounded-xl border border-slate-700 bg-slate-800/60 p-4">
+            <h3 class="mb-3 font-semibold">Adicionar categoria</h3>
+            <input id="newCategory" class="mb-3 w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-2 text-sm" placeholder="Ex: Telas" required />
+            <button class="rounded-xl bg-purple-500 px-4 py-2 font-semibold">Salvar categoria</button>
+          </form>
+
+          <form id="productForm" class="rounded-xl border border-slate-700 bg-slate-800/60 p-4">
+            <h3 class="mb-3 font-semibold">Adicionar produto</h3>
+            <input id="productName" class="mb-3 w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-2 text-sm" placeholder="Nome da peça" required />
+            <input id="productPrice" type="number" step="0.01" class="mb-3 w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-2 text-sm" placeholder="Preço" required />
+            <input id="productImage" class="mb-3 w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-2 text-sm" placeholder="URL da imagem (opcional)" />
+            <select id="productCategory" class="mb-3 w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-2 text-sm" required></select>
+            <button class="rounded-xl bg-cyan-500 px-4 py-2 font-semibold text-slate-950">Salvar produto</button>
+          </form>
         </div>
-    </main>
+      </section>
+    </section>
+  </main>
 
-    <!-- 5. LÓGICA JAVASCRIPT -->
-    <script>
-        
-        // Dados dos textos a serem digitados
-        const titleText = "Bem-vindo à DF Celulares";
-        const subText = "Prepare-se para uma nova experiência.";
-        const typingSpeed = 75; // Milissegundos por caractere
+  <div id="adminModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4">
+    <div class="w-full max-w-sm rounded-2xl border border-slate-700 bg-slate-900 p-5 shadow-xl">
+      <h3 class="mb-1 text-lg font-bold">Login do administrador</h3>
+      <p class="mb-4 text-sm text-slate-300">Entre com login e senha para acessar o painel ADM.</p>
+      <form id="adminLoginForm" class="space-y-3">
+        <input id="adminUser" class="w-full rounded-xl border border-slate-600 bg-slate-800 px-4 py-2 text-sm" placeholder="Login" required />
+        <input id="adminPass" type="password" class="w-full rounded-xl border border-slate-600 bg-slate-800 px-4 py-2 text-sm" placeholder="Senha" required />
+        <p id="adminError" class="hidden text-sm text-red-300">Login ou senha inválidos.</p>
+        <div class="flex gap-2">
+          <button type="button" id="closeAdminModal" class="w-full rounded-xl border border-slate-600 px-4 py-2">Cancelar</button>
+          <button class="w-full rounded-xl bg-cyan-500 px-4 py-2 font-semibold text-slate-950">Entrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-        /**
-         * Função de utilidade para aplicar o efeito de digitação a um elemento.
-         * @param {string} elementId - ID do elemento HTML alvo.
-         * @param {string} text - O texto completo a ser digitado.
-         * @param {function} [callback] - Função a ser chamada após a conclusão da digitação.
-         */
-        function typeText(elementId, text, callback) {
-            const element = document.getElementById(elementId);
-            if (!element) return;
+  <script>
+    const WHATSAPP_NUMBER = '5599999999999';
+    const ADMIN_LOGIN = 'admin';
+    const ADMIN_PASSWORD = '123456';
 
-            let i = 0;
-            element.textContent = ''; // Limpa o conteúdo antes de começar
-            element.classList.add('typing-cursor'); // Adiciona o cursor
+    const defaultCategories = ['Telas', 'Baterias', 'Conectores'];
+    const defaultProducts = [
+      { id: crypto.randomUUID(), name: 'Tela OLED iPhone 11', price: 420, category: 'Telas', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=900' },
+      { id: crypto.randomUUID(), name: 'Bateria Samsung A52', price: 129.9, category: 'Baterias', image: 'https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=900' },
+      { id: crypto.randomUUID(), name: 'Conector de carga Moto G', price: 54.5, category: 'Conectores', image: 'https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd?w=900' }
+    ];
 
-            function typeWriter() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, typingSpeed);
-                } else {
-                    // Remove o cursor assim que a digitação for concluída (AGORA REMOVE A BORDA TAMBÉM)
-                    element.classList.remove('typing-cursor'); 
-                    
-                    if (callback) {
-                        setTimeout(callback, 500); // Pequena pausa (0.5s) antes de chamar o próximo passo
-                    }
-                }
-            }
-            typeWriter();
-        }
+    const state = {
+      clientName: '',
+      isAdminAuthenticated: false,
+      categories: JSON.parse(localStorage.getItem('catalog_categories') || 'null') || defaultCategories,
+      products: JSON.parse(localStorage.getItem('catalog_products') || 'null') || defaultProducts
+    };
 
-        // Função para iniciar a sequência de digitação (Título -> Subtítulo)
-        function startSequentialTyping() {
-            // 1. Inicia a digitação do Título (o cursor desaparece 0.5s depois)
-            typeText('typed-title', titleText, () => {
-                // 2. Após a conclusão do Título, inicia a digitação do Subtítulo (o cursor desaparece ao final)
-                typeText('typed-text', subText);
-            });
-        }
+    const initialScreen = document.getElementById('initialScreen');
+    const appContent = document.getElementById('appContent');
+    const clientName = document.getElementById('clientName');
+    const clientError = document.getElementById('clientError');
+    const enterCatalog = document.getElementById('enterCatalog');
+    const welcomeText = document.getElementById('welcomeText');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const searchInput = document.getElementById('searchInput');
+    const productGrid = document.getElementById('productGrid');
+    const emptyState = document.getElementById('emptyState');
+    const toggleAdmin = document.getElementById('toggleAdmin');
+    const adminSection = document.getElementById('adminSection');
+    const productCategory = document.getElementById('productCategory');
 
-        // --- LÓGICA MATRIX ---
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
+    const adminModal = document.getElementById('adminModal');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminUser = document.getElementById('adminUser');
+    const adminPass = document.getElementById('adminPass');
+    const adminError = document.getElementById('adminError');
+    const closeAdminModal = document.getElementById('closeAdminModal');
 
-        let matrixInterval;
-        const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()';
-        let fontSize = 16;
-        let columns;
-        let drops;
+    const categoryForm = document.getElementById('categoryForm');
+    const productForm = document.getElementById('productForm');
 
-        // Função para ajustar o tamanho do Canvas e resetar as gotas
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            columns = Math.floor(canvas.width / fontSize);
-            drops = [];
-            for (let x = 0; x < columns; x++) {
-                drops[x] = 1; 
-            }
-        }
+    let isAdminVisible = false;
 
-        // Função principal de desenho do Matrix
-        function drawMatrix() {
-            // Fundo semi-transparente preto para rastro (0.05 é a opacidade)
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const formatPrice = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-            ctx.fillStyle = '#0F0'; // Cor verde Matrix
-            ctx.font = fontSize + 'px monospace';
+    function persist() {
+      localStorage.setItem('catalog_categories', JSON.stringify(state.categories));
+      localStorage.setItem('catalog_products', JSON.stringify(state.products));
+    }
 
-            for (let i = 0; i < drops.length; i++) {
-                const text = characters.charAt(Math.floor(Math.random() * characters.length));
-                
-                // Desenha o caractere
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    function refreshCategoryOptions() {
+      categoryFilter.innerHTML = '<option value="">Todas as categorias</option>';
+      productCategory.innerHTML = '<option value="">Selecione uma categoria</option>';
 
-                // Envia a "gota" de volta ao topo se atingir a parte inferior ou aleatoriamente
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0; 
-                }
+      state.categories.forEach((category) => {
+        const filterOpt = document.createElement('option');
+        filterOpt.value = category;
+        filterOpt.textContent = category;
+        categoryFilter.appendChild(filterOpt);
 
-                // Move a "gota" para baixo
-                drops[i]++;
-            }
-        }
-        
-        // Inicia a animação Matrix (30 FPS)
-        function startMatrix() {
-            resizeCanvas();
-            matrixInterval = setInterval(drawMatrix, 33); 
-        }
-        
-        // Adiciona listener para redimensionamento
-        window.addEventListener('resize', resizeCanvas);
+        const adminOpt = document.createElement('option');
+        adminOpt.value = category;
+        adminOpt.textContent = category;
+        productCategory.appendChild(adminOpt);
+      });
+    }
 
+    function buildWhatsAppLink(product) {
+      const text = `Olá! Sou ${state.clientName}. Tenho interesse na peça: ${product.name} (${formatPrice(product.price)}). Podemos fechar?`;
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('background-video');
-            const audio = document.getElementById('background-audio');
-            
-            const startButton = document.getElementById('start-button');
-            const initialPrompt = document.getElementById('initial-prompt');
-            const navigationButtons = document.getElementById('navigation-buttons');
-            const navButtons = document.querySelectorAll('.nav-button'); // Botões de categoria
-            
-            const overlay = document.getElementById('overlay');
-            const audioStatus = document.getElementById('audio-status');
-            
-            // NOVO: Flag para rastrear se o áudio foi iniciado pelo usuário (após o clique)
-            let isAudioStarted = false;
+    function renderProducts() {
+      const term = searchInput.value.trim().toLowerCase();
+      const selectedCategory = categoryFilter.value;
 
-            // Inicia o efeito Matrix no carregamento
-            startMatrix();
-            // Inicia a sequência de digitação
-            startSequentialTyping();
+      const filtered = state.products.filter((product) => {
+        const byCategory = !selectedCategory || product.category === selectedCategory;
+        const byTerm = !term || product.name.toLowerCase().includes(term) || formatPrice(product.price).toLowerCase().includes(term);
+        return byCategory && byTerm;
+      });
 
-            // Tenta dar play no vídeo imediatamente (deve funcionar se estiver MUTED), mas ele está invisível
-            // CORREÇÃO CRÍTICA: Se a reprodução automática falhar, o vídeo tentará tocar ao clicar no botão.
-            video.play().catch(error => {
-                console.warn("Autoplay do vídeo falhou. O vídeo tentará iniciar com o primeiro clique do usuário.");
-            });
+      productGrid.innerHTML = '';
+      emptyState.classList.toggle('hidden', filtered.length > 0);
 
-            // Função para alternar mudo (AGORA SÓ CONTROLA A MÚSICA CUSTOMIZADA)
-            const toggleMute = () => {
-                const isMuted = audio.muted;
-                audio.muted = !isMuted; 
+      filtered.forEach((product) => {
+        const card = document.createElement('article');
+        card.className = 'overflow-hidden rounded-2xl border border-slate-700 bg-slate-900/90 shadow-lg shadow-cyan-950/30';
+        card.innerHTML = `
+          <img src="${product.image || 'https://placehold.co/600x400/0f172a/f8fafc?text=Peça'}" alt="${product.name}" class="h-40 w-full object-cover sm:h-44">
+          <div class="space-y-2 p-4">
+            <p class="inline-block rounded-full bg-slate-800 px-3 py-1 text-xs font-medium text-cyan-200">${product.category}</p>
+            <h3 class="text-base font-bold sm:text-lg">${product.name}</h3>
+            <p class="text-lg font-extrabold text-emerald-300 sm:text-xl">${formatPrice(product.price)}</p>
+            <a target="_blank" rel="noopener" href="${buildWhatsAppLink(product)}" class="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 font-semibold text-emerald-950 transition hover:bg-emerald-400">🛒 Finalizar no WhatsApp</a>
+          </div>
+        `;
+        productGrid.appendChild(card);
+      });
+    }
 
-                if (!isMuted) {
-                    audioStatus.innerHTML = '<span>🔇</span> Mudo';
-                } else {
-                    audioStatus.innerHTML = '<span>🔊</span> Áudio Ligado';
-                }
-            };
-            
-            // Lógica disparada ao clicar no botão 'Click para Entrar'
-            startButton.addEventListener('click', () => {
-                
-                // Tenta dar play no vídeo novamente (agora forçado pela interação do usuário)
-                video.play().catch(e => {
-                    console.error("Falha ao iniciar o vídeo mesmo com interação:", e);
-                });
+    function openAdminModal() {
+      adminModal.classList.remove('hidden');
+      adminModal.classList.add('flex');
+      adminError.classList.add('hidden');
+      adminLoginForm.reset();
+      adminUser.focus();
+    }
 
-                // Para e esconde o Canvas Matrix
-                clearInterval(matrixInterval);
-                canvas.style.display = 'none'; // Esconde o canvas
+    function closeModal() {
+      adminModal.classList.add('hidden');
+      adminModal.classList.remove('flex');
+    }
 
-                // Faz o vídeo aparecer com um fade-in suave
-                video.style.opacity = '1';
+    function toggleAdminPanel() {
+      isAdminVisible = !isAdminVisible;
+      adminSection.classList.toggle('hidden', !isAdminVisible);
+      toggleAdmin.textContent = isAdminVisible ? 'Fechar ADM' : 'Botão ADM';
+    }
 
-                // 1. O vídeo (#background-video) continua MUTADO permanentemente.
-                // 2. Toca APENAS a música de fundo customizada (#background-audio).
-                audio.play().then(() => {
-                    isAudioStarted = true; // Define a flag como verdadeira
-                }).catch(error => {
-                    console.error("Falha ao iniciar o áudio customizado: ", error);
-                });
+    enterCatalog.addEventListener('click', () => {
+      const value = clientName.value.trim();
+      if (value.length < 2) {
+        clientError.classList.remove('hidden');
+        return;
+      }
 
-                // 3. Transição visual: Esconde o prompt inicial
-                initialPrompt.classList.add('opacity-0', 'scale-90');
-                
-                setTimeout(() => {
-                    initialPrompt.classList.add('hidden'); // Esconde totalmente o elemento inicial
-                    
-                    // 4. Mostra a navegação
-                    navigationButtons.classList.remove('hidden'); // Revela o container de navegação
-                    // Faz o fade-in e scale-up
-                    navigationButtons.classList.remove('opacity-0', 'scale-95');
-                    navigationButtons.classList.add('opacity-100', 'scale-100'); 
-                    
-                    // 5. Torna o overlay menos opaco (vídeo aparece mais)
-                    overlay.classList.remove('bg-black', 'bg-opacity-70', 'bg-opacity-50');
-                    overlay.classList.add('bg-black', 'bg-opacity-40'); 
-                    
-                    // 6. Mostra o indicador de status do áudio
-                    audioStatus.classList.remove('hidden');
-                    audioStatus.innerHTML = '<span>🔊</span> Áudio Ligado';
+      state.clientName = value;
+      clientError.classList.add('hidden');
+      initialScreen.classList.add('hidden');
+      appContent.classList.remove('hidden');
+      welcomeText.textContent = `Olá, ${state.clientName}! Escolha sua peça e agilize seu atendimento. 🚀`;
+      renderProducts();
+      searchInput.focus();
+    });
 
-                    // 7. Adiciona funcionalidade de mudo no status
-                    audioStatus.addEventListener('click', toggleMute);
+    clientName.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') enterCatalog.click();
+    });
 
-                    // 8. Adiciona lógica para os botões de navegação
-                    navButtons.forEach(btn => {
-                        btn.addEventListener('click', (e) => {
-                            const action = e.currentTarget.getAttribute('data-action');
-                            // Redireciona o usuário para a página correspondente
-                            window.location.href = `${action}.html`; 
-                        });
-                    });
+    categoryFilter.addEventListener('change', renderProducts);
+    searchInput.addEventListener('input', renderProducts);
 
-                }, 300); // Deve ser igual ou maior que a duração da transição do elemento inicial
-            }, { once: true });
+    toggleAdmin.addEventListener('click', () => {
+      if (!state.isAdminAuthenticated) {
+        openAdminModal();
+        return;
+      }
+      toggleAdminPanel();
+    });
 
-            // NOVO: Listener para pausar/retomar a música ao mudar a aba/janela
-            document.addEventListener('visibilitychange', () => {
-                // Apenas se o áudio já foi iniciado e não está no modo mudo manual
-                if (isAudioStarted && !audio.muted) {
-                    if (document.hidden) {
-                        // Página em segundo plano/minimizada: pausa
-                        audio.pause();
-                    } else {
-                        // Página ativa: tenta retomar a reprodução
-                        // O catch é importante pois o navegador pode bloquear o play() sem interação
-                        audio.play().catch(e => console.log("Áudio não pôde ser retomado sem interação do usuário."));
-                    }
-                }
-            });
-        });
-    </script>
+    adminLoginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const user = adminUser.value.trim();
+      const pass = adminPass.value;
 
+      if (user !== ADMIN_LOGIN || pass !== ADMIN_PASSWORD) {
+        adminError.classList.remove('hidden');
+        return;
+      }
+
+      state.isAdminAuthenticated = true;
+      closeModal();
+      if (!isAdminVisible) toggleAdminPanel();
+    });
+
+    closeAdminModal.addEventListener('click', closeModal);
+
+    adminModal.addEventListener('click', (event) => {
+      if (event.target === adminModal) closeModal();
+    });
+
+    categoryForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const input = document.getElementById('newCategory');
+      const value = input.value.trim();
+      if (!value || state.categories.includes(value)) return;
+      state.categories.push(value);
+      persist();
+      refreshCategoryOptions();
+      renderProducts();
+      input.value = '';
+    });
+
+    productForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = document.getElementById('productName').value.trim();
+      const price = Number(document.getElementById('productPrice').value);
+      const image = document.getElementById('productImage').value.trim();
+      const category = productCategory.value;
+      if (!name || !category || Number.isNaN(price) || price <= 0) return;
+
+      state.products.push({ id: crypto.randomUUID(), name, price, image, category });
+      persist();
+      renderProducts();
+      productForm.reset();
+    });
+
+    refreshCategoryOptions();
+    renderProducts();
+  </script>
 </body>
 </html>
-
-
