@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechPeças - Distribuidora</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/font/lucide.min.css" rel="stylesheet">
+    <!-- Importação do Script do Lucide para renderização de SVGs -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -18,8 +19,13 @@
         }
         .sticky-top-button {
             position: sticky;
-            top: 4.5rem; /* Logo abaixo do header */
+            top: 4.5rem;
             z-index: 30;
+        }
+        /* Ajuste de tamanho padrão para os ícones */
+        .lucide {
+            width: 20px;
+            height: 20px;
         }
     </style>
 </head>
@@ -62,6 +68,11 @@
             else if (abaAtiva === 'sucesso') app.innerHTML = renderSucesso();
 
             if (mostrarModalNome) app.innerHTML += renderModal();
+
+            // CRÍTICO: Disparar a criação dos ícones após o render do HTML
+            if (window.lucide) {
+                lucide.createIcons();
+            }
         }
 
         function setAba(aba) {
@@ -153,14 +164,14 @@
             <header class="bg-slate-900 border-b border-orange-600/30 text-white sticky top-0 z-40 shadow-xl px-4 py-3">
                 <div class="flex justify-between items-center max-w-xl mx-auto">
                     <div class="flex items-center gap-2">
-                        <div class="bg-orange-600 p-1.5 rounded-lg">
-                            <i class="lucide-smartphone w-5 h-5"></i>
+                        <div class="bg-orange-600 p-1.5 rounded-lg flex items-center justify-center">
+                            <i data-lucide="smartphone" class="w-5 h-5"></i>
                         </div>
                         <h1 class="text-lg font-black tracking-tight uppercase">Tech<span class="text-orange-500">Peças</span></h1>
                     </div>
                     ${abaAtiva === 'carrinho' ? `
                         <button onclick="setAba('catalogo')" class="text-xs font-bold flex items-center gap-1 bg-slate-800 text-orange-500 px-3 py-1.5 rounded-full border border-orange-600/20">
-                            <i class="lucide-arrow-left w-4 h-4"></i> VOLTAR
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i> VOLTAR
                         </button>
                     ` : ''}
                 </div>
@@ -177,8 +188,8 @@
             <div class="sticky-top-button px-4 py-2 animate-in">
                 <button onclick="setAba('carrinho')" class="w-full bg-orange-600 text-white py-4 px-6 rounded-2xl shadow-2xl shadow-orange-900/40 flex items-center justify-between border border-orange-400/20 active:scale-[0.98] transition-all">
                     <div class="flex items-center gap-3">
-                        <div class="bg-white/20 p-2 rounded-xl">
-                            <i class="lucide-shopping-cart w-5 h-5"></i>
+                        <div class="bg-white/20 p-2 rounded-xl flex items-center justify-center">
+                            <i data-lucide="shopping-cart" class="w-5 h-5 text-white"></i>
                         </div>
                         <div class="text-left">
                             <p class="text-[10px] font-black uppercase tracking-widest opacity-80 leading-none">Finalizar Pedido</p>
@@ -198,11 +209,11 @@
             return `
             <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/80 backdrop-blur-xl border-t border-slate-800 px-6 py-3 flex justify-around items-center z-50 pb-safe shadow-2xl">
                 <button onclick="setAba('catalogo')" class="flex flex-col items-center gap-1 ${abaAtiva === 'catalogo' ? 'text-orange-500' : 'text-slate-600'}">
-                    <i class="lucide-home w-6 h-6"></i>
+                    <i data-lucide="home" class="w-6 h-6"></i>
                     <span class="text-[9px] font-black uppercase tracking-widest">Peças</span>
                 </button>
                 <button onclick="setAba('carrinho')" class="flex flex-col items-center gap-1 relative ${abaAtiva === 'carrinho' ? 'text-orange-500' : 'text-slate-600'}">
-                    <i class="lucide-shopping-cart w-6 h-6"></i>
+                    <i data-lucide="shopping-cart" class="w-6 h-6"></i>
                     <span class="text-[9px] font-black uppercase tracking-widest">Carrinho</span>
                     ${totalItens > 0 ? `<span class="absolute -top-1 -right-2 bg-orange-600 text-white text-[9px] font-black w-4 h-4 flex items-center justify-center rounded-full shadow-lg">${totalItens}</span>` : ''}
                 </button>
@@ -222,7 +233,7 @@
             <main class="max-w-xl mx-auto p-4 animate-in">
                 <div class="space-y-5">
                     <div class="relative">
-                        <i class="lucide-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5"></i>
+                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5"></i>
                         <input type="text" placeholder="Procurar peça ou modelo..." value="${busca}" oninput="handleBusca(event)"
                             class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-orange-600 outline-none transition-all text-sm">
                     </div>
@@ -240,7 +251,7 @@
                             <div class="bg-slate-900 rounded-2xl p-3 shadow-md border border-slate-800 flex flex-col justify-between hover:border-orange-600/30 transition-all">
                                 <div>
                                     <div class="aspect-square bg-slate-950 rounded-xl flex items-center justify-center mb-3 border border-slate-800">
-                                        <i class="lucide-package w-8 h-8 text-slate-700"></i>
+                                        <i data-lucide="package" class="w-8 h-8 text-slate-700"></i>
                                     </div>
                                     <span class="text-[9px] font-black text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded uppercase tracking-tighter">${p.categoria}</span>
                                     <h3 class="font-bold text-slate-100 text-xs mt-1 leading-tight line-clamp-2">${p.nome}</h3>
@@ -248,7 +259,7 @@
                                 <div class="mt-4 flex flex-col gap-3">
                                     <span class="text-base font-black text-white">R$ ${p.preco.toFixed(2)}</span>
                                     <button onclick="adicionarAoCarrinho(${p.id})" class="w-full bg-orange-600 text-white py-3 rounded-xl active:scale-95 shadow-lg shadow-orange-900/20 flex items-center justify-center gap-2 font-black text-xs uppercase transition-transform">
-                                        <i class="lucide-plus w-4 h-4"></i> Adicionar
+                                        <i data-lucide="plus" class="w-4 h-4"></i> Adicionar
                                     </button>
                                 </div>
                             </div>
@@ -272,16 +283,16 @@
                         ${carrinho.map(item => `
                             <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex items-center gap-3">
                                 <div class="w-14 h-14 bg-slate-950 rounded-xl flex items-center justify-center border border-slate-800 text-slate-600">
-                                    <i class="lucide-package w-5 h-5"></i>
+                                    <i data-lucide="package" class="w-5 h-5"></i>
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="font-bold text-slate-100 text-xs truncate">${item.nome}</h4>
                                     <p class="text-xs text-orange-500 font-bold">R$ ${item.preco.toFixed(2)}</p>
                                 </div>
                                 <div class="flex items-center bg-slate-800 rounded-xl p-1">
-                                    <button onclick="atualizarQtd(${item.id}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400"><i class="lucide-minus w-4 h-4"></i></button>
+                                    <button onclick="atualizarQtd(${item.id}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400"><i data-lucide="minus" class="w-4 h-4"></i></button>
                                     <span class="w-8 text-center text-sm font-black text-white">${item.qtd}</span>
-                                    <button onclick="atualizarQtd(${item.id}, 1)" class="w-8 h-8 flex items-center justify-center text-slate-400"><i class="lucide-plus w-4 h-4"></i></button>
+                                    <button onclick="atualizarQtd(${item.id}, 1)" class="w-8 h-8 flex items-center justify-center text-slate-400"><i data-lucide="plus" class="w-4 h-4"></i></button>
                                 </div>
                             </div>
                         `).join('')}
@@ -296,13 +307,13 @@
                                 <span class="text-3xl font-black text-white">R$ ${total.toFixed(2)}</span>
                             </div>
                             <button onclick="abrirModal()" class="w-full bg-orange-600 text-white py-5 rounded-2xl font-black mt-6 active:scale-95 flex items-center justify-center gap-3 shadow-xl shadow-orange-900/20 text-sm uppercase tracking-widest transition-transform">
-                                CONTINUAR PEDIDO <i class="lucide-chevron-right w-6 h-6"></i>
+                                CONTINUAR PEDIDO <i data-lucide="chevron-right" class="w-6 h-6"></i>
                             </button>
                         </div>
                     </div>
                 ` : `
                     <div class="text-center py-20 bg-slate-900 rounded-3xl border-2 border-dashed border-slate-800">
-                        <i class="lucide-shopping-cart w-10 h-10 mx-auto text-slate-800 mb-3"></i>
+                        <i data-lucide="shopping-cart" class="w-10 h-10 mx-auto text-slate-800 mb-3"></i>
                         <p class="text-slate-500 font-bold uppercase text-[10px]">O carrinho está vazio</p>
                         <button onclick="setAba('catalogo')" class="text-orange-500 font-black mt-4 underline text-xs uppercase tracking-widest">Procurar Peças</button>
                     </div>
@@ -317,14 +328,14 @@
                 <div class="bg-slate-900 w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl border border-slate-800">
                     <div class="flex flex-col items-center text-center space-y-6">
                         <div class="w-20 h-20 bg-orange-600/10 text-orange-500 rounded-3xl flex items-center justify-center border border-orange-600/20 shadow-inner">
-                            <i class="lucide-store w-10 h-10"></i>
+                            <i data-lucide="store" class="w-10 h-10"></i>
                         </div>
                         <div class="space-y-1">
                             <h3 class="text-2xl font-black text-white uppercase tracking-tight">Identificação</h3>
                             <p class="text-slate-500 text-xs font-medium">Nome da sua loja ou técnico responsável.</p>
                         </div>
                         <div class="w-full relative">
-                            <i class="lucide-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 w-5 h-5"></i>
+                            <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 w-5 h-5"></i>
                             <input type="text" id="inputNome" placeholder="EX: LOJA DO JOÃO" oninput="render()"
                                 class="w-full pl-11 pr-4 py-5 rounded-2xl bg-slate-950 border border-slate-800 text-white focus:border-orange-600 outline-none font-black uppercase text-sm shadow-inner transition-all">
                         </div>
@@ -341,7 +352,7 @@
             return `
             <main class="max-w-xl mx-auto p-4 animate-in text-center pt-10">
                 <div class="w-24 h-24 bg-orange-600 text-white rounded-full flex items-center justify-center mx-auto shadow-2xl mb-8 shadow-orange-900/40">
-                    <i class="lucide-check-circle-2 w-12 h-12"></i>
+                    <i data-lucide="check-circle-2" class="w-12 h-12"></i>
                 </div>
                 <h2 class="text-3xl font-black uppercase tracking-tight">Pedido <span class="text-orange-500">Pronto!</span></h2>
                 <p class="text-slate-400 text-sm mt-3 px-4">Olá, <span class="text-white font-bold">${pedidoFinalizado.cliente}</span>. O resumo do seu pedido foi gerado com sucesso.</p>
@@ -360,7 +371,7 @@
                 </div>
                 
                 <button onclick="enviarWhatsApp()" class="w-full bg-[#25D366] text-white py-6 rounded-3xl font-black mt-10 shadow-2xl shadow-green-900/20 flex items-center justify-center gap-3 active:scale-95 transition-transform text-base uppercase tracking-widest">
-                    <i class="lucide-message-circle w-6 h-6"></i> ENVIAR PEDIDO
+                    <i data-lucide="message-circle" class="w-6 h-6"></i> ENVIAR PEDIDO
                 </button>
                 <button onclick="setAba('catalogo')" class="w-full py-6 text-slate-500 font-bold uppercase text-[10px] tracking-[0.3em] mt-2">Novo Orçamento</button>
             </main>`;
