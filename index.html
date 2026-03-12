@@ -25,7 +25,6 @@
             width: 20px;
             height: 20px;
         }
-        /* Garantir que o card cresça conforme o conteúdo */
         .produto-card {
             min-height: 280px;
         }
@@ -170,7 +169,7 @@
             { id: 68, nome: "BATERIA SKAIKY PROGRAMÁVEL IPHONE 15 PRO MAX (4422 mAh)", categoria: "baterias", preco: 300.00 },
         ];
 
-        const CATEGORIAS = ["Todos", "Telas", "Baterias", "Conectores", "Flex", "Carcaças", "Ferramentas", "Insumos"];
+        const CATEGORIAS = ["Todos", "telas", "baterias", "Conectores", "Flex", "Carcaças", "Ferramentas", "Insumos"];
 
         // Estado Global
         let abaAtiva = 'catalogo';
@@ -181,9 +180,56 @@
         let pedidoFinalizado = null;
         let mostrarModalNome = false;
 
+        // --- ALGORITMO DE BUSCA INTELIGENTE (FUZZY SEARCH) ---
+        function fuzzyMatch(text, query) {
+            text = text.toLowerCase();
+            query = query.toLowerCase();
+            
+            if (text.includes(query)) return true;
+
+            // Divide a busca em palavras (ex: "tela ipone" -> ["tela", "ipone"])
+            const queryWords = query.split(/\s+/).filter(w => w.length > 2);
+            if (queryWords.length === 0) return text.includes(query);
+
+            // Verifica se cada palavra da busca é parecida com alguma palavra do produto
+            return queryWords.every(word => {
+                const productWords = text.split(/\s+/);
+                return productWords.some(pWord => {
+                    // Se a palavra do produto contém a palavra buscada ou vice-versa
+                    if (pWord.includes(word) || word.includes(pWord)) return true;
+                    
+                    // Cálculo de distância simples (permite 1 ou 2 erros dependendo do tamanho)
+                    const dist = levenshteinDistance(word, pWord);
+                    const threshold = word.length > 4 ? 2 : 1;
+                    return dist <= threshold;
+                });
+            });
+        }
+
+        function levenshteinDistance(a, b) {
+            const matrix = [];
+            for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+            for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+
+            for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1,
+                            matrix[i][j - 1] + 1,
+                            matrix[i - 1][j] + 1
+                        );
+                    }
+                }
+            }
+            return matrix[b.length][a.length];
+        }
+        // -----------------------------------------------------
+
         function render() {
             const app = document.getElementById('app');
-            
             if (abaAtiva === 'catalogo') app.innerHTML = renderCatalogo();
             else if (abaAtiva === 'carrinho') app.innerHTML = renderCarrinho();
             else if (abaAtiva === 'sucesso') app.innerHTML = renderSucesso();
@@ -193,10 +239,7 @@
                 modalDiv.innerHTML = renderModal();
                 app.appendChild(modalDiv.firstElementChild);
             }
-
-            if (window.lucide) {
-                lucide.createIcons();
-            }
+            if (window.lucide) lucide.createIcons();
         }
 
         function setAba(aba) {
@@ -205,20 +248,17 @@
             window.scrollTo(0, 0);
         }
 
-        function filtrarEmTempoReal(val) {
+        function filtrarInteligente(val) {
             busca = val;
             const cards = document.querySelectorAll('.produto-card');
             cards.forEach(card => {
-                const nome = card.getAttribute('data-nome').toLowerCase();
+                const nome = card.getAttribute('data-nome');
                 const categoria = card.getAttribute('data-categoria');
-                const matchesBusca = nome.includes(val.toLowerCase());
+                
+                const matchesBusca = val.length < 2 || fuzzyMatch(nome, val);
                 const matchesCat = categoriaSel === 'Todos' || categoria === categoriaSel;
                 
-                if (matchesBusca && matchesCat) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = (matchesBusca && matchesCat) ? 'flex' : 'none';
             });
         }
 
@@ -239,27 +279,17 @@
             const item = carrinho.find(i => i.id === id);
             if (item) {
                 item.qtd += delta;
-                if (item.qtd <= 0) {
-                    carrinho = carrinho.filter(i => i.id !== id);
-                }
+                if (item.qtd <= 0) carrinho = carrinho.filter(i => i.id !== id);
             }
             render();
         }
 
-        function abrirModal() {
-            mostrarModalNome = true;
-            render();
-        }
-
-        function fecharModal() {
-            mostrarModalNome = false;
-            render();
-        }
+        function abrirModal() { mostrarModalNome = true; render(); }
+        function fecharModal() { mostrarModalNome = false; render(); }
 
         function concluirPedido() {
             const nomeInput = document.getElementById('inputNome')?.value;
             if (!nomeInput || !nomeInput.trim()) return;
-            
             nomeCliente = nomeInput.trim().toUpperCase();
             pedidoFinalizado = {
                 id: Math.floor(1000 + Math.random() * 9000),
@@ -268,7 +298,6 @@
                 total: carrinho.reduce((acc, i) => acc + (i.preco * i.qtd), 0),
                 data: new Date().toLocaleString('pt-PT')
             };
-            
             carrinho = [];
             mostrarModalNome = false;
             abaAtiva = 'sucesso';
@@ -282,7 +311,7 @@
                 msg += `• ${item.qtd}x ${item.nome} - R$ ${(item.preco * item.qtd).toFixed(2)}\n`;
             });
             msg += `--------------------------\n*TOTAL: R$ ${pedidoFinalizado.total.toFixed(2)}*`;
-            window.open(`https://wa.me/5588988405043?text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://wa.me/5500000000000?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         function renderHeader() {
@@ -295,11 +324,6 @@
                         </div>
                         <h1 class="text-lg font-black tracking-tight uppercase">DF <span class="text-orange-500">distribuidora</span></h1>
                     </div>
-                    ${abaAtiva === 'carrinho' ? `
-                        <button onclick="setAba('catalogo')" class="text-xs font-bold flex items-center gap-1 bg-slate-800 text-orange-500 px-3 py-1.5 rounded-full border border-orange-600/20">
-                            <i data-lucide="arrow-left" class="w-4 h-4"></i> VOLTAR
-                        </button>
-                    ` : ''}
                 </div>
             </header>`;
         }
@@ -310,13 +334,13 @@
             if (totalItens === 0 || abaAtiva !== 'catalogo') return '';
             return `
             <div class="sticky-top-button px-4 py-2 animate-in">
-                <button onclick="setAba('carrinho')" class="w-full bg-orange-600 text-white py-4 px-6 rounded-2xl shadow-2xl shadow-orange-900/40 flex items-center justify-between border border-orange-400/20 active:scale-[0.98] transition-all">
+                <button onclick="setAba('carrinho')" class="w-full bg-orange-600 text-white py-4 px-6 rounded-2xl shadow-2xl flex items-center justify-between border border-orange-400/20 active:scale-[0.98] transition-all">
                     <div class="flex items-center gap-3">
                         <div class="bg-white/20 p-2 rounded-xl flex items-center justify-center">
                             <i data-lucide="shopping-cart" class="w-5 h-5 text-white"></i>
                         </div>
                         <div class="text-left">
-                            <p class="text-[10px] font-black uppercase tracking-widest opacity-80 leading-none">Ver Carrinho</p>
+                            <p class="text-[10px] font-black uppercase tracking-widest opacity-80 leading-none">Finalizar Pedido</p>
                             <p class="text-sm font-black">${totalItens} ${totalItens === 1 ? 'item' : 'itens'}</p>
                         </div>
                     </div>
@@ -342,7 +366,6 @@
         }
 
         function renderCatalogo() {
-            const produtos = PRODUTOS_MOCK;
             return `
             ${renderHeader()}
             ${renderFloatingButton()}
@@ -350,21 +373,20 @@
                 <div class="space-y-5">
                     <div class="relative">
                         <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5"></i>
-                        <input type="text" placeholder="Procurar peça ou modelo..." 
-                            oninput="filtrarEmTempoReal(this.value)"
-                            onkeydown="if(event.key === 'Enter') render()"
+                        <input type="text" placeholder="Busca inteligente (ex: ipone, semsung...)" 
+                            oninput="filtrarInteligente(this.value)"
                             class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-orange-600 outline-none transition-all text-sm">
                     </div>
                     <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                         ${CATEGORIAS.map(cat => `
-                            <button onclick="setCategoria('${cat}')" class="px-5 py-2.5 rounded-xl text-xs font-black whitespace-nowrap transition-all border-2 ${categoriaSel === cat ? 'bg-orange-600 border-orange-600 text-white shadow-lg shadow-orange-900/20' : 'bg-slate-900 border-slate-800 text-slate-400'}">
+                            <button onclick="setCategoria('${cat}')" class="px-5 py-2.5 rounded-xl text-xs font-black whitespace-nowrap transition-all border-2 ${categoriaSel === cat ? 'bg-orange-600 border-orange-600 text-white shadow-lg' : 'bg-slate-900 border-slate-800 text-slate-400'}">
                                 ${cat.toUpperCase()}
                             </button>
                         `).join('')}
                     </div>
                     <div id="lista-produtos" class="grid grid-cols-2 gap-3">
-                        ${produtos.map(p => {
-                            const isVisible = (categoriaSel === 'Todos' || p.categoria === categoriaSel) && p.nome.toLowerCase().includes(busca.toLowerCase());
+                        ${PRODUTOS_MOCK.map(p => {
+                            const isVisible = (categoriaSel === 'Todos' || p.categoria === categoriaSel) && (busca.length < 2 || fuzzyMatch(p.nome, busca));
                             return `
                             <div class="produto-card bg-slate-900 rounded-2xl p-3 shadow-md border border-slate-800 flex flex-col justify-between hover:border-orange-600/30 transition-all" 
                                  data-nome="${p.nome}" data-categoria="${p.categoria}" style="display: ${isVisible ? 'flex' : 'none'}">
@@ -375,12 +397,11 @@
                                     <div class="mb-2">
                                         <span class="text-[9px] font-black text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded uppercase tracking-tighter">${p.categoria}</span>
                                     </div>
-                                    <!-- Removido o truncate e line-clamp para mostrar o nome todo -->
-                                    <h3 class="font-bold text-slate-100 text-xs mt-1 leading-normal">${p.nome}</h3>
+                                    <h3 class="font-bold text-slate-100 text-xs mt-1 leading-normal break-words">${p.nome}</h3>
                                 </div>
                                 <div class="mt-4 flex flex-col gap-3">
                                     <span class="text-base font-black text-white">R$ ${p.preco.toFixed(2)}</span>
-                                    <button onclick="adicionarAoCarrinho(${p.id})" class="w-full bg-orange-600 text-white py-3 rounded-xl active:scale-95 flex items-center justify-center gap-2 font-black text-xs uppercase transition-transform shadow-lg shadow-orange-900/20">
+                                    <button onclick="adicionarAoCarrinho(${p.id})" class="w-full bg-orange-600 text-white py-3 rounded-xl active:scale-95 flex items-center justify-center gap-2 font-black text-xs uppercase transition-transform">
                                         <i data-lucide="plus" class="w-4 h-4"></i> Adicionar
                                     </button>
                                 </div>
@@ -397,7 +418,7 @@
             return `
             ${renderHeader()}
             <main class="max-w-xl mx-auto p-4 animate-in">
-                <h2 class="text-xl font-black px-1 text-white uppercase tracking-tight mb-4">O Teu <span class="text-orange-500">Carrinho</span></h2>
+                <h2 class="text-xl font-black px-1 text-white uppercase tracking-tight mb-4">Carrinho</h2>
                 ${carrinho.length > 0 ? `
                     <div class="space-y-3">
                         ${carrinho.map(item => `
@@ -405,13 +426,12 @@
                                 <div class="flex items-start gap-4">
                                     <div class="w-12 h-12 flex-shrink-0 bg-slate-950 rounded-xl flex items-center justify-center border border-slate-800 text-slate-600"><i data-lucide="package" class="w-5 h-5"></i></div>
                                     <div class="flex-1">
-                                        <!-- Nome completo aqui também -->
                                         <h4 class="font-bold text-slate-100 text-sm leading-tight">${item.nome}</h4>
                                         <p class="text-xs text-orange-500 font-bold mt-1">R$ ${item.preco.toFixed(2)} cada</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-                                     <span class="text-xs font-bold text-white uppercase">Subtotal: R$ ${(item.preco * item.qtd).toFixed(2)}</span>
+                                     <span class="text-xs font-bold text-white uppercase tracking-tight">R$ ${(item.preco * item.qtd).toFixed(2)}</span>
                                      <div class="flex items-center bg-slate-800 rounded-xl p-1">
                                         <button onclick="atualizarQtd(${item.id}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400"><i data-lucide="minus" class="w-4 h-4"></i></button>
                                         <span class="w-8 text-center text-sm font-black text-white">${item.qtd}</span>
@@ -420,12 +440,12 @@
                                 </div>
                             </div>
                         `).join('')}
-                        <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border border-slate-800 mt-6 overflow-hidden">
+                        <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border border-slate-800 mt-6">
                             <div class="flex justify-between items-end">
                                 <span class="text-sm font-medium text-slate-400 uppercase tracking-widest">TOTAL</span>
                                 <span class="text-3xl font-black text-white">R$ ${total.toFixed(2)}</span>
                             </div>
-                            <button onclick="abrirModal()" class="w-full bg-orange-600 text-white py-5 rounded-2xl font-black mt-6 flex items-center justify-center gap-3 shadow-xl shadow-orange-900/20 text-sm uppercase tracking-widest transition-transform active:scale-95">
+                            <button onclick="abrirModal()" class="w-full bg-orange-600 text-white py-5 rounded-2xl font-black mt-6 flex items-center justify-center gap-3 text-sm uppercase tracking-widest active:scale-95">
                                 CONTINUAR <i data-lucide="chevron-right" class="w-6 h-6"></i>
                             </button>
                         </div>
@@ -446,10 +466,7 @@
                 <div class="bg-slate-900 w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl border border-slate-800">
                     <div class="flex flex-col items-center text-center space-y-6">
                         <div class="w-20 h-20 bg-orange-600/10 text-orange-500 rounded-3xl flex items-center justify-center border border-orange-600/20"><i data-lucide="store" class="w-10 h-10"></i></div>
-                        <div class="space-y-1">
-                            <h3 class="text-2xl font-black text-white uppercase tracking-tight">Identificação</h3>
-                            <p class="text-slate-500 text-xs">Nome da sua loja ou técnico.</p>
-                        </div>
+                        <h3 class="text-2xl font-black text-white uppercase tracking-tight">Identificação</h3>
                         <div class="w-full relative">
                             <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 w-5 h-5"></i>
                             <input type="text" id="inputNome" placeholder="NOME DA LOJA" 
@@ -458,7 +475,7 @@
                         </div>
                         <div class="flex w-full gap-3 pt-2">
                             <button onclick="fecharModal()" class="flex-1 py-5 rounded-2xl font-black text-slate-500 bg-slate-800 text-[10px] uppercase tracking-widest">Sair</button>
-                            <button onclick="concluirPedido()" class="flex-[2.5] py-5 rounded-2xl font-black text-white bg-orange-600 text-[11px] uppercase tracking-widest active:scale-95 transition-transform shadow-lg shadow-orange-900/20">Finalizar</button>
+                            <button onclick="concluirPedido()" class="flex-[2.5] py-5 rounded-2xl font-black text-white bg-orange-600 text-[11px] uppercase tracking-widest active:scale-95 shadow-lg shadow-orange-900/20">Finalizar</button>
                         </div>
                     </div>
                 </div>
@@ -469,14 +486,14 @@
             return `
             <main class="max-w-xl mx-auto p-4 animate-in text-center pt-10">
                 <div class="w-24 h-24 bg-orange-600 text-white rounded-full flex items-center justify-center mx-auto shadow-2xl mb-8 shadow-orange-900/40"><i data-lucide="check-circle-2" class="w-12 h-12"></i></div>
-                <h2 class="text-3xl font-black uppercase tracking-tight">Pronto!</h2>
-                <p class="text-slate-400 text-sm mt-3 px-4">Olá, <span class="text-white font-bold">${pedidoFinalizado.cliente}</span>. O resumo foi gerado.</p>
+                <h2 class="text-3xl font-black uppercase tracking-tight text-white">Pedido Gerado!</h2>
+                <p class="text-slate-400 text-sm mt-3 px-4">Olá, <span class="text-white font-bold">${pedidoFinalizado.cliente}</span>. Clique no botão abaixo para enviar.</p>
                 <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 text-left mt-10">
-                   <p class="text-[10px] font-bold text-orange-500 mb-2 uppercase tracking-widest">Resumo do Pedido</p>
+                   <p class="text-[10px] font-bold text-orange-500 mb-2 uppercase tracking-widest">Valor Final</p>
                    <p class="text-xl font-black text-white">R$ ${pedidoFinalizado.total.toFixed(2)}</p>
                 </div>
                 <button onclick="enviarWhatsApp()" class="w-full bg-[#25D366] text-white py-6 rounded-3xl font-black mt-10 flex items-center justify-center gap-3 active:scale-95 transition-transform text-base uppercase tracking-widest shadow-xl shadow-green-900/20">
-                    <i data-lucide="message-circle" class="w-6 h-6"></i> ENVIAR PELO WHATSAPP
+                    <i data-lucide="message-circle" class="w-6 h-6"></i> ENVIAR WHATSAPP
                 </button>
             </main>`;
         }
