@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DF Celulares - Distribuidora</title>
+    <title>TechPeças - Distribuidora</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -25,6 +25,10 @@
             width: 20px;
             height: 20px;
         }
+        /* Garantir que o card cresça conforme o conteúdo */
+        .produto-card {
+            min-height: 280px;
+        }
     </style>
 </head>
 <body class="font-sans antialiased">
@@ -34,13 +38,13 @@
     <script>
         // Dados do Sistema
         const PRODUTOS_MOCK = [
-            { id: 1, nome: "Tela Frontal iPhone 11 - Diamonds", categoria: "telas", preco: 100.00 },
+            { id: 1, nome: "Tela Frontal iPhone 11 - Diamonds", categoria: "Telas", preco: 100.00 },
 
             { id: 2, nome: "Tela Frontal iPhone 12 / 12 pro - Diamonds", categoria: "telas", preco: 238.00 },
 
             { id: 3, nome: "Tela Frontal iPhone 13 Oled - Diamonds", categoria: "telas", preco: 248.00 },
 
-            { id: 4, nome: "Tela Frontal iPhone 14 soft oled - Diamonds", categoria: "telas", preco: 365.00 },
+            { id: 4, nome: "Tela Frontal iPhone 14 soft oled - Diamonds", categoria: "Telas", preco: 365.00 },
 
             { id: 5, nome: "Tela Frontal iPhone 13 pro max soft oled- Diamonds", categoria: "telas", preco: 410.00 },
 
@@ -166,7 +170,7 @@
             { id: 68, nome: "BATERIA SKAIKY PROGRAMÁVEL IPHONE 15 PRO MAX (4422 mAh)", categoria: "baterias", preco: 300.00 },
         ];
 
-        const CATEGORIAS = ["Todos", "telas", "baterias", "Conectores", "Flex", "Carcaças", "Ferramentas", "Insumos"];
+        const CATEGORIAS = ["Todos", "Telas", "Baterias", "Conectores", "Flex", "Carcaças", "Ferramentas", "Insumos"];
 
         // Estado Global
         let abaAtiva = 'catalogo';
@@ -201,15 +205,6 @@
             window.scrollTo(0, 0);
         }
 
-        // Corrigido: Agora apenas atualiza a variável e filtra os itens visualmente ou aguarda o Enter
-        function handleBusca(e) {
-            busca = e.target.value;
-            if (e.key === 'Enter') {
-                render();
-            }
-        }
-
-        // Opcional: Para busca em tempo real sem perder o foco, filtramos apenas os cards
         function filtrarEmTempoReal(val) {
             busca = val;
             const cards = document.querySelectorAll('.produto-card');
@@ -263,10 +258,7 @@
 
         function concluirPedido() {
             const nomeInput = document.getElementById('inputNome')?.value;
-            if (!nomeInput || !nomeInput.trim()) {
-                document.getElementById('inputNome').classList.add('border-red-500');
-                return;
-            }
+            if (!nomeInput || !nomeInput.trim()) return;
             
             nomeCliente = nomeInput.trim().toUpperCase();
             pedidoFinalizado = {
@@ -290,7 +282,7 @@
                 msg += `• ${item.qtd}x ${item.nome} - R$ ${(item.preco * item.qtd).toFixed(2)}\n`;
             });
             msg += `--------------------------\n*TOTAL: R$ ${pedidoFinalizado.total.toFixed(2)}*`;
-            window.open(`https://wa.me/5588988405043?text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://wa.me/5500000000000?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         function renderHeader() {
@@ -301,7 +293,7 @@
                         <div class="bg-orange-600 p-1.5 rounded-lg flex items-center justify-center">
                             <i data-lucide="smartphone" class="w-5 h-5"></i>
                         </div>
-                        <h1 class="text-lg font-black tracking-tight uppercase">DF <span class="text-orange-500">Distribuidora</span></h1>
+                        <h1 class="text-lg font-black tracking-tight uppercase">Tech<span class="text-orange-500">Peças</span></h1>
                     </div>
                     ${abaAtiva === 'carrinho' ? `
                         <button onclick="setAba('catalogo')" class="text-xs font-bold flex items-center gap-1 bg-slate-800 text-orange-500 px-3 py-1.5 rounded-full border border-orange-600/20">
@@ -324,7 +316,7 @@
                             <i data-lucide="shopping-cart" class="w-5 h-5 text-white"></i>
                         </div>
                         <div class="text-left">
-                            <p class="text-[10px] font-black uppercase tracking-widest opacity-80 leading-none">Finalizar Pedido</p>
+                            <p class="text-[10px] font-black uppercase tracking-widest opacity-80 leading-none">Ver Carrinho</p>
                             <p class="text-sm font-black">${totalItens} ${totalItens === 1 ? 'item' : 'itens'}</p>
                         </div>
                     </div>
@@ -358,7 +350,7 @@
                 <div class="space-y-5">
                     <div class="relative">
                         <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5"></i>
-                        <input type="text" placeholder="Procurar peça ou modelo..." value="${busca}" 
+                        <input type="text" placeholder="Procurar peça ou modelo..." 
                             oninput="filtrarEmTempoReal(this.value)"
                             onkeydown="if(event.key === 'Enter') render()"
                             class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-orange-600 outline-none transition-all text-sm">
@@ -380,8 +372,11 @@
                                     <div class="aspect-square bg-slate-950 rounded-xl flex items-center justify-center mb-3 border border-slate-800 text-slate-700">
                                         <i data-lucide="package" class="w-8 h-8"></i>
                                     </div>
-                                    <span class="text-[9px] font-black text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded uppercase tracking-tighter">${p.categoria}</span>
-                                    <h3 class="font-bold text-slate-100 text-xs mt-1 leading-tight line-clamp-2">${p.nome}</h3>
+                                    <div class="mb-2">
+                                        <span class="text-[9px] font-black text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded uppercase tracking-tighter">${p.categoria}</span>
+                                    </div>
+                                    <!-- Removido o truncate e line-clamp para mostrar o nome todo -->
+                                    <h3 class="font-bold text-slate-100 text-xs mt-1 leading-normal">${p.nome}</h3>
                                 </div>
                                 <div class="mt-4 flex flex-col gap-3">
                                     <span class="text-base font-black text-white">R$ ${p.preco.toFixed(2)}</span>
@@ -399,7 +394,6 @@
 
         function renderCarrinho() {
             const total = carrinho.reduce((acc, i) => acc + (i.preco * i.qtd), 0);
-            const totalItens = carrinho.reduce((acc, i) => acc + i.qtd, 0);
             return `
             ${renderHeader()}
             <main class="max-w-xl mx-auto p-4 animate-in">
@@ -407,26 +401,32 @@
                 ${carrinho.length > 0 ? `
                     <div class="space-y-3">
                         ${carrinho.map(item => `
-                            <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex items-center gap-3">
-                                <div class="w-14 h-14 bg-slate-950 rounded-xl flex items-center justify-center border border-slate-800 text-slate-600"><i data-lucide="package" class="w-5 h-5"></i></div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-bold text-slate-100 text-xs truncate">${item.nome}</h4>
-                                    <p class="text-xs text-orange-500 font-bold">R$ ${item.preco.toFixed(2)}</p>
+                            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex flex-col gap-4">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-12 h-12 flex-shrink-0 bg-slate-950 rounded-xl flex items-center justify-center border border-slate-800 text-slate-600"><i data-lucide="package" class="w-5 h-5"></i></div>
+                                    <div class="flex-1">
+                                        <!-- Nome completo aqui também -->
+                                        <h4 class="font-bold text-slate-100 text-sm leading-tight">${item.nome}</h4>
+                                        <p class="text-xs text-orange-500 font-bold mt-1">R$ ${item.preco.toFixed(2)} cada</p>
+                                    </div>
                                 </div>
-                                <div class="flex items-center bg-slate-800 rounded-xl p-1">
-                                    <button onclick="atualizarQtd(${item.id}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400"><i data-lucide="minus" class="w-4 h-4"></i></button>
-                                    <span class="w-8 text-center text-sm font-black text-white">${item.qtd}</span>
-                                    <button onclick="atualizarQtd(${item.id}, 1)" class="w-8 h-8 flex items-center justify-center text-slate-400"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                                <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                                     <span class="text-xs font-bold text-white uppercase">Subtotal: R$ ${(item.preco * item.qtd).toFixed(2)}</span>
+                                     <div class="flex items-center bg-slate-800 rounded-xl p-1">
+                                        <button onclick="atualizarQtd(${item.id}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                                        <span class="w-8 text-center text-sm font-black text-white">${item.qtd}</span>
+                                        <button onclick="atualizarQtd(${item.id}, 1)" class="w-8 h-8 flex items-center justify-center text-slate-400"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         `).join('')}
-                        <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border border-slate-800 mt-6 relative overflow-hidden">
+                        <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border border-slate-800 mt-6 overflow-hidden">
                             <div class="flex justify-between items-end">
                                 <span class="text-sm font-medium text-slate-400 uppercase tracking-widest">TOTAL</span>
                                 <span class="text-3xl font-black text-white">R$ ${total.toFixed(2)}</span>
                             </div>
                             <button onclick="abrirModal()" class="w-full bg-orange-600 text-white py-5 rounded-2xl font-black mt-6 flex items-center justify-center gap-3 shadow-xl shadow-orange-900/20 text-sm uppercase tracking-widest transition-transform active:scale-95">
-                                CONTINUAR PEDIDO <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                                CONTINUAR <i data-lucide="chevron-right" class="w-6 h-6"></i>
                             </button>
                         </div>
                     </div>
@@ -470,12 +470,13 @@
             <main class="max-w-xl mx-auto p-4 animate-in text-center pt-10">
                 <div class="w-24 h-24 bg-orange-600 text-white rounded-full flex items-center justify-center mx-auto shadow-2xl mb-8 shadow-orange-900/40"><i data-lucide="check-circle-2" class="w-12 h-12"></i></div>
                 <h2 class="text-3xl font-black uppercase tracking-tight">Pronto!</h2>
-                <p class="text-slate-400 text-sm mt-3">Olá, <span class="text-white font-bold">${pedidoFinalizado.cliente}</span>. Clique abaixo para enviar.</p>
+                <p class="text-slate-400 text-sm mt-3 px-4">Olá, <span class="text-white font-bold">${pedidoFinalizado.cliente}</span>. O resumo foi gerado.</p>
                 <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 text-left mt-10">
-                   <p class="text-2xl font-black text-orange-500">R$ ${pedidoFinalizado.total.toFixed(2)}</p>
+                   <p class="text-[10px] font-bold text-orange-500 mb-2 uppercase tracking-widest">Resumo do Pedido</p>
+                   <p class="text-xl font-black text-white">R$ ${pedidoFinalizado.total.toFixed(2)}</p>
                 </div>
                 <button onclick="enviarWhatsApp()" class="w-full bg-[#25D366] text-white py-6 rounded-3xl font-black mt-10 flex items-center justify-center gap-3 active:scale-95 transition-transform text-base uppercase tracking-widest shadow-xl shadow-green-900/20">
-                    <i data-lucide="message-circle" class="w-6 h-6"></i> ENVIAR WHATSAPP
+                    <i data-lucide="message-circle" class="w-6 h-6"></i> ENVIAR PELO WHATSAPP
                 </button>
             </main>`;
         }
@@ -484,8 +485,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
