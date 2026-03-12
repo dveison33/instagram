@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechPeças - Distribuidora</title>
+    <title>DF Celulares - Distribuidora</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -34,14 +34,62 @@
     <script>
         // Dados do Sistema
         const PRODUTOS_MOCK = [
-            { id: 1, nome: "Tela Frontal iPhone 11 - Original China", categoria: "Telas", preco: 189.90 },
-            { id: 2, nome: "Bateria Samsung G532 J2 Prime", categoria: "Baterias", preco: 35.00 },
-            { id: 3, nome: "Conector de Carga Moto G8 Play", categoria: "Conectores", preco: 12.50 },
-            { id: 4, nome: "Tela Frontal Samsung A10 - Incell", categoria: "Telas", preco: 85.00 },
-            { id: 5, nome: "Cabo Flex Power iPhone X", categoria: "Flex", preco: 25.00 },
-            { id: 6, nome: "Tampa Traseira Xiaomi Note 8 - Azul", categoria: "Carcaças", preco: 45.00 },
-            { id: 7, nome: "Kit de Ferramentas Precisão (24 em 1)", categoria: "Ferramentas", preco: 59.90 },
-            { id: 8, nome: "Cola B7000 110ml", categoria: "Insumos", preco: 28.00 },
+            { id: 1, nome: "Tela Frontal iPhone 11 - Diamonds", categoria: "Telas", preco: 100.00 },
+            { id: 2, nome: "Tela Frontal iPhone 12 / 12 pro - Diamonds", categoria: "telas", preco: 238.00 },
+            { id: 3, nome: "Tela Frontal iPhone 13 Oled - Diamonds", categoria: "telas", preco: 248.00 },
+            { id: 4, nome: "Tela Frontal iPhone 14 soft oled - Diamonds", categoria: "Telas", preco: 365.00 },
+            { id: 5, nome: "Tela Frontal iPhone 13 pro max soft oled- Diamonds", categoria: "telas", preco: 410.00 },
+            { id: 6, nome: "Tela Frontal iPhone 14 pro max soft oled - Diamonds", categoria: "telas", preco: 600.00 },
+            { id: 7, nome: "Tela Frontal iPhone 8 plus - branca - Diamonds", categoria: "telas", preco: 120.00 },
+            { id: 8, nome: "Tela Frontal iPhone XR - Diamonds", categoria: "telas", preco: 100.00 },
+            { id: 9, nome: "Tela Frontal iPhone X  - Diamonds", categoria: "telas", preco: 110.00 },
+            { id: 10, nome: "TELA DIAMONDS SAMSUNG A04S/A13 5G ORI Com Aro (SM-A047M/A136U", categoria: "telas", preco: 95.00 },
+            { id: 11, nome: "TELA SAMSUNG A05 ORI Sem Aro (SM-A055M/DS", categoria: "telas", preco: 70.00 },
+            { id: 12, nome: "TELA DIAMONDS SAMSUNG A05 ORI Sem Aro (SM-A055M/DS)", categoria: "telas", preco: 80.00 },
+            { id: 11, nome: "TELA SAMSUNG A05 ORI C/A (SM-A055M/DS", categoria: "telas", preco: 85.00 },
+            { id: 12, nome: "TELA DIAMONDS SAMSUNG A05 ORI C/A (SM-A055M/DS)", categoria: "telas", preco: 90.00 },
+            { id: 13, nome: "TELA DIAMONDS SAMSUNG A05S ORI S/A (SM-A057F/DS", categoria: "telas", preco: 80.00 },
+            { id: 14, nome: "TELA SAMSUNG A06 4G ORI S/A (SM-A065F/DS", categoria: "telas", preco: 70.00 },
+            { id: 15, nome: "TELA DIAMONDS SAMSUNG A06 4G ORI S/A (SM-A065F/DS", categoria: "telas", preco: 80.00 },
+            { id: 16, nome: "TELA SAMSUNG A07 ORI S/A (SM-A075M/DSs", categoria: "telas", preco: 90.00 },
+            { id: 17, nome: "TELA DIAMONDS SAMSUNG A07 ORI S/A (SM-A075M/DS)", categoria: "telas", preco: 95.00 },
+            { id: 18, nome: "TELA SAMSUNG A12 ORI C/A (TODAS AS VERSÕES)", categoria: "telas", preco: 75.00 },
+            { id: 19, nome: "TELA DIAMONDS SAMSUNG A12 ORI C/A (UNIVERSAL)", categoria: "telas", preco: 95.00 },
+            { id: 20, nome: "TELA SAMSUNG A13 4G/A23 4G/M33/M23 5G ORI S/A (M336B", categoria: "telas", preco: 70.00 },
+            { id: 21, nome: "TELA DIAMONDS SAMSUNG A13 4G/A23/M33 ORI S/A (SM-A135M/DS)", categoria: "telas", preco: 75.00 },
+            { id: 22, nome: "TELA SAMSUNG A13 4G ORI C/A (SM-A135M/DS)", categoria: "telas", preco: 75.00 },
+            { id: 23, nome: "TELA DIAMONDS SAMSUNG A13 4G ORI C/A (SM-A135M/DS)", categoria: "telas", preco: 95.00 },
+            { id: 24, nome: "TELA SAMSUNG A14 4G ORI C/A (SM-A145M/DS)", categoria: "telas", preco: 90.00 },
+            { id: 25, nome: "TELA DIAMONDS SAMSUNG A14 4G ORI C/A (SM-A145M/DS)", categoria: "telas", preco: 125.00 },
+            { id: 26, nome: "TELA SAMSUNG A15 INCELL C/A (SM-A155M/DSN)", categoria: "telas", preco: 90.00 },
+            { id: 27, nome: "TELA DIAMONDS SAMSUNG A15 INCELL C/A (SM-A155M/DSN)", categoria: "telas", preco: 115.00 },
+            { id: 28, nome: "TELA DIAMONDS SAMSUNG A33 INCELL C/A (SM-A336M)", categoria: "telas", preco: 155.00 },
+            { id: 29, nome: "TELA DIAMONDS SAMSUNG A03/A02S/A03S/A04E/M02S/M04/F02S/F04 ORI S/A (SM-A205M)", categoria: "telas", preco: 70.00 },
+            { id: 30, nome: "TELA DIAMONDS SAMSUNG A03 CORE ORI S/A (SM-A032M)", categoria: "telas", preco: 65.00 },
+            { id: 32, nome: "TELA SAMSUNG A04 ORI S/A (SM-A045M/DS", categoria: "telas", preco: 60.00 },
+            { id: 33, nome: "TELA SAMSUNG A04S/A13 5G ORI S/A (SM-A047M/A136U)", categoria: "telas", preco: 60.00 },
+            { id: 34, nome: "TELA DIAMONDS SAMSUNG A72 4G INCELL C/A(SM-A725F)", categoria: "telas", preco: 155.00 },
+            { id: 35, nome: "TELA DIAMONDS MOTOROLA MOTO E22/E22I ORI S/A (XT2239", categoria: "telas", preco: 70.00 },
+            { id: 36, nome: "TELA DIAMONDS MOTOROLA MOTO G04/G04S/E14/G24/G24 POWER ORI S/A (XT2423)", categoria: "telas", preco: 70.00 },
+            { id: 37, nome: "TELA MOTOROLA MOTO G52/G71S/G82 INCELL C/A (XT2221-1", categoria: "telas", preco: 85.00 },
+            { id: 38, nome: "TELA MOTOROLA MOTO G42 INCELL S/A (XT2233-2)", categoria: "telas", preco: 70.00 },
+            { id: 39, nome: "TELA MOTOROLA MOTO G14/G54/G55/G64 ORI S/A (XT2341-1)", categoria: "telas", preco: 70.00 },
+            { id: 40, nome: "TELA MOTOROLA MOTO E13/E23 ORI S/A (XT2345-2)", categoria: "telas", preco: 55.00 },
+            { id: 41, nome: "TELA DIAMONDS MOTOROLA MOTO G06 ORI S/A", categoria: "telas", preco: 85.00 },
+            { id: 42, nome: "TELA DIAMONDS XIAOMI REDMI NOTE 9S/NOTE 9 PRO ORI S/A", categoria: "telas", preco: 75.00 },
+            { id: 43, nome: "TELA XIAOMI REDMI NOTE 10 4G/NOTE 10S/POCO M5S INCELL C/A", categoria: "telas", preco: 85.00 },
+            { id: 44, nome: "TELA XIAOMI REDMI NOTE 10 4G/NOTE 10S/POCO M5S OLED S/A", categoria: "telas", preco: 158.00 },
+            { id: 45, nome: "TELA XIAOMI REDMI NOTE 11/NOTE 11S/NOTE 12S/POCO M4 PRO 4G INCELL C/A", categoria: "telas", preco: 75.00 }
+            { id: 47, nome: "TELA XIAOMI REDMI NOTE 12 4G INCELL C/A", categoria: "telas", preco: 100.00 },
+            { id: 50, nome: "TELA DIAMONDS XIAOMI REDMI NOTE 13 4G/NOTE 14/POCO M7 PRO OLED S/A", categoria: "telas", preco: 198.00 },
+            { id: 52, nome: "TELA XIAOMI REDMI A1/A1 PLUS/POCO C50 ORI C/A", categoria: "telas", preco: 85.00 },
+            { id: 53, nome: "TELA XIAOMI REDMI A5/POCO C71 ORI S/A", categoria: "telas", preco: 75.00 },
+            { id: 54, nome: "TELA XIAOMI REDMI 12/REDMI 13/REDMI 13X/POCO M6 PRO 5G ORI S/A", categoria: "telas", preco: 70.00 },
+            { id: 55, nome: "TELA XIAOMI REDMI 12C/REDM 11A/POCO C55 ORI S/A", categoria: "telas", preco: 65.00 },
+            { id: 56, nome: "TELA XIAOMI REDMI 12/REDMI 13/REDMI 13X/POCO M6 PRO 5G ORI S/A", categoria: "telas", preco: 75.00 },
+            
+
+            { id: 57, nome: "TELA XIAOMI REDMI 13C (4G/5G)/POCO C65/UMIDIGI NOTE 90A ORI S/A", categoria: "telas", preco: 65.00 },
         ];
 
         const CATEGORIAS = ["Todos", "Telas", "Baterias", "Conectores", "Flex", "Carcaças", "Ferramentas", "Insumos"];
@@ -168,7 +216,7 @@
                 msg += `• ${item.qtd}x ${item.nome} - R$ ${(item.preco * item.qtd).toFixed(2)}\n`;
             });
             msg += `--------------------------\n*TOTAL: R$ ${pedidoFinalizado.total.toFixed(2)}*`;
-            window.open(`https://wa.me/5500000000000?text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://wa.me/5588988405043?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         function renderHeader() {
@@ -179,7 +227,7 @@
                         <div class="bg-orange-600 p-1.5 rounded-lg flex items-center justify-center">
                             <i data-lucide="smartphone" class="w-5 h-5"></i>
                         </div>
-                        <h1 class="text-lg font-black tracking-tight uppercase">Tech<span class="text-orange-500">Peças</span></h1>
+                        <h1 class="text-lg font-black tracking-tight uppercase">'DF '<span class="text-orange-500">Distribuidora</span></h1>
                     </div>
                     ${abaAtiva === 'carrinho' ? `
                         <button onclick="setAba('catalogo')" class="text-xs font-bold flex items-center gap-1 bg-slate-800 text-orange-500 px-3 py-1.5 rounded-full border border-orange-600/20">
@@ -362,3 +410,4 @@
     </script>
 </body>
 </html>
+
