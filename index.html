@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DF Celulares - Distribuidora</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Importação do Script do Lucide para renderização de SVGs -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -22,7 +21,6 @@
             top: 4.5rem;
             z-index: 30;
         }
-        /* Ajuste de tamanho padrão para os ícones */
         .lucide {
             width: 20px;
             height: 20px;
@@ -31,92 +29,86 @@
 </head>
 <body class="font-sans antialiased">
 
-    <div id="app" class="min-h-screen pb-24">
-        <!-- O conteúdo será injectado via JavaScript -->
-    </div>
+    <div id="app" class="min-h-screen pb-24"></div>
 
     <script>
         // Dados do Sistema
         const PRODUTOS_MOCK = [
             { id: 1, nome: "Tela Frontal iPhone 11 - Diamonds", categoria: "Telas", preco: 100.00 },
-            { id: 2, nome: "Tela Frontal iPhone 12 / 12 pro - Diamonds", categoria: "telas", preco: 35.00 },
-            { id: 3, nome: "Tela Frontal iPhone 13 Oled - Diamonds", categoria: "telas", preco: 12.50 },
-            { id: 4, nome: "Tela Frontal iPhone 14 soft oled - Diamonds", categoria: "Telas", preco: 85.00 },
-            { id: 5, nome: "Tela Frontal iPhone 13 pro max soft oled- Diamonds", categoria: "telas", preco: 25.00 },
-            { id: 6, nome: "Tela Frontal iPhone 14 pro max soft oled - Diamonds", categoria: "telas", preco: 45.00 },
-            { id: 7, nome: "Tela Frontal iPhone 8 plus - branca - Diamonds", categoria: "telas", preco: 59.90 },
-            { id: 8, nome: "Tela Frontal iPhone XR - Diamonds", categoria: "telas", preco: 28.00 },
-            { id: 9, nome: "Tela Frontal iPhone X incell - Diamonds", categoria: "telas", preco: 28.00 },
-            { id: 10, nome: "TELA DIAMONDS SAMSUNG A04S/A13 5G ORI C/A (SM-A047M/A136U", categoria: "telas", preco: 28.00 },
-            { id: 11, nome: "TELA SAMSUNG A05 ORI S/A (SM-A055M/DS", categoria: "telas", preco: 28.00 },
-            { id: 12, nome: "TELA DIAMONDS SAMSUNG A05 ORI S/A (SM-A055M/DS)", categoria: "telas", preco: 28.00 },
-            { id: 11, nome: "TELA SAMSUNG A05 ORI C/A (SM-A055M/DS", categoria: "telas", preco: 28.00 },
-            { id: 12, nome: "TELA DIAMONDS SAMSUNG A05 ORI C/A (SM-A055M/DS)", categoria: "telas", preco: 28.00 },
-            { id: 13, nome: "TELA DIAMONDS SAMSUNG A05S ORI S/A (SM-A057F/DS", categoria: "telas", preco: 28.00 },
-            { id: 14, nome: "TELA SAMSUNG A06 4G ORI S/A (SM-A065F/DS", categoria: "telas", preco: 28.00 },
-            { id: 15, nome: "TELA DIAMONDS SAMSUNG A06 4G ORI S/A (SM-A065F/DS", categoria: "telas", preco: 28.00 },
-            { id: 16, nome: "TELA SAMSUNG A07 ORI S/A (SM-A075M/DSs", categoria: "telas", preco: 59.90 },
-            { id: 17, nome: "TELA DIAMONDS SAMSUNG A07 ORI S/A (SM-A075M/DS)", categoria: "telas", preco: 28.00 },
-            { id: 18, nome: "TELA SAMSUNG A12 ORI C/A (TODAS AS VERSÕES)", categoria: "telas", preco: 28.00 },
-            { id: 19, nome: "TELA DIAMONDS SAMSUNG A12 ORI C/A (UNIVERSAL)", categoria: "telas", preco: 45.00 },
-            { id: 20, nome: "TELA SAMSUNG A13 4G/A23 4G/M33/M23 5G ORI S/A (M336B", categoria: "telas", preco: 59.90 },
-            { id: 21, nome: "TELA DIAMONDS SAMSUNG A13 4G/A23/M33 ORI S/A (SM-A135M/DS)", categoria: "telas", preco: 28.00 },
-            { id: 22, nome: "TELA SAMSUNG A13 4G ORI C/A (SM-A135M/DS)", categoria: "telas", preco: 59.90 },
-            { id: 23, nome: "TELA DIAMONDS SAMSUNG A13 4G ORI C/A (SM-A135M/DS)", categoria: "telas", preco: 28.00 },
-            { id: 24, nome: "TELA SAMSUNG A14 4G ORI C/A (SM-A145M/DS)", categoria: "telas", preco: 28.00 },
-            { id: 25, nome: "TELA DIAMONDS SAMSUNG A14 4G ORI C/A (SM-A145M/DS)", categoria: "telas", preco: 59.90 },
-            { id: 26, nome: "TELA SAMSUNG A15 INCELL C/A (SM-A155M/DSN)", categoria: "telas", preco: 28.00 },
-            { id: 27, nome: "TELA DIAMONDS SAMSUNG A15 INCELL C/A (SM-A155M/DSN)", categoria: "telas", preco: 28.00 },
-            { id: 28, nome: "TELA DIAMONDS SAMSUNG A33 INCELL C/A (SM-A336M)", categoria: "telas", preco: 59.90 },
-            { id: 29, nome: "TELA DIAMONDS SAMSUNG A03/A02S/A03S/A04E/M02S/M04/F02S/F04 ORI S/A (SM-A205M)", categoria: "telas", preco: 28.00 },
-            { id: 30, nome: "TELA DIAMONDS SAMSUNG A03 CORE ORI S/A (SM-A032M)", categoria: "telas", preco: 28.00 },
+            { id: 2, nome: "Tela Frontal iPhone 12 / 12 pro - Diamonds", categoria: "telas", preco: 238.00 },
+            { id: 3, nome: "Tela Frontal iPhone 13 Oled - Diamonds", categoria: "telas", preco: 248.00 },
+            { id: 4, nome: "Tela Frontal iPhone 14 soft oled - Diamonds", categoria: "Telas", preco: 365.00 },
+            { id: 5, nome: "Tela Frontal iPhone 13 pro max soft oled- Diamonds", categoria: "telas", preco: 410.00 },
+            { id: 6, nome: "Tela Frontal iPhone 14 pro max soft oled - Diamonds", categoria: "telas", preco: 600.00 },
+            { id: 7, nome: "Tela Frontal iPhone 8 plus - branca - Diamonds", categoria: "telas", preco: 120.00 },
+            { id: 8, nome: "Tela Frontal iPhone XR - Diamonds", categoria: "telas", preco: 100.00 },
+            { id: 9, nome: "Tela Frontal iPhone X  - Diamonds", categoria: "telas", preco: 110.00 },
+            { id: 10, nome: "TELA DIAMONDS SAMSUNG A04S/A13 5G ORI Com Aro (SM-A047M/A136U", categoria: "telas", preco: 95.00 },
+            { id: 11, nome: "TELA SAMSUNG A05 ORI Sem Aro (SM-A055M/DS", categoria: "telas", preco: 70.00 },
+            { id: 12, nome: "TELA DIAMONDS SAMSUNG A05 ORI Sem Aro (SM-A055M/DS)", categoria: "telas", preco: 80.00 },
+            { id: 11, nome: "TELA SAMSUNG A05 ORI C/A (SM-A055M/DS", categoria: "telas", preco: 85.00 },
+            { id: 12, nome: "TELA DIAMONDS SAMSUNG A05 ORI C/A (SM-A055M/DS)", categoria: "telas", preco: 90.00 },
+            { id: 13, nome: "TELA DIAMONDS SAMSUNG A05S ORI S/A (SM-A057F/DS", categoria: "telas", preco: 80.00 },
+            { id: 14, nome: "TELA SAMSUNG A06 4G ORI S/A (SM-A065F/DS", categoria: "telas", preco: 70.00 },
+            { id: 15, nome: "TELA DIAMONDS SAMSUNG A06 4G ORI S/A (SM-A065F/DS", categoria: "telas", preco: 80.00 },
+            { id: 16, nome: "TELA SAMSUNG A07 ORI S/A (SM-A075M/DSs", categoria: "telas", preco: 90.00 },
+            { id: 17, nome: "TELA DIAMONDS SAMSUNG A07 ORI S/A (SM-A075M/DS)", categoria: "telas", preco: 95.00 },
+            { id: 18, nome: "TELA SAMSUNG A12 ORI C/A (TODAS AS VERSÕES)", categoria: "telas", preco: 75.00 },
+            { id: 19, nome: "TELA DIAMONDS SAMSUNG A12 ORI C/A (UNIVERSAL)", categoria: "telas", preco: 95.00 },
+            { id: 20, nome: "TELA SAMSUNG A13 4G/A23 4G/M33/M23 5G ORI S/A (M336B", categoria: "telas", preco: 70.00 },
+            { id: 21, nome: "TELA DIAMONDS SAMSUNG A13 4G/A23/M33 ORI S/A (SM-A135M/DS)", categoria: "telas", preco: 75.00 },
+            { id: 22, nome: "TELA SAMSUNG A13 4G ORI C/A (SM-A135M/DS)", categoria: "telas", preco: 75.00 },
+            { id: 23, nome: "TELA DIAMONDS SAMSUNG A13 4G ORI C/A (SM-A135M/DS)", categoria: "telas", preco: 95.00 },
+            { id: 24, nome: "TELA SAMSUNG A14 4G ORI C/A (SM-A145M/DS)", categoria: "telas", preco: 90.00 },
+            { id: 25, nome: "TELA DIAMONDS SAMSUNG A14 4G ORI C/A (SM-A145M/DS)", categoria: "telas", preco: 125.00 },
+            { id: 26, nome: "TELA SAMSUNG A15 INCELL C/A (SM-A155M/DSN)", categoria: "telas", preco: 90.00 },
+            { id: 27, nome: "TELA DIAMONDS SAMSUNG A15 INCELL C/A (SM-A155M/DSN)", categoria: "telas", preco: 115.00 },
+            { id: 28, nome: "TELA DIAMONDS SAMSUNG A33 INCELL C/A (SM-A336M)", categoria: "telas", preco: 155.00 },
+            { id: 29, nome: "TELA DIAMONDS SAMSUNG A03/A02S/A03S/A04E/M02S/M04/F02S/F04 ORI S/A (SM-A205M)", categoria: "telas", preco: 70.00 },
+            { id: 30, nome: "TELA DIAMONDS SAMSUNG A03 CORE ORI S/A (SM-A032M)", categoria: "telas", preco: 65.00 },
+            
+
             { id: 31, nome: "TELA SAMSUNG A03 CORE ORI C/A (SM-A032M)", categoria: "telas", preco: 59.90 },
-            { id: 32, nome: "TELA SAMSUNG A04 ORI S/A (SM-A045M/DS", categoria: "telas", preco: 28.00 },
-            { id: 33, nome: "TELA SAMSUNG A04S/A13 5G ORI S/A (SM-A047M/A136U)", categoria: "telas", preco: 28.00 },
-            { id: 34, nome: "TELA DIAMONDS SAMSUNG A72 4G INCELL C/A(SM-A725F)", categoria: "telas", preco: 59.90 },
-            { id: 35, nome: "TELA DIAMONDS MOTOROLA MOTO E22/E22I ORI S/A (XT2239", categoria: "telas", preco: 28.00 },
-            { id: 36, nome: "TELA DIAMONDS MOTOROLA MOTO G04/G04S/E14/G24/G24 POWER ORI S/A (XT2423)", categoria: "telas", preco: 28.00 },
-            { id: 37, nome: "TELA MOTOROLA MOTO G52/G71S/G82 INCELL C/A (XT2221-1", categoria: "telas", preco: 59.90 },
-            { id: 38, nome: "TELA MOTOROLA MOTO G42 INCELL S/A (XT2233-2)", categoria: "telas", preco: 28.00 },
-            { id: 39, nome: "TELA MOTOROLA MOTO G14/G54/G55/G64 ORI S/A (XT2341-1)", categoria: "telas", preco: 28.00 },
-            { id: 40, nome: "TELA MOTOROLA MOTO E13/E23 ORI S/A (XT2345-2)", categoria: "telas", preco: 59.90 },
-            { id: 41, nome: "TELA DIAMONDS MOTOROLA MOTO G06 ORI S/A", categoria: "telas", preco: 28.00 },
-            { id: 42, nome: "TELA DIAMONDS XIAOMI REDMI NOTE 9S/NOTE 9 PRO ORI S/A", categoria: "telas", preco: 28.00 },
-            { id: 43, nome: "TELA XIAOMI REDMI NOTE 10 4G/NOTE 10S/POCO M5S INCELL C/A", categoria: "telas", preco: 59.90 },
-            { id: 44, nome: "TELA XIAOMI REDMI NOTE 10 4G/NOTE 10S/POCO M5S OLED S/A", categoria: "telas", preco: 28.00 },
-            { id: 45, nome: "TELA XIAOMI REDMI NOTE 11/NOTE 11S/NOTE 12S/POCO M4 PRO 4G INCELL C/A", categoria: "telas", preco: 28.00 },
-            { id: 46, nome: "TELA DIAMONDS XIAOMI REDMI NOTE 11/NOTE 11S/NOTE 12S/POCO M4 PRO 4G OLED S/A", categoria: "telas", preco: 59.90 },
-            { id: 47, nome: "TELA XIAOMI REDMI NOTE 12 4G INCELL C/A", categoria: "telas", preco: 28.00 },
-            { id: 48, nome: "TELA XIAOMI REDMI NOTE 12 4G/POCO X5 OLED S/A", categoria: "telas", preco: 28.00 },
-            { id: 49, nome: "TELA DIAMONDS XIAOMI REDMI NOTE 12 PRO 4G INCELL C/A", categoria: "telas", preco: 59.90 },
-            { id: 50, nome: "TELA DIAMONDS XIAOMI REDMI NOTE 13 4G/NOTE 14/POCO M7 PRO OLED S/A", categoria: "telas", preco: 28.00 },
-            { id: 51, nome: "TELA DIAMONDS XIAOMI REDMI NOTE 13 4G/NOTE 14/POCO M7 PRO OLED S/A", categoria: "telas", preco: 28.00 },
-            { id: 52, nome: "TELA XIAOMI REDMI A1/A1 PLUS/POCO C50 ORI C/A", categoria: "telas", preco: 59.90 },
-            { id: 53, nome: "TELA XIAOMI REDMI A5/POCO C71 ORI S/A", categoria: "telas", preco: 28.00 },
-            { id: 54, nome: "TELA XIAOMI REDMI 12/REDMI 13/REDMI 13X/POCO M6 PRO 5G ORI S/A", categoria: "telas", preco: 28.00 },
-            { id: 55, nome: "TELA XIAOMI REDMI 12C/REDM 11A/POCO C55 ORI S/A", categoria: "telas", preco: 59.90 },
-            { id: 56, nome: "TELA XIAOMI REDMI 12/REDMI 13/REDMI 13X/POCO M6 PRO 5G ORI S/A", categoria: "telas", preco: 28.00 },
-            { id: 57, nome: "TELA XIAOMI REDMI 13C (4G/5G)/POCO C65/UMIDIGI NOTE 90A ORI S/A", categoria: "telas", preco: 28.00 },
-            { id: 58, nome: "TELA XIAOMI REDMI 14C/POCO C75 ORI S/A", categoria: "telas", preco: 59.90 },
-            { id: 59, nome: "TELA XIAOMI POCO M3 4G/REDMI 9 POWER/REDMI 9T ORI S/A", categoria: "telas", preco: 28.00 },
-            { id: 60, nome: "TELA REALME C51/C53/NOTE 50 ORI S/A (RMX3760)", categoria: "telas", preco: 28.00 },
-            { id: 61, nome: "TELA REALME C63/C61/NARZO N63/REALME NOTE 60/NOTE 60X ORI S/", categoria: "telas", preco: 59.90 },
-            { id: 62, nome: "TELA DIAMONDS REALME NOTE 70 ORI S/A", categoria: "telas", preco: 28.00 },
-            { id: 63, nome: "TELA DIAMONDS INFINIX SMART 8/SMART 8 PRO ORI S/A (X6525/X6525B", categoria: "telas", preco: 28.00 },
-            { id: 64, nome: "BATERIA MAX ORIGINAL IPHONE 8 PLUS (2691mAh)", categoria: "baterias", preco: 59.90 },
-            { id: 65, nome: "BATERIA SKAIKY IPHONE XR (C/FLEX) (2942mAh)s", categoria: "baterias", preco: 28.00 },
-            { id: 66, nome: "BATERIA SKAIKY PROGRAMÁVEL IPHONE 13 PRO (3095mAh)", categoria: "baterias", preco: 28.00 },
-            { id: 67, nome: "BATERIA MAX ORIGINAL IPHONE 12/12 PRO (2815mAh)", categoria: "baterias", preco: 59.90 },
-            { id: 68, nome: "BATERIA SKAIKY PROGRAMÁVEL IPHONE 15 PRO MAX (4422 mAh)", categoria: "baterias", preco: 28.00 },
-            
+
+
+
+            { id: 32, nome: "TELA SAMSUNG A04 ORI S/A (SM-A045M/DS", categoria: "telas", preco: 60.00 },
+            { id: 33, nome: "TELA SAMSUNG A04S/A13 5G ORI S/A (SM-A047M/A136U)", categoria: "telas", preco: 60.00 },
+            { id: 34, nome: "TELA DIAMONDS SAMSUNG A72 4G INCELL C/A(SM-A725F)", categoria: "telas", preco: 155.00 },
+            { id: 35, nome: "TELA DIAMONDS MOTOROLA MOTO E22/E22I ORI S/A (XT2239", categoria: "telas", preco: 70.00 },
+            { id: 36, nome: "TELA DIAMONDS MOTOROLA MOTO G04/G04S/E14/G24/G24 POWER ORI S/A (XT2423)", categoria: "telas", preco: 70.00 },
+            { id: 37, nome: "TELA MOTOROLA MOTO G52/G71S/G82 INCELL C/A (XT2221-1", categoria: "telas", preco: 85.00 },
+            { id: 38, nome: "TELA MOTOROLA MOTO G42 INCELL S/A (XT2233-2)", categoria: "telas", preco: 70.00 },
+            { id: 39, nome: "TELA MOTOROLA MOTO G14/G54/G55/G64 ORI S/A (XT2341-1)", categoria: "telas", preco: 70.00 },
+            { id: 40, nome: "TELA MOTOROLA MOTO E13/E23 ORI S/A (XT2345-2)", categoria: "telas", preco: 55.00 },
+            { id: 41, nome: "TELA DIAMONDS MOTOROLA MOTO G06 ORI S/A", categoria: "telas", preco: 85.00 },
+            { id: 42, nome: "TELA DIAMONDS XIAOMI REDMI NOTE 9S/NOTE 9 PRO ORI S/A", categoria: "telas", preco: 75.00 },
+            { id: 43, nome: "TELA XIAOMI REDMI NOTE 10 4G/NOTE 10S/POCO M5S INCELL C/A", categoria: "telas", preco: 85.00 },
+            { id: 44, nome: "TELA XIAOMI REDMI NOTE 10 4G/NOTE 10S/POCO M5S OLED S/A", categoria: "telas", preco: 158.00 },
+            { id: 45, nome: "TELA XIAOMI REDMI NOTE 11/NOTE 11S/NOTE 12S/POCO M4 PRO 4G INCELL C/A", categoria: "telas", preco: 75.00 }
+            { id: 47, nome: "TELA XIAOMI REDMI NOTE 12 4G INCELL C/A", categoria: "telas", preco: 100.00 },
+            { id: 50, nome: "TELA DIAMONDS XIAOMI REDMI NOTE 13 4G/NOTE 14/POCO M7 PRO OLED S/A", categoria: "telas", preco: 198.00 },
+            { id: 52, nome: "TELA XIAOMI REDMI A1/A1 PLUS/POCO C50 ORI C/A", categoria: "telas", preco: 85.00 },
+            { id: 53, nome: "TELA XIAOMI REDMI A5/POCO C71 ORI S/A", categoria: "telas", preco: 75.00 },
+            { id: 54, nome: "TELA XIAOMI REDMI 12/REDMI 13/REDMI 13X/POCO M6 PRO 5G ORI S/A", categoria: "telas", preco: 70.00 },
+            { id: 55, nome: "TELA XIAOMI REDMI 12C/REDM 11A/POCO C55 ORI S/A", categoria: "telas", preco: 65.00 },
+            { id: 56, nome: "TELA XIAOMI REDMI 12/REDMI 13/REDMI 13X/POCO M6 PRO 5G ORI S/A", categoria: "telas", preco: 75.00 },
             
 
+            { id: 57, nome: "TELA XIAOMI REDMI 13C (4G/5G)/POCO C65/UMIDIGI NOTE 90A ORI S/A", categoria: "telas", preco: 65.00 },
 
 
-
-
-
-
+            { id: 58, nome: "TELA XIAOMI REDMI 14C/POCO C75 ORI S/A", categoria: "telas", preco: 70.00 },
+            { id: 59, nome: "TELA XIAOMI POCO M3 4G/REDMI 9 POWER/REDMI 9T ORI S/A", categoria: "telas", preco: 70.00 },
+            { id: 60, nome: "TELA REALME C51/C53/NOTE 50 ORI S/A (RMX3760)", categoria: "telas", preco: 75.00 },
+            { id: 61, nome: "TELA REALME C63/C61/NARZO N63/REALME NOTE 60/NOTE 60X ORI S/", categoria: "telas", preco: 70.00 },
+            { id: 62, nome: "TELA DIAMONDS REALME NOTE 70 ORI S/A", categoria: "telas", preco: 90.00 },
+            { id: 63, nome: "TELA DIAMONDS INFINIX SMART 8/SMART 8 PRO ORI S/A (X6525/X6525B", categoria: "telas", preco: 85.00 },
+            { id: 64, nome: "BATERIA MAX ORIGINAL IPHONE 8 PLUS (2691mAh)", categoria: "baterias", preco: 65.00 },
+            { id: 65, nome: "BATERIA SKAIKY IPHONE XR (C/FLEX) (2942mAh)s", categoria: "baterias", preco: 105.00 },
+            { id: 66, nome: "BATERIA SKAIKY PROGRAMÁVEL IPHONE 13 PRO (3095mAh)", categoria: "baterias", preco: 205.00 },
+            { id: 67, nome: "BATERIA MAX ORIGINAL IPHONE 12/12 PRO (2815mAh)", categoria: "baterias", preco: 105.00 },
+            { id: 68, nome: "BATERIA SKAIKY PROGRAMÁVEL IPHONE 15 PRO MAX (4422 mAh)", categoria: "baterias", preco: 300.00 },
         ];
 
         const CATEGORIAS = ["Todos", "Telas", "Baterias", "Conectores", "Flex", "Carcaças", "Ferramentas", "Insumos"];
@@ -130,7 +122,6 @@
         let pedidoFinalizado = null;
         let mostrarModalNome = false;
 
-        // Funções de Lógica
         function render() {
             const app = document.getElementById('app');
             
@@ -138,9 +129,12 @@
             else if (abaAtiva === 'carrinho') app.innerHTML = renderCarrinho();
             else if (abaAtiva === 'sucesso') app.innerHTML = renderSucesso();
 
-            if (mostrarModalNome) app.innerHTML += renderModal();
+            if (mostrarModalNome) {
+                const modalDiv = document.createElement('div');
+                modalDiv.innerHTML = renderModal();
+                app.appendChild(modalDiv.firstElementChild);
+            }
 
-            // CRÍTICO: Disparar a criação dos ícones após o render do HTML
             if (window.lucide) {
                 lucide.createIcons();
             }
@@ -152,9 +146,30 @@
             window.scrollTo(0, 0);
         }
 
+        // Corrigido: Agora apenas atualiza a variável e filtra os itens visualmente ou aguarda o Enter
         function handleBusca(e) {
             busca = e.target.value;
-            render();
+            if (e.key === 'Enter') {
+                render();
+            }
+        }
+
+        // Opcional: Para busca em tempo real sem perder o foco, filtramos apenas os cards
+        function filtrarEmTempoReal(val) {
+            busca = val;
+            const cards = document.querySelectorAll('.produto-card');
+            cards.forEach(card => {
+                const nome = card.getAttribute('data-nome').toLowerCase();
+                const categoria = card.getAttribute('data-categoria');
+                const matchesBusca = nome.includes(val.toLowerCase());
+                const matchesCat = categoriaSel === 'Todos' || categoria === categoriaSel;
+                
+                if (matchesBusca && matchesCat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
 
         function setCategoria(cat) {
@@ -193,7 +208,10 @@
 
         function concluirPedido() {
             const nomeInput = document.getElementById('inputNome')?.value;
-            if (!nomeInput || !nomeInput.trim()) return;
+            if (!nomeInput || !nomeInput.trim()) {
+                document.getElementById('inputNome').classList.add('border-red-500');
+                return;
+            }
             
             nomeCliente = nomeInput.trim().toUpperCase();
             pedidoFinalizado = {
@@ -212,24 +230,14 @@
 
         function enviarWhatsApp() {
             if (!pedidoFinalizado) return;
-
-            let msg = `*NOVO PEDIDO: #${pedidoFinalizado.id}*\n`;
-            msg += `*CLIENTE:* ${pedidoFinalizado.cliente}\n`;
-            msg += `*DATA:* ${pedidoFinalizado.data}\n`;
-            msg += `--------------------------\n`;
-            
+            let msg = `*NOVO PEDIDO: #${pedidoFinalizado.id}*\n*CLIENTE:* ${pedidoFinalizado.cliente}\n*DATA:* ${pedidoFinalizado.data}\n--------------------------\n`;
             pedidoFinalizado.itens.forEach(item => {
                 msg += `• ${item.qtd}x ${item.nome} - R$ ${(item.preco * item.qtd).toFixed(2)}\n`;
             });
-
-            msg += `--------------------------\n`;
-            msg += `*TOTAL: R$ ${pedidoFinalizado.total.toFixed(2)}*`;
-
-            const numero = "5500000000000"; 
-            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
+            msg += `--------------------------\n*TOTAL: R$ ${pedidoFinalizado.total.toFixed(2)}*`;
+            window.open(`https://wa.me/5500000000000?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        // Templates de Renderização
         function renderHeader() {
             return `
             <header class="bg-slate-900 border-b border-orange-600/30 text-white sticky top-0 z-40 shadow-xl px-4 py-3">
@@ -252,9 +260,7 @@
         function renderFloatingButton() {
             const total = carrinho.reduce((acc, i) => acc + (i.preco * i.qtd), 0);
             const totalItens = carrinho.reduce((acc, i) => acc + i.qtd, 0);
-
             if (totalItens === 0 || abaAtiva !== 'catalogo') return '';
-
             return `
             <div class="sticky-top-button px-4 py-2 animate-in">
                 <button onclick="setAba('carrinho')" class="w-full bg-orange-600 text-white py-4 px-6 rounded-2xl shadow-2xl shadow-orange-900/40 flex items-center justify-between border border-orange-400/20 active:scale-[0.98] transition-all">
@@ -264,15 +270,12 @@
                         </div>
                         <div class="text-left">
                             <p class="text-[10px] font-black uppercase tracking-widest opacity-80 leading-none">Finalizar Pedido</p>
-                            <p class="text-sm font-black">${totalItens} ${totalItens === 1 ? 'item' : 'itens'} no carrinho</p>
+                            <p class="text-sm font-black">${totalItens} ${totalItens === 1 ? 'item' : 'itens'}</p>
                         </div>
                     </div>
-                    <div class="text-right">
-                        <p class="text-lg font-black tracking-tight">R$ ${total.toFixed(2)}</p>
-                    </div>
+                    <p class="text-lg font-black tracking-tight">R$ ${total.toFixed(2)}</p>
                 </button>
-            </div>
-            `;
+            </div>`;
         }
 
         function renderNav() {
@@ -292,12 +295,7 @@
         }
 
         function renderCatalogo() {
-            const produtos = PRODUTOS_MOCK.filter(p => {
-                const matchBusca = p.nome.toLowerCase().includes(busca.toLowerCase());
-                const matchCat = categoriaSel === 'Todos' || p.categoria === categoriaSel;
-                return matchBusca && matchCat;
-            });
-
+            const produtos = PRODUTOS_MOCK;
             return `
             ${renderHeader()}
             ${renderFloatingButton()}
@@ -305,10 +303,11 @@
                 <div class="space-y-5">
                     <div class="relative">
                         <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5"></i>
-                        <input type="text" placeholder="Procurar peça ou modelo..." value="${busca}" oninput="handleBusca(event)"
+                        <input type="text" placeholder="Procurar peça ou modelo..." value="${busca}" 
+                            oninput="filtrarEmTempoReal(this.value)"
+                            onkeydown="if(event.key === 'Enter') render()"
                             class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-orange-600 outline-none transition-all text-sm">
                     </div>
-
                     <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                         ${CATEGORIAS.map(cat => `
                             <button onclick="setCategoria('${cat}')" class="px-5 py-2.5 rounded-xl text-xs font-black whitespace-nowrap transition-all border-2 ${categoriaSel === cat ? 'bg-orange-600 border-orange-600 text-white shadow-lg shadow-orange-900/20' : 'bg-slate-900 border-slate-800 text-slate-400'}">
@@ -316,25 +315,27 @@
                             </button>
                         `).join('')}
                     </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        ${produtos.map(p => `
-                            <div class="bg-slate-900 rounded-2xl p-3 shadow-md border border-slate-800 flex flex-col justify-between hover:border-orange-600/30 transition-all">
+                    <div id="lista-produtos" class="grid grid-cols-2 gap-3">
+                        ${produtos.map(p => {
+                            const isVisible = (categoriaSel === 'Todos' || p.categoria === categoriaSel) && p.nome.toLowerCase().includes(busca.toLowerCase());
+                            return `
+                            <div class="produto-card bg-slate-900 rounded-2xl p-3 shadow-md border border-slate-800 flex flex-col justify-between hover:border-orange-600/30 transition-all" 
+                                 data-nome="${p.nome}" data-categoria="${p.categoria}" style="display: ${isVisible ? 'flex' : 'none'}">
                                 <div>
-                                    <div class="aspect-square bg-slate-950 rounded-xl flex items-center justify-center mb-3 border border-slate-800">
-                                        <i data-lucide="package" class="w-8 h-8 text-slate-700"></i>
+                                    <div class="aspect-square bg-slate-950 rounded-xl flex items-center justify-center mb-3 border border-slate-800 text-slate-700">
+                                        <i data-lucide="package" class="w-8 h-8"></i>
                                     </div>
                                     <span class="text-[9px] font-black text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded uppercase tracking-tighter">${p.categoria}</span>
                                     <h3 class="font-bold text-slate-100 text-xs mt-1 leading-tight line-clamp-2">${p.nome}</h3>
                                 </div>
                                 <div class="mt-4 flex flex-col gap-3">
                                     <span class="text-base font-black text-white">R$ ${p.preco.toFixed(2)}</span>
-                                    <button onclick="adicionarAoCarrinho(${p.id})" class="w-full bg-orange-600 text-white py-3 rounded-xl active:scale-95 shadow-lg shadow-orange-900/20 flex items-center justify-center gap-2 font-black text-xs uppercase transition-transform">
+                                    <button onclick="adicionarAoCarrinho(${p.id})" class="w-full bg-orange-600 text-white py-3 rounded-xl active:scale-95 flex items-center justify-center gap-2 font-black text-xs uppercase transition-transform shadow-lg shadow-orange-900/20">
                                         <i data-lucide="plus" class="w-4 h-4"></i> Adicionar
                                     </button>
                                 </div>
-                            </div>
-                        `).join('')}
+                            </div>`;
+                        }).join('')}
                     </div>
                 </div>
             </main>
@@ -344,7 +345,6 @@
         function renderCarrinho() {
             const total = carrinho.reduce((acc, i) => acc + (i.preco * i.qtd), 0);
             const totalItens = carrinho.reduce((acc, i) => acc + i.qtd, 0);
-
             return `
             ${renderHeader()}
             <main class="max-w-xl mx-auto p-4 animate-in">
@@ -353,9 +353,7 @@
                     <div class="space-y-3">
                         ${carrinho.map(item => `
                             <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex items-center gap-3">
-                                <div class="w-14 h-14 bg-slate-950 rounded-xl flex items-center justify-center border border-slate-800 text-slate-600">
-                                    <i data-lucide="package" class="w-5 h-5"></i>
-                                </div>
+                                <div class="w-14 h-14 bg-slate-950 rounded-xl flex items-center justify-center border border-slate-800 text-slate-600"><i data-lucide="package" class="w-5 h-5"></i></div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="font-bold text-slate-100 text-xs truncate">${item.nome}</h4>
                                     <p class="text-xs text-orange-500 font-bold">R$ ${item.preco.toFixed(2)}</p>
@@ -367,17 +365,12 @@
                                 </div>
                             </div>
                         `).join('')}
-
                         <div class="bg-slate-900 p-6 rounded-3xl text-white shadow-xl border border-slate-800 mt-6 relative overflow-hidden">
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-orange-600/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
-                            <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">
-                                <span>${totalItens} ITENS SELECIONADOS</span>
-                            </div>
                             <div class="flex justify-between items-end">
-                                <span class="text-sm font-medium text-slate-400">VALOR TOTAL</span>
+                                <span class="text-sm font-medium text-slate-400 uppercase tracking-widest">TOTAL</span>
                                 <span class="text-3xl font-black text-white">R$ ${total.toFixed(2)}</span>
                             </div>
-                            <button onclick="abrirModal()" class="w-full bg-orange-600 text-white py-5 rounded-2xl font-black mt-6 active:scale-95 flex items-center justify-center gap-3 shadow-xl shadow-orange-900/20 text-sm uppercase tracking-widest transition-transform">
+                            <button onclick="abrirModal()" class="w-full bg-orange-600 text-white py-5 rounded-2xl font-black mt-6 flex items-center justify-center gap-3 shadow-xl shadow-orange-900/20 text-sm uppercase tracking-widest transition-transform active:scale-95">
                                 CONTINUAR PEDIDO <i data-lucide="chevron-right" class="w-6 h-6"></i>
                             </button>
                         </div>
@@ -385,8 +378,7 @@
                 ` : `
                     <div class="text-center py-20 bg-slate-900 rounded-3xl border-2 border-dashed border-slate-800">
                         <i data-lucide="shopping-cart" class="w-10 h-10 mx-auto text-slate-800 mb-3"></i>
-                        <p class="text-slate-500 font-bold uppercase text-[10px]">O carrinho está vazio</p>
-                        <button onclick="setAba('catalogo')" class="text-orange-500 font-black mt-4 underline text-xs uppercase tracking-widest">Procurar Peças</button>
+                        <p class="text-slate-500 font-bold uppercase text-[10px]">Vazio</p>
                     </div>
                 `}
             </main>
@@ -398,21 +390,20 @@
             <div class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md animate-in">
                 <div class="bg-slate-900 w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl border border-slate-800">
                     <div class="flex flex-col items-center text-center space-y-6">
-                        <div class="w-20 h-20 bg-orange-600/10 text-orange-500 rounded-3xl flex items-center justify-center border border-orange-600/20 shadow-inner">
-                            <i data-lucide="store" class="w-10 h-10"></i>
-                        </div>
+                        <div class="w-20 h-20 bg-orange-600/10 text-orange-500 rounded-3xl flex items-center justify-center border border-orange-600/20"><i data-lucide="store" class="w-10 h-10"></i></div>
                         <div class="space-y-1">
                             <h3 class="text-2xl font-black text-white uppercase tracking-tight">Identificação</h3>
-                            <p class="text-slate-500 text-xs font-medium">Nome da sua loja ou técnico responsável.</p>
+                            <p class="text-slate-500 text-xs">Nome da sua loja ou técnico.</p>
                         </div>
                         <div class="w-full relative">
                             <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 w-5 h-5"></i>
-                            <input type="text" id="inputNome" placeholder="EX: LOJA DO JOÃO" oninput="render()"
-                                class="w-full pl-11 pr-4 py-5 rounded-2xl bg-slate-950 border border-slate-800 text-white focus:border-orange-600 outline-none font-black uppercase text-sm shadow-inner transition-all">
+                            <input type="text" id="inputNome" placeholder="NOME DA LOJA" 
+                                onkeydown="if(event.key === 'Enter') concluirPedido()"
+                                class="w-full pl-11 pr-4 py-5 rounded-2xl bg-slate-950 border border-slate-800 text-white focus:border-orange-600 outline-none font-black uppercase text-sm">
                         </div>
                         <div class="flex w-full gap-3 pt-2">
                             <button onclick="fecharModal()" class="flex-1 py-5 rounded-2xl font-black text-slate-500 bg-slate-800 text-[10px] uppercase tracking-widest">Sair</button>
-                            <button onclick="concluirPedido()" class="flex-[2.5] py-5 rounded-2xl font-black text-white bg-orange-600 shadow-xl shadow-orange-900/20 text-[11px] uppercase tracking-widest active:scale-95 transition-transform">Finalizar Agora</button>
+                            <button onclick="concluirPedido()" class="flex-[2.5] py-5 rounded-2xl font-black text-white bg-orange-600 text-[11px] uppercase tracking-widest active:scale-95 transition-transform shadow-lg shadow-orange-900/20">Finalizar</button>
                         </div>
                     </div>
                 </div>
@@ -422,37 +413,19 @@
         function renderSucesso() {
             return `
             <main class="max-w-xl mx-auto p-4 animate-in text-center pt-10">
-                <div class="w-24 h-24 bg-orange-600 text-white rounded-full flex items-center justify-center mx-auto shadow-2xl mb-8 shadow-orange-900/40">
-                    <i data-lucide="check-circle-2" class="w-12 h-12"></i>
+                <div class="w-24 h-24 bg-orange-600 text-white rounded-full flex items-center justify-center mx-auto shadow-2xl mb-8 shadow-orange-900/40"><i data-lucide="check-circle-2" class="w-12 h-12"></i></div>
+                <h2 class="text-3xl font-black uppercase tracking-tight">Pronto!</h2>
+                <p class="text-slate-400 text-sm mt-3">Olá, <span class="text-white font-bold">${pedidoFinalizado.cliente}</span>. Clique abaixo para enviar.</p>
+                <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 text-left mt-10">
+                   <p class="text-2xl font-black text-orange-500">R$ ${pedidoFinalizado.total.toFixed(2)}</p>
                 </div>
-                <h2 class="text-3xl font-black uppercase tracking-tight">Pedido <span class="text-orange-500">Pronto!</span></h2>
-                <p class="text-slate-400 text-sm mt-3 px-4">Olá, <span class="text-white font-bold">${pedidoFinalizado.cliente}</span>. O resumo do seu pedido foi gerado com sucesso.</p>
-                
-                <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 text-left mt-10 relative overflow-hidden">
-                   <div class="absolute top-0 right-0 w-24 h-24 bg-orange-600/5 rounded-full -mr-12 -mt-12 blur-xl"></div>
-                   <p class="text-[10px] font-black text-orange-500 uppercase mb-4 tracking-[0.2em]">Resumo dos Dados</p>
-                   <p class="text-sm font-bold text-white mb-1 tracking-tight">ID: #${pedidoFinalizado.id}</p>
-                   <p class="text-xs font-medium text-slate-400 mb-1 uppercase tracking-wider">${pedidoFinalizado.data}</p>
-                   <p class="text-xs font-medium text-slate-400 mb-5">${pedidoFinalizado.itens.length} PRODUTOS NO TOTAL</p>
-                   <div class="h-px bg-slate-800 w-full mb-5"></div>
-                   <div class="flex justify-between items-center">
-                       <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">VALOR FINAL</span>
-                       <p class="text-2xl font-black text-orange-500">R$ ${pedidoFinalizado.total.toFixed(2)}</p>
-                   </div>
-                </div>
-                
-                <button onclick="enviarWhatsApp()" class="w-full bg-[#25D366] text-white py-6 rounded-3xl font-black mt-10 shadow-2xl shadow-green-900/20 flex items-center justify-center gap-3 active:scale-95 transition-transform text-base uppercase tracking-widest">
-                    <i data-lucide="message-circle" class="w-6 h-6"></i> ENVIAR PEDIDO
+                <button onclick="enviarWhatsApp()" class="w-full bg-[#25D366] text-white py-6 rounded-3xl font-black mt-10 flex items-center justify-center gap-3 active:scale-95 transition-transform text-base uppercase tracking-widest shadow-xl shadow-green-900/20">
+                    <i data-lucide="message-circle" class="w-6 h-6"></i> ENVIAR WHATSAPP
                 </button>
-                <button onclick="setAba('catalogo')" class="w-full py-6 text-slate-500 font-bold uppercase text-[10px] tracking-[0.3em] mt-2">Novo Orçamento</button>
             </main>`;
         }
 
-        // Inicializar aplicação
         render();
     </script>
 </body>
 </html>
-
-
-
