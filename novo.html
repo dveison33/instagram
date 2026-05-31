@@ -1,621 +1,258 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atenção!</title>
-    <!-- Carrega o Tailwind CSS para estilização --><script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        /* Define a fonte Inter como padrão e um fundo escuro */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0d0d0d;
-            color: #f3f4f6;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        /* Estilo para a seção principal do vídeo */
-        #video-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh; /* Ocupa a altura total antes de revelar o conteúdo */
-            width: 100%;
-            padding: 1rem;
-        }
-        /* Centraliza e limita o tamanho do CONTAINER DO VÍDEO */
-        #video-container {
-            max-width: 100%;
-            width: 800px;
-            border-radius: 12px;
-            /* Sombra vermelha de atenção */
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.7); 
-            transition: all 0.3s ease;
-            cursor: pointer; /* Indica que é clicável */
-            aspect-ratio: 16 / 9; /* Garante a proporção de vídeo 16:9 */
-            position: relative;
-            background-color: #2d3748; /* Cor de fundo enquanto não carrega */
-            overflow: hidden;
-        }
-        #video-container:hover {
-            box-shadow: 0 0 40px rgba(255, 0, 0, 1);
-        }
-        /* Estilo para o iframe dentro do container */
-        #main-video-embed iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controle Financeiro</title>
 
-        /* Estilo para o Thumbnail (Imagem de capa) */
-        #video-thumbnail {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-            display: block;
-            transition: opacity 0.3s;
-        }
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
 
-        /* Estilo para o botão de ação principal */
-        .cta-button {
-            background-image: linear-gradient(to right, #ff416c 0%, #ff4b2b  51%, #ff416c  100%);
-            margin: 10px;
-            padding: 15px 45px;
-            text-align: center;
-            text-transform: uppercase;
-            transition: 0.5s;
-            background-size: 200% auto;
-            color: white;            
-            box-shadow: 0 0 20px #eee;
-            border-radius: 10px;
-            display: block;
-            font-weight: 700;
-        }
+    body {
+        background: #f4f6f9;
+        padding: 20px;
+    }
 
-        .cta-button:hover {
-            background-position: right center; /* change the direction of the change */
-            color: #fff;
-            text-decoration: none;
-        }
+    .container {
+        max-width: 900px;
+        margin: auto;
+    }
 
-        /* Animação para o conteúdo principal */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        #content-block, #android-video-block, #iphone-video-block, #computer-video-block {
-            animation: fadeIn 1s ease-out forwards;
-        }
-        
-        /* Estilo específico para o container dos vídeos secundários (IFRAME) */
-        .secondary-video-container {
-            border-radius: 12px;
-            aspect-ratio: 16 / 9;
-            position: relative;
-            background-color: #2d3748;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        #android-video-block .secondary-video-container {
-             box-shadow: 0 10px 30px rgba(0, 255, 0, 0.7); /* Sombra verde para Android */
-        }
-        #iphone-video-block .secondary-video-container {
-             box-shadow: 0 10px 30px rgba(0, 120, 255, 0.7); /* Sombra azul para iPhone/iOS */
-        }
-         #computer-video-block .secondary-video-container {
-             box-shadow: 0 10px 30px rgba(255, 255, 0, 0.7); /* Sombra amarela para Computador */
-        }
-        /* Estilo para o iframe dentro do container */
-        .video-embed iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    .resumo {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .box {
+        flex: 1;
+        min-width: 200px;
+        background: #28a745;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table th,
+    table td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background: #007bff;
+        color: white;
+    }
+
+    .excluir {
+        background: #dc3545;
+        padding: 6px 10px;
+        border-radius: 5px;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .excluir:hover {
+        background: #b02a37;
+    }
+</style>
 </head>
 <body>
 
-    <!-- SEÇÃO DO VÍDEO (TOPO DA PÁGINA) -->
-    <section id="video-section" class="text-center">
-        <!-- TÍTULO PRINCIPAL -->
-        <h1 class="text-5xl sm:text-6xl md:text-8xl font-black mb-10 text-red-500 tracking-tighter uppercase p-2">
-            ATENÇÃO
-        </h1>
-        
-        <!-- TEXTO DE INSTRUÇÃO -->
-        <p id="video-instruction" class="text-2xl text-red-400 font-bold mb-6 max-w-2xl mx-auto text-center uppercase tracking-wide">
-            A VERDADE QUE NINGUÉM NUNCA TE CONTOU
-        </p>
+<div class="container">
+    <h1>💰 Controle Financeiro Mensal</h1>
 
-        <!-- CONTAINER PRINCIPAL DO VÍDEO -->
-        <div id="video-container" class="relative max-w-full w-[800px] mx-auto">
-            
-            <!-- THUMBNAIL DE PLACEHOLDER -->
-            <img id="video-thumbnail" src="https://placehold.co/800x450/374151/f3f4f6?text=V%C3%ADdeo+Principal+de+Vendas" alt="Thumbnail do vídeo principal" class="absolute inset-0">
-            
-            <!-- Play Button Overlay -->
-            <div id="play-overlay" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl transition-opacity duration-300">
-                <!-- Ícone de Play: Triângulo Branco no Fundo Vermelho Arredondado -->
-                <div class="w-16 h-16 sm:w-24 sm:h-24 bg-red-700 rounded-full flex items-center justify-center transition-all hover:scale-105">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-14 h-14 ml-1">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                </div>
-            </div>
+    <div class="card">
+        <h2>Adicionar Gasto</h2>
 
-            <!-- CONTAINER PARA O IFRAME PRINCIPAL -->
-            <div id="main-video-embed" class="absolute inset-0 hidden"></div>
-            
-        </div>
-        
-        <div id="loading-message" class="mt-4 text-red-400 hidden">
-            Aguarde, carregando...
+        <div class="form-group">
+            <label>Descrição</label>
+            <input type="text" id="descricao" placeholder="Ex: Mercado">
         </div>
 
-    </section>
-
-    <!-- CONTEÚDO PRINCIPAL (INICIALMENTE ESCONDIDO) -->
-    <main id="content-block" class="hidden w-full max-w-4xl p-8 pt-0 mx-auto">
-        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border-t-4 border-red-500">
-            
-            <!-- TÍTULO PRINCIPAL DE REVELAÇÃO -->
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-red-500 mb-3 tracking-tight text-center">
-                Como você viu no vídeo, o problema é real e afeta milhares de pessoas. Agora que você conhece o perigo, é hora de agir.
-            </h2>
-
-            <!-- NOVO SUBTÍTULO DE CHAMADA PARA AÇÃO -->
-            <p class="text-xl sm:text-2xl font-bold text-yellow-400 mb-6 max-w-3xl mx-auto text-center tracking-wide">
-                Se você já sofreu com isso ou se ainda não passou, saiba como se proteger contra esse tipo de golpe!
-            </p>
-
-            <!-- NOVO TEXTO DE ESCOLHA DO USUÁRIO -->
-            <p class="text-2xl font-bold text-white mb-6 text-center uppercase">
-                SAIBA COMO PROTEGER SEU DISPOSITIVO AGORA:
-            </p>
-
-            <!-- CHAVES DE PROTEÇÃO (Área 1) - AGORA SÃO BOTÕES CLICÁVEIS E MAIS SIMPLES -->
-            <div id="choice-buttons" class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4 mb-10 text-xl font-black">
-                <button data-device="android" type="button" class="protection-choice text-white bg-red-700 hover:bg-red-600 active:bg-red-800 rounded-full px-4 py-2 shadow-md transition transform hover:scale-105">ANDROID</button>
-                <button data-device="iphone" type="button" class="protection-choice text-white bg-red-700 hover:bg-red-600 active:bg-red-800 rounded-full px-4 py-2 shadow-md transition transform hover:scale-105">IPHONE</button>
-                <button data-device="computer" type="button" class="protection-choice text-white bg-red-700 hover:bg-red-600 active:bg-red-800 rounded-full px-4 py-2 shadow-md transition transform hover:scale-105">COMPUTADOR</button>
-            </div>
+        <div class="form-group">
+            <label>Categoria</label>
+            <select id="categoria">
+                <option>Alimentação</option>
+                <option>Transporte</option>
+                <option>Moradia</option>
+                <option>Lazer</option>
+                <option>Saúde</option>
+                <option>Outros</option>
+            </select>
         </div>
-    </main>
 
-    <!-- BLOCO CONDICIONAL PARA VÍDEO DE ANDROID (IFRAME) -->
-    <section id="android-video-block" class="hidden w-full max-w-4xl p-8 pt-0 mx-auto text-center">
-        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border-t-4 border-green-500">
-             <h3 class="text-3xl font-bold text-green-400 mb-6 uppercase">Assista: O Guia de Blindagem do Android</h3>
-             <div id="android-video-container" class="secondary-video-container max-w-full w-[800px] mx-auto mb-6 border-4 border-green-500">
-                 <!-- THUMBNAIL DE PLACEHOLDER -->
-                 <img src="https://placehold.co/800x450/10B981/000000?text=Guia+de+Android" alt="Guia de Android" class="absolute inset-0 w-full h-full object-cover rounded-xl">
-                 <!-- Play Overlay Padrão para vídeos secundários (clique para carregar o player) -->
-                 <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl transition-opacity duration-300">
-                    <div class="w-16 h-16 sm:w-24 sm:h-24 bg-green-700 rounded-full flex items-center justify-center transition-all hover:scale-105">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-14 h-14 ml-1"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                </div>
-                <!-- O player real será carregado aqui via JavaScript -->
-                <div id="android-video-embed" class="video-embed absolute inset-0 hidden"></div>
-            </div>
-            <p class="text-xl text-gray-300 mb-6">Você está a um passo de proteger seu Android contra 99% das ameaças. Não perca tempo!</p>
-
-            <!-- Botão CTA Pós-Vídeo Android -->
-            <a href="#" id="next-step-computer" class="cta-button text-xl sm:text-2xl">
-                PRÓXIMO PASSO MEU COMPUTADOR
-            </a>
-
+        <div class="form-group">
+            <label>Valor (R$)</label>
+            <input type="number" id="valor" step="0.01">
         </div>
-    </section>
 
-    <!-- BLOCO CONDICIONAL PARA VÍDEO DE IPHONE (IFRAME) -->
-    <section id="iphone-video-block" class="hidden w-full max-w-4xl p-8 pt-0 mx-auto text-center">
-        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border-t-4 border-blue-500">
-             <h3 class="text-3xl font-bold text-blue-400 mb-6 uppercase">Assista: O Guia de Blindagem do iPhone (iOS)</h3>
-             <div id="iphone-video-container" class="secondary-video-container max-w-full w-[800px] mx-auto mb-6 border-4 border-blue-500">
-                 <!-- THUMBNAIL DE PLACEHOLDER -->
-                 <img src="https://placehold.co/800x450/3B82F6/000000?text=Guia+de+iPhone" alt="Guia de iPhone" class="absolute inset-0 w-full h-full object-cover rounded-xl">
-                 <!-- Play Overlay Padrão para vídeos secundários (clique para carregar o player) -->
-                 <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl transition-opacity duration-300">
-                    <div class="w-16 h-16 sm:w-24 sm:h-24 bg-blue-700 rounded-full flex items-center justify-center transition-all hover:scale-105">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-14 h-14 ml-1"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                </div>
-                <!-- O player real será carregado aqui via JavaScript -->
-                <div id="iphone-video-embed" class="video-embed absolute inset-0 hidden"></div>
-            </div>
-            <p class="text-xl text-gray-300 mb-6">Seu iPhone blindado. Você está a um clique do passo final.</p>
-
-            <!-- Botão CTA Pós-Vídeo iPhone -->
-            <a href="#" id="next-step-computer-iphone" class="cta-button text-xl sm:text-2xl">
-                PRÓXIMO PASSO MEU COMPUTADOR
-            </a>
-
+        <div class="form-group">
+            <label>Data</label>
+            <input type="date" id="data">
         </div>
-    </section>
 
-    <!-- NOVO BLOCO CONDICIONAL PARA VÍDEO DE COMPUTADOR (Final CTA) (IFRAME) -->
-    <section id="computer-video-block" class="hidden w-full max-w-4xl p-8 pt-0 mx-auto text-center">
-        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border-t-4 border-yellow-500">
-             <h3 class="text-3xl font-bold text-yellow-400 mb-2 uppercase">Último Passo: A Blindagem Completa do Seu Computador</h3>
-             
-             <div id="computer-video-container" class="secondary-video-container max-w-full w-[800px] mx-auto mb-6 border-4 border-yellow-500">
-                 <!-- THUMBNAIL DE PLACEHOLDER -->
-                 <img src="https://placehold.co/800x450/FBBF24/000000?text=Guia+de+Computador" alt="Guia de Computador" class="absolute inset-0 w-full h-full object-cover rounded-xl">
-                 <!-- Play Overlay Padrão para vídeos secundários (clique para carregar o player) -->
-                 <div class="play-overlay absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl transition-opacity duration-300">
-                    <div class="w-16 h-16 sm:w-24 sm:h-24 bg-yellow-700 rounded-full flex items-center justify-center transition-all hover:scale-105">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-14 h-14 ml-1"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                </div>
-                <!-- O player real será carregado aqui via JavaScript -->
-                <div id="computer-video-embed" class="video-embed absolute inset-0 hidden"></div>
-            </div>
-            <p class="text-xl text-gray-300 mb-6">Sua segurança nunca foi tão completa. Clique abaixo para garantir sua proteção total agora mesmo.</p>
+        <button onclick="adicionarGasto()">
+            Adicionar Gasto
+        </button>
+    </div>
 
-            <!-- BLOCO DE PROVA SOCIAL: DADOS DE CIBERATAQUES (COM DADOS ATUALIZADOS DA CNN) -->
-            <div class="mt-8 mb-8 p-6 bg-gray-900 rounded-lg border-2 border-red-600 shadow-xl">
-                <h4 class="text-3xl font-extrabold text-red-500 mb-4 uppercase tracking-wider">
-                    BRASIL SOB ATAQUE: SUA SEGURANÇA EM RISCO
-                </h4>
-                <p class="text-xl text-white mb-6">
-                    A ameaça não é teoria, é a nossa realidade. Dados recentes da **CNN Brasil** mostram a urgência:
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-                    <!-- Coluna de Ranking -->
-                    <div class="bg-red-900/30 p-4 rounded-lg border-l-4 border-red-500">
-                        <p class="text-2xl font-black text-red-300 mb-2">POSIÇÃO CHOCANTE</p>
-                        <p class="text-5xl font-black text-yellow-400 leading-none">
-                            VICE-CAMPEÃO
-                        </p>
-                        <p class="text-lg text-gray-300 mt-1">O Brasil carrega o título de **segundo país com mais ataques cibernéticos no mundo**.</p>
-                        <p class="text-lg text-red-400 mt-2 font-semibold">Fonte: CNN Brasil, Panorama de Ameaças para a América Latina 2024.</p>
-                    </div>
-
-                    <!-- Coluna de Estatísticas -->
-                    <div class="bg-red-900/30 p-4 rounded-lg border-l-4 border-red-500">
-                        <p class="text-2xl font-black text-red-300 mb-2">GOLPES POR MINUTO</p>
-                        <p class="text-5xl font-black text-yellow-400 leading-none">
-                            1.379
-                        </p>
-                        <p class="text-lg text-gray-300 mt-1">Golpes registrados por minuto no país, totalizando **mais de 700 milhões** em 12 meses.</p>
-                        <p class="text-lg text-red-400 mt-2 font-semibold">A falta de capacitação é um dos principais desafios de cibersegurança.</p>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM BLOCO DE PROVA SOCIAL -->
-
-            <!-- NOVO BLOCO DE VENDA: Formatação Simplificada -->
-            <div class="mt-8 mb-8 p-6 bg-gray-900 rounded-lg border-2 border-yellow-500 shadow-xl">
-                <h4 class="text-3xl font-extrabold text-yellow-300 mb-4 uppercase tracking-wider">
-                    A Solução: Instalação de Sistema Oficial da Microsoft!
-                </h4>
-                <p class="text-xl text-white mb-6">
-                    Você não precisa ser um técnico para ter um computador seguro! Com o nosso método, você aprenderá a instalar os sistemas OFICIAIS da Microsoft na sua máquina do zero, mesmo que não tenha **NENHUM CONHECIMENTO PRÉVIO** de informática.
-                </p>
-                
-                
-                <!-- BLOCO DE COMPARAÇÃO DE SERVIÇOS (POSIÇÃO CORRETA) -->
-                <div class="mb-10 pt-6">
-                    <h5 class="text-3xl font-extrabold text-red-500 mb-6 uppercase tracking-wider">
-                        Compare as Opções e Decida:
-                    </h5>
-
-                    <div class="flex flex-col sm:flex-row gap-6 justify-center">
-
-                        <!-- COLUNA 1: FORMATO FEITA POR UM TECNCIO (Serviço de Terceiros - R$50) -->
-                        <div class="flex-1 p-6 rounded-xl border-4 border-red-700 bg-gray-950 shadow-red-900/50 shadow-2xl">
-                            <h6 class="text-2xl font-bold text-red-500 mb-3">FORMATAÇÃO FEITA POR UM TECNICO HOJE NO MERCADO</h6>
-                            <p class="text-4xl font-black text-red-300 mb-4">R$ 50,00</p>
-                            <ul class="text-left text-gray-300 space-y-2 text-lg">
-                                <li class="flex items-start">❌ Sem Backup de Segurança</li>
-                                <li class="flex items-start">❌ Sem Programas Essenciais Instalados</li>
-                                <li class="flex items-start text-red-400 font-semibold">⚠️ Grande Risco de Ataques e Perda de Dados (Vídeos, Fotos, Arquivos)</li>
-                                <li class="flex items-start">❌ Uso de ISO Não Oficial (Pirata/Infectada)</li>
-                            </ul>
-                        </div>
-
-                        <!-- COLUNA 2: NOSSO MÉTODO (Completo e Seguro - R$47) -->
-                        <div class="flex-1 p-6 rounded-xl border-4 border-yellow-500 bg-gray-950 shadow-yellow-900/50 shadow-2xl transform sm:scale-105">
-                            <h6 class="text-2xl font-bold text-yellow-400 mb-3">FORMATAÇÃO FEITA POR VOCÊ COM NOSSO MÉTODO</h6>
-                            <p class="text-4xl font-black text-green-400 mb-4">R$ 47,00</p>
-                            <ul class="text-left text-gray-300 space-y-2 text-lg">
-                                <li class="flex items-start">✅ Formatação Completa Com Backup</li>
-                                <li class="flex items-start">✅ Programas Essenciais Instalados</li>
-                                <li class="flex items-start text-green-400 font-semibold">🛡️ Risco QUASE ZERO de Ataques e Perda de Dados</li>
-                                <li class="flex items-start">✅ Uso de ISO OFICIAL da Microsoft</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- FIM BLOCO DE COMPARAÇÃO -->
-
-                <!-- BLOCO DOS 3 PASSOS (AGORA ABAIXO DA COMPARAÇÃO) -->
-                <p class="text-2xl font-bold text-red-400 mb-4 border-t border-gray-700 pt-6">
-                    Tudo em 3 Passos Simples e Descomplicados:
-                </p>
-
-                <ul class="list-none space-y-4 text-left mx-auto max-w-xl">
-                    <li class="p-3 bg-gray-800 rounded-lg shadow-md border-l-4 border-red-500 text-left">
-                        <span class="text-red-500 font-bold text-xl mr-2">PASSO 1:</span> 
-                        <span class="text-white font-semibold">O Backup de Segurança.</span> 
-                        <span class="text-gray-400 block text-sm sm:inline">Garanta que nenhum de seus arquivos importantes seja perdido durante o processo.</span>
-                    </li>
-                    <li class="p-3 bg-gray-800 rounded-lg shadow-md border-l-4 border-red-500 text-left">
-                        <span class="text-red-500 font-bold text-xl mr-2">PASSO 2:</span> 
-                        <span class="text-white font-semibold">Criação do Pendrive Bootável e Ajuste de Boot.</span> 
-                        <span class="text-gray-400 block text-sm sm:inline">Prepare o sistema operacional no seu pendrive e configure sua máquina para iniciar a instalação.</span>
-                    </li>
-                    <li class="p-3 bg-gray-800 rounded-lg shadow-md border-l-4 border-red-500 text-left">
-                        <span class="text-red-500 font-bold text-xl mr-2">PASSO 3:</span> 
-                        <span class="text-white font-semibold">Instalação, Programas Essenciais e Ativação.</span> 
-                        <span class="text-gray-400 block text-sm sm:inline">Instale o sistema operacional, todos os programas necessários e realize a ativação de forma correta e permanente.</span>
-                    </li>
-                </ul>
-                <!-- FIM DO BLOCO DOS 3 PASSOS -->
-
-
-                <!-- TEXTO PROMOCIONAL DE RECUPERAÇÃO DE VALOR -->
-                <p class="text-xl text-green-400 font-bold mt-6 mb-4">
-                    E ainda recupere o valor investido formatando computadores de amigos e familiares de forma segura para que eles também não caiam em golpes.
-                </p>
-                <!-- FIM DO TEXTO PROMOCIONAL -->
-                
-                <!-- TEXTOS PROMOCIONAIS FINAIS -->
-                <p class="text-2xl font-bold text-red-400 mt-6 font-semibold">
-                     Mais barato que uma pizza para deixar seu computador mais seguro e diminuir o risco de perder dados importantes ou dinheiro para golpistas!
-                </p>
-                
-                <p class="text-xl text-yellow-300 mt-6 font-semibold">
-                    Clique abaixo e destrave a blindagem completa do seu dispositivo, começando agora a proteger e otimizar seu computador!
-                </p>
-                <!-- FIM TEXTOS PROMOCIONAIS FINAIS -->
-    
-                <!-- Botão CTA FINAL -->
-                <a href="#" class="cta-button text-xl sm:text-2xl">
-                    EU PRECISO!
-                </a>
-                <p class="mt-4 text-sm text-gray-400">Oferta especial válida por tempo limitado.</p>
-                <!-- FIM DO BOTÃO CTA FINAL -->
-
-            </div>
-            <!-- FIM BLOCO DE VENDA -->
-            
+    <div class="card resumo">
+        <div class="box">
+            <h3>Total Gasto no Mês</h3>
+            <h2 id="total">R$ 0,00</h2>
         </div>
-    </main>
+    </div>
 
+    <div class="card">
+        <h2>Lista de Gastos</h2>
 
-    <script>
-        
-        // ======================================================================================================
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CONFIGURAÇÃO DE VÍDEOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        // O Vídeo Principal agora usa IFRAME (preview) com um TIMER fixo para simular o fim.
-        // ======================================================================================================
-        const DRIVE_IFRAME_BASE_URL = 'https://drive.google.com/file/d/';
-        const DRIVE_IFRAME_SUFFIX = '/preview'; 
-        
-        // ID do Vídeo Principal de Vendas (PRECISA SER O ARQUIVO QUE VOCÊ VAI USAR)
-        const MAIN_VIDEO_ID = '1bPoteRtj0XigrJCq0OyQJt5rD2xCz5sw'; 
-        
-        // === VARIÁVEL MAIS IMPORTANTE PARA VOCÊ AJUSTAR ===
-        // Mude este valor para a DURAÇÃO EXATA do seu vídeo principal (em segundos).
-        // Se o seu vídeo tem 1 minuto e 45 segundos, use 105.
-        // Se não for preciso, o áudio continuará (ou sumirá antes).
-        const REVEAL_TIME_SECONDS = 81; // <<<<<<<< AJUSTE AQUI (EX: 105)
-        // =================================================
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaGastos">
+            </tbody>
+        </table>
+    </div>
+</div>
 
-        // IDs dos Vídeos Secundários (Devem ser usados com o link de preview/iframe)
-        const ANDROID_VIDEO_ID = 'SUA_ID_DO_ARQUIVO_ANDROID'; 
-        const IPHONE_VIDEO_ID = 'SUA_ID_DO_ARQUIVO_IPHONE'; 
-        const COMPUTER_VIDEO_ID = 'SUA_ID_DO_ARQUIVO_COMPUTADOR';
-        // ======================================================================================================
+<script>
+let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
 
-        let timerFallback = null; // Variável para armazenar o timer
+function salvarDados() {
+    localStorage.setItem("gastos", JSON.stringify(gastos));
+}
 
-        document.addEventListener('DOMContentLoaded', () => {
+function atualizarTela() {
+    const tabela = document.getElementById("tabelaGastos");
+    tabela.innerHTML = "";
 
-            // Elementos Principais
-            const videoContainer = document.getElementById('video-container');
-            const mainVideoEmbed = document.getElementById('main-video-embed');
-            const playOverlay = document.getElementById('play-overlay'); 
-            const videoThumbnail = document.getElementById('video-thumbnail');
-            const contentBlock = document.getElementById('content-block');
-            const videoInstruction = document.getElementById('video-instruction');
-            const videoSection = document.getElementById('video-section');
-            
-            // Mapeamento dos containers e IDs para carregamento secundário (IFRAMES)
-            const iframeVideoMap = {
-                'android-video-container': { id: ANDROID_VIDEO_ID, embedDivId: 'android-video-embed' },
-                'iphone-video-container': { id: IPHONE_VIDEO_ID, embedDivId: 'iphone-video-embed' },
-                'computer-video-container': { id: COMPUTER_VIDEO_ID, embedDivId: 'computer-video-embed' },
-            };
-            
-            // Função para revelar o CTA principal
-            const revealCTA = () => {
-                // Esconde o iframe principal (o video "some")
-                mainVideoEmbed.classList.add('hidden');
-                
-                // Exibe o conteúdo debaixo
-                contentBlock.classList.remove('hidden');
-                videoInstruction.classList.add('hidden');
-                videoSection.style.minHeight = 'auto'; 
-                
-                // Rola suavemente para o conteúdo
-                contentBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            };
-            
-            // ----------------------------------------------------------------------
-            // Lógica do Vídeo Principal (IFRAME + TIMER)
-            // ----------------------------------------------------------------------
-            const loadAndPlayMainVideo = () => {
-                
-                // Se o iframe já foi carregado, não carrega de novo (apenas garante que o timer não está ativo)
-                if (mainVideoEmbed.querySelector('iframe')) {
-                    // Se o usuário clicar após o timer ter acabado, apenas revela o CTA
-                    if (contentBlock.classList.contains('hidden')) {
-                        revealCTA();
-                    }
-                    return; 
-                }
+    let total = 0;
 
-                // 1. Constrói a URL do Iframe do Google Drive
-                const embedUrl = DRIVE_IFRAME_BASE_URL + MAIN_VIDEO_ID + DRIVE_IFRAME_SUFFIX + '?autoplay=1';
-                
-                // 2. Insere o iframe
-                mainVideoEmbed.innerHTML = `<iframe src="${embedUrl}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-                
-                // 3. Esconde o thumbnail e o overlay
-                videoThumbnail.classList.add('hidden');
-                playOverlay.classList.add('hidden');
-                
-                // 4. Mostra o container do iframe
-                mainVideoEmbed.classList.remove('hidden');
-                
-                // 5. INICIA O TIMER PARA REVELAR O CONTEÚDO
-                if (timerFallback) {
-                    clearTimeout(timerFallback);
-                }
-                timerFallback = setTimeout(revealCTA, REVEAL_TIME_SECONDS * 1000);
-            };
+    gastos.forEach((gasto, index) => {
+        total += gasto.valor;
 
-            // Atacha o listener de clique ao container principal
-            videoContainer.addEventListener('click', loadAndPlayMainVideo);
-            //----------------------------------------------------------------------
+        tabela.innerHTML += `
+            <tr>
+                <td>${gasto.descricao}</td>
+                <td>${gasto.categoria}</td>
+                <td>R$ ${gasto.valor.toFixed(2)}</td>
+                <td>${gasto.data}</td>
+                <td>
+                    <button class="excluir"
+                        onclick="excluirGasto(${index})">
+                        Excluir
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
 
+    document.getElementById("total").innerText =
+        `R$ ${total.toFixed(2)}`;
+}
 
-            // ----------------------------------------------------------------------
-            // Lógica dos Vídeos Secundários (Google Drive IFRAME)
-            // ----------------------------------------------------------------------
-            
-            // Função genérica para carregar o iframe (usada nos vídeos secundários)
-            const loadEmbedIframeVideo = (containerElement, videoFileId) => {
-                
-                // 1. Constrói a URL do Iframe do Google Drive
-                const embedUrl = DRIVE_IFRAME_BASE_URL + videoFileId + DRIVE_IFRAME_SUFFIX;
-                
-                // 2. Limpa o container e insere o iframe
-                containerElement.innerHTML = `<iframe src="${embedUrl}" allow="autoplay" allowfullscreen></iframe>`;
-                
-                // 3. Mostra o container do iframe
-                containerElement.classList.remove('hidden');
-            }
+function adicionarGasto() {
+    const descricao = document.getElementById("descricao").value;
+    const categoria = document.getElementById("categoria").value;
+    const valor = parseFloat(document.getElementById("valor").value);
+    const data = document.getElementById("data").value;
 
+    if (!descricao || !valor || !data) {
+        alert("Preencha todos os campos!");
+        return;
+    }
 
-            const secondaryVideoContainers = document.querySelectorAll('.secondary-video-container');
+    gastos.push({
+        descricao,
+        categoria,
+        valor,
+        data
+    });
 
-            secondaryVideoContainers.forEach(container => {
-                const containerId = container.id;
-                const config = iframeVideoMap[containerId]; // Pega o ID do arquivo e o ID da div do embed
-                
-                // Pega a div interna onde o iframe será inserido
-                const embedDiv = document.getElementById(config.embedDivId);
-                const thumbnail = container.querySelector('img');
-                const playOverlaySecondary = container.querySelector('.play-overlay');
+    salvarDados();
+    atualizarTela();
 
-                container.addEventListener('click', () => {
-                    // Se já tiver iframe, não carrega de novo
-                    if (embedDiv.querySelector('iframe')) return;
+    document.getElementById("descricao").value = "";
+    document.getElementById("valor").value = "";
+    document.getElementById("data").value = "";
+}
 
-                    // 1. Esconde o thumbnail e o overlay
-                    thumbnail.classList.add('hidden');
-                    playOverlaySecondary.classList.add('hidden');
-                    
-                    // 2. Carrega o vídeo (IFRAME)
-                    loadEmbedIframeVideo(embedDiv, config.id);
-                });
-            });
+function excluirGasto(index) {
+    gastos.splice(index, 1);
+    salvarDados();
+    atualizarTela();
+}
 
-
-            // Lógica para botões de ESCOLHA de proteção e Próximo Passo
-            const choiceButtons = document.querySelectorAll('.protection-choice');
-            const androidVideoBlock = document.getElementById('android-video-block');
-            const iphoneVideoBlock = document.getElementById('iphone-video-block');
-            const computerVideoBlock = document.getElementById('computer-video-block');
-            const nextStepComputerButton = document.getElementById('next-step-computer');
-            const nextStepComputerIphoneButton = document.getElementById('next-step-computer-iphone');
-            
-            
-            // Função auxiliar para resetar e pausar vídeos secundários
-            const hideAndStopAllSecondaryVideos = () => {
-                [androidVideoBlock, iphoneVideoBlock, computerVideoBlock].forEach(block => {
-                    block.classList.add('hidden');
-                });
-                
-                // Oculta e limpa os iframes para que o vídeo pare de tocar
-                for (const key in iframeVideoMap) {
-                    const embedDiv = document.getElementById(iframeVideoMap[key].embedDivId);
-                    const container = document.getElementById(key);
-                    
-                    if (embedDiv) {
-                        embedDiv.classList.add('hidden');
-                        embedDiv.innerHTML = ''; // Remove o iframe, parando a reprodução
-                    }
-                    if (container) {
-                        // Mostra o thumbnail e o overlay novamente para o próximo clique
-                        container.querySelector('img').classList.remove('hidden');
-                        container.querySelector('.play-overlay').classList.remove('hidden');
-                    }
-                }
-            };
-
-            choiceButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const device = button.getAttribute('data-device');
-                    
-                    hideAndStopAllSecondaryVideos(); // Pausa e esconde todos os outros
-
-                    let targetBlock = null;
-                    if (device === 'android') {
-                        targetBlock = androidVideoBlock;
-                    } else if (device === 'iphone') {
-                        targetBlock = iphoneVideoBlock;
-                    } else if (device === 'computer') {
-                        targetBlock = computerVideoBlock;
-                    }
-
-                    if (targetBlock) {
-                        targetBlock.classList.remove('hidden');
-                        setTimeout(() => {
-                            targetBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 200);
-                    }
-                });
-            });
-
-            // Lógica para o botão "PROXIMO PASSO MEU COMPUTADOR" (do Android)
-            nextStepComputerButton.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                
-                hideAndStopAllSecondaryVideos();
-                computerVideoBlock.classList.remove('hidden');
-
-                setTimeout(() => {
-                    computerVideoBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 200);
-            });
-            
-            // Lógica para o botão "PROXIMO PASSO MEU COMPUTADOR" (do iPhone)
-            nextStepComputerIphoneButton.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                
-                hideAndStopAllSecondaryVideos();
-                computerVideoBlock.classList.remove('hidden');
-
-                setTimeout(() => {
-                    computerVideoBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 200);
-            });
-
-        });
-    </script>
+atualizarTela();
+</script>
 
 </body>
 </html>
