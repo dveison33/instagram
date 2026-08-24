@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Aparelhos - Assistência Técnica</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #f4f6f9;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--secondary-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: var(--primary-color);
+            margin: 10px 0 5px 0;
+        }
+        .logo-placeholder {
+            font-size: 14px;
+            color: #666;
+            border: 2px dashed #ccc;
+            padding: 10px;
+            display: inline-block;
+            border-radius: 4px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #004085;
+        }
+        .canvas-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        canvas {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            color: #0056b3;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <!-- Substitua abaixo por sua logo real se quiser: <img src="sua-logo.png" width="120"> -->
+        <div class="logo-placeholder"> [ Insira sua Logo aqui ] </div>
+        <h1>Assistência Técnica</h1>
+        <p>Controle de Entrada e Saída de Aparelhos (Integrado ao Google Sheets)</p>
+    </div>
+    
+    <!-- Formulário de Cadastro -->
+    <form id="osForm">
+        <div class="form-group">
+            <label for="cliente">Nome do Cliente:</label>
+            <input type="text" id="cliente" required>
+        </div>
+        <div class="form-group">
+            <label for="aparelho">Aparelho / Modelo:</label>
+            <input type="text" id="aparelho" required>
+        </div>
+        <div class="form-group">
+            <label for="defeito">Defeito Relatado:</label>
+            <textarea id="defeito" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status">
+                <option value="Em Análise">Em Análise</option>
+                <option value="Em Conserto">Em Conserto</option>
+                <option value="Pronto">Pronto</option>
+                <option value="Entregue">Entregue</option>
+            </select>
+        </div>
+        <button type="submit" id="btnSalvar">Cadastrar e Enviar para Planilha</button>
+        <div id="loading">Salvando na planilha online... Aguarde.</div>
+    </form>
+
+    <!-- Canvas para exibir painel visual -->
+    <div class="canvas-container">
+        <h3>Painel Gráfico de Status</h3>
+        <canvas id="meuCanvas" width="450" height="150"></canvas>
+    </div>
+
+    <!-- Tabela de Registros -->
+    <h3>Aparelhos Registrados nesta Sessão</h3>
+    <table id="tabelaAparelhos">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Aparelho</th>
+                <th>Defeito</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados inseridos via JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // ⚠️ COLE A URL DO SEU GOOGLE APPS SCRIPT ABAIXO ENTRE AS ASPAS:
+    const URL_DO_SCRIPT = 'https://script.google.com/macros/s/AKfycbwkNP90z1FtSV25Br97q6iIpJA4qkOoyG0SQNFSlcrDT8zT-3ekan4baWd90b7Wyir7/execS';
+
+    const form = document.getElementById('osForm');
+    const tabela = document.getElementById('tabelaAparelhos').getElementsByTagName('tbody')[0];
+    const canvas = document.getElementById('meuCanvas');
+    const ctx = canvas.getContext('2d');
+    const loading = document.getElementById('loading');
+    const btnSalvar = document.getElementById('btnSalvar');
+
+    let registros = [];
+
+    function atualizarCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        let analise = registros.filter(r => r.status === 'Em Análise').length;
+        let conserto = registros.filter(r => r.status === 'Em Conserto').length;
+        let pronto = registros.filter(r => r.status === 'Pronto').length;
+        let entregue = registros.filter(r => r.status === 'Entregue').length;
+
+        const larguraBarra = 70;
+        const espacamento = 35;
+        const xInicial = 30;
+
+        const dados = [
+            { label: 'Análise', qtd: analise, cor: '#f0ad4e' },
+            { label: 'Conserto', qtd: conserto, cor: '#0275d8' },
+            { label: 'Pronto', qtd: pronto, cor: '#5cb85c' },
+            { label: 'Entregue', qtd: entregue, cor: '#292b2c' }
+        ];
+
+        dados.forEach((d, index) => {
+            let x = xInicial + index * (larguraBarra + espacamento);
+            let altura = d.qtd * 20;
+            let y = 120 - altura;
+
+            ctx.fillStyle = d.cor;
+            ctx.fillRect(x, y, larguraBarra, altura > 0 ? altura : 2);
+
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.fillText(d.label, x, 140);
+            ctx.fillText(`(${d.qtd})`, x + 22, y - 5);
+        });
+
+        if (registros.length === 0) {
+            ctx.fillStyle = '#888';
+            ctx.font = '14px Arial';
+            ctx.fillText('Nenhum aparelho cadastrado ainda.', 115, 80);
+        }
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const cliente = document.getElementById('cliente').value;
+        const aparelho = document.getElementById('aparelho').value;
+        const defeito = document.getElementById('defeito').value;
+        const status = document.getElementById('status').value;
+
+        // Mostra carregando
+        btnSalvar.disabled = true;
+        loading.style.display = 'block';
+
+        const dadosEnvio = { cliente, aparelho, defeito, status };
+
+        // Envia para o Google Planilhas via Fetch API
+        fetch(URL_DO_SCRIPT, {
+            method: 'POST',
+            mode: 'no-cors', // Necessário para requisições cross-origin do Google Apps Script
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dadosEnvio)
+        })
+        .then(() => {
+            // Como usamos no-cors, assumimos sucesso no envio
+            registros.push({ cliente, aparelho, defeito, status });
+
+            const novaLinha = tabela.insertRow();
+            novaLinha.insertCell(0).innerText = cliente;
+            novaLinha.insertCell(1).innerText = aparelho;
+            novaLinha.insertCell(2).innerText = defeito;
+            novaLinha.insertCell(3).innerText = status;
+
+            atualizarCanvas();
+            form.reset();
+            alert('Aparelho cadastrado e salvo com sucesso na planilha!');
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao salvar na planilha. Verifique a URL do script.');
+        })
+        .finally(() => {
+            btnSalvar.disabled = false;
+            loading.style.display = 'none';
+        });
+    });
+
+    atualizarCanvas();
+</script>
+
+</body>
+</html>
