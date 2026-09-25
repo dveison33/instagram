@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DF Celulares - Página Principal</title>
+    <title>DF Celulares - Escolha seu Vendedor</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -59,7 +59,6 @@
             animation: logoMotion 4s ease-in-out infinite;
         }
 
-        /* EFEITO ESPECIAL PARA OS BOTÕES: Transição suave, leve escala e brilho na borda ao interagir */
         .btn-effect {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -93,6 +92,7 @@
             100% { transform: translateY(-10vh) scale(0.4); opacity: 0; }
         }
     </style>
+</head>
 <body class="font-sans antialiased flex flex-col justify-between items-center py-2 sm:py-6 px-3 selection:bg-amber-400 selection:text-black">
 
     <div id="starsContainer" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
@@ -107,7 +107,7 @@
                 
                 <div class="relative w-36 h-36 sm:w-40 sm:h-40 mx-auto flex items-center justify-center mt-1">
                     <div class="w-36 h-36 sm:w-40 sm:h-40 rounded-full flex items-center justify-center overflow-hidden shadow-[0_0_50px_rgba(250,204,21,0.9)] animated-logo bg-transparent">
-                        <img src="Logosite.png" alt="Logo DF Celulares" class="w-full h-full object-contain scale-125 p-0">
+                        <img src="Logosite.png" alt="Logo DF Celulares" class="w-full h-full object-contain scale-125 p-0" onerror="this.src='https://placehold.co/160x160/1a1a1a/facc15?text=DF+Celulares'">
                     </div>
                 </div>
 
@@ -116,9 +116,9 @@
                 </h1>
 
                 <p class="text-[11px] font-semibold tracking-wide text-amber-200/90 flex items-center justify-center gap-2">
-                    <span>Seu próximo celular está aqui! 📱🔥</br>
-                         Ofertas, acessórios e assistência técnica para deixar seu dia mais conectado.</br>
-                         Clique e confira 👇</span>
+                    <span>Seu próximo celular está aqui! 📱🔥<br>
+                          Ofertas, acessórios e assistência técnica para deixar seu dia mais conectado.<br>
+                          Escolha seu atendente e clique abaixo 👇</span>
                 </p>
             </section>
 
@@ -139,12 +139,12 @@
                     <span>Assistência Técnica</span>
                 </button>
 
-                <!-- WhatsApp Geral -->
+                <!-- WhatsApp Geral / Vendedores -->
                 <button type="button" onclick="showScreen('screenWhatsapp')" class="w-full bg-[#161410] gold-border text-white p-3.5 rounded-full flex items-center justify-start gap-3.5 font-bold text-sm btn-effect hover:bg-neutral-900 text-left">
                     <div class="w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-lg ml-1 shrink-0">
                         <i class="fa-brands fa-whatsapp"></i>
                     </div>
-                    <span>WhatsApp</span>
+                    <span>WhatsApp / Vendedores</span>
                 </button>
 
                 <!-- Localização -->
@@ -167,27 +167,42 @@
 
 
         <!-- ================= TELA 2: COMPRAR APARELHO ================= -->
-        <div id="screenComprar" class="hidden space-y-3.5 max-w-[290px] mx-auto w-full">
+        <div id="screenComprar" class="hidden space-y-3 max-w-[290px] mx-auto w-full">
             <button type="button" onclick="showScreen('screenMainMenu')" class="text-neutral-400 hover:text-amber-400 text-xs font-bold flex items-center gap-2 bg-neutral-900 px-3 py-2 rounded-xl border border-neutral-800 transition-colors">
                 <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
             </button>
 
-            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-3.5">
+            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-3">
                 <div class="text-center space-y-1">
                     <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-lg rounded-xl flex items-center justify-center mx-auto mb-1">
                         <i class="fa-solid fa-mobile-screen-button"></i>
                     </div>
                     <h3 class="text-base font-bold text-white">Comprar Aparelho</h3>
-                    <p class="text-[11px] text-neutral-400">Monte seu pedido para orçamento no WhatsApp</p>
+                    <p class="text-[11px] text-neutral-400">Escolha o vendedor e monte seu pedido</p>
                 </div>
 
                 <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block">1. Seu Nome</label>
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">1. Escolha o Vendedor</label>
+                    <div class="grid grid-cols-2 gap-2" id="sellerBtnsBuy">
+                        <!-- AQUI VOCÊ COLOCA O NÚMERO DO VINICIUS E DA KEILA (Parâmetros: Tipo, Número DDI+DDD+Celular, Nome) -->
+                        <button type="button" onclick="setSeller('buy', '5588988545200', 'Vinicius', this)" class="seller-btn-buy bg-neutral-900 border-neutral-700 text-neutral-300 py-2.5 px-2 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-0.5 transition-all">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Vinicius</span>
+                        </button>
+                        <button type="button" onclick="setSeller('buy', '5588994596846', 'Keila', this)" class="seller-btn-buy bg-neutral-900 border-neutral-700 text-neutral-300 py-2.5 px-2 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-0.5 transition-all">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Keila</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-1 text-left">
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">2. Seu Nome</label>
                     <input type="text" id="cName" oninput="updateBuyLink()" placeholder="Digite seu nome..." class="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400">
                 </div>
 
                 <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block">2. Marca</label>
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">3. Marca</label>
                     <div class="grid grid-cols-3 gap-1.5" id="brandBtns">
                         <button type="button" onclick="setBrand('Apple / iPhone', this)" class="b-btn bg-amber-400/20 border-amber-400 text-amber-300 py-2 rounded-xl text-xs font-bold border">Apple</button>
                         <button type="button" onclick="setBrand('Samsung', this)" class="b-btn bg-neutral-900 border-neutral-700 text-neutral-300 py-2 rounded-xl text-xs font-bold border">Samsung</button>
@@ -196,80 +211,110 @@
                 </div>
 
                 <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block">3. Modelo Específico</label>
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">4. Modelo Específico</label>
                     <input type="text" id="cModel" oninput="updateBuyLink()" placeholder="Ex: iPhone 13, S23..." class="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400">
                 </div>
 
-                <a id="buyWhatsappBtn" href="#" target="_blank" rel="noopener noreferrer" class="block w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1">
-                    <i class="fa-brands fa-whatsapp mr-1 text-base"></i> Solicitar no WhatsApp
+                <a id="buyWhatsappBtn" href="#" onclick="return validateSeller('buy')" class="block w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1">
+                    <i class="fa-brands fa-whatsapp mr-1 text-base"></i> Chamar Vendedor
                 </a>
             </div>
         </div>
 
 
         <!-- ================= TELA 3: ASSISTÊNCIA TÉCNICA ================= -->
-        <div id="screenAssistencia" class="hidden space-y-3.5 max-w-[290px] mx-auto w-full">
+        <div id="screenAssistencia" class="hidden space-y-3 max-w-[290px] mx-auto w-full">
             <button type="button" onclick="showScreen('screenMainMenu')" class="text-neutral-400 hover:text-amber-400 text-xs font-bold flex items-center gap-2 bg-neutral-900 px-3 py-2 rounded-xl border border-neutral-800 transition-colors">
                 <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
             </button>
 
-            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-3.5">
+            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-3">
                 <div class="text-center space-y-1">
                     <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-lg rounded-xl flex items-center justify-center mx-auto mb-1">
                         <i class="fa-solid fa-screwdriver-wrench"></i>
                     </div>
                     <h3 class="text-base font-bold text-white">Assistência Técnica</h3>
-                    <p class="text-[11px] text-neutral-400">Orçamento de conserto via WhatsApp</p>
+                    <p class="text-[11px] text-neutral-400">Escolha o atendente e peça orçamento</p>
                 </div>
 
                 <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block">1. Seu Nome</label>
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">1. Escolha o Atendente</label>
+                    <div class="grid grid-cols-2 gap-2" id="sellerBtnsService">
+                        <!-- AQUI VOCÊ COLOCA O NÚMERO DO VINICIUS E DA KEILA (Parâmetros: Tipo, Número DDI+DDD+Celular, Nome) -->
+                        <button type="button" onclick="setSeller('service', '5588994596846', 'Vinicius', this)" class="seller-btn-service bg-neutral-900 border-neutral-700 text-neutral-300 py-2.5 px-2 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-0.5 transition-all">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Vinicius</span>
+                        </button>
+                        <button type="button" onclick="setSeller('service', '5588999999999', 'Keila', this)" class="seller-btn-service bg-neutral-900 border-neutral-700 text-neutral-300 py-2.5 px-2 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-0.5 transition-all">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Keila</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-1 text-left">
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">2. Seu Nome</label>
                     <input type="text" id="aName" oninput="updateServiceLink()" placeholder="Digite seu nome..." class="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400">
                 </div>
 
                 <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block">2. Modelo do Aparelho</label>
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">3. Modelo do Aparelho</label>
                     <input type="text" id="aModel" oninput="updateServiceLink()" placeholder="Ex: iPhone 11, Moto G..." class="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400">
                 </div>
 
                 <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block">3. Defeito Apresentado</label>
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">4. Defeito Apresentado</label>
                     <textarea id="aDefect" oninput="updateServiceLink()" rows="2" placeholder="Ex: Tela quebrada..." class="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 resize-none"></textarea>
                 </div>
 
-                <a id="serviceWhatsappBtn" href="#" target="_blank" rel="noopener noreferrer" class="block w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1">
+                <a id="serviceWhatsappBtn" href="#" onclick="return validateSeller('service')" class="block w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1">
                     <i class="fa-brands fa-whatsapp mr-1 text-base"></i> Solicitar Orçamento
                 </a>
             </div>
         </div>
 
 
-        <!-- ================= TELA 4: WHATSAPP DIRETO COM NOME ================= -->
-        <div id="screenWhatsapp" class="hidden space-y-3.5 max-w-[290px] mx-auto w-full">
+        <!-- ================= TELA 4: WHATSAPP DIRETO COM ESCOLHA DE VENDEDOR ================= -->
+        <div id="screenWhatsapp" class="hidden space-y-3 max-w-[290px] mx-auto w-full">
             <button type="button" onclick="showScreen('screenMainMenu')" class="text-neutral-400 hover:text-amber-400 text-xs font-bold flex items-center gap-2 bg-neutral-900 px-3 py-2 rounded-xl border border-neutral-800 transition-colors">
                 <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
             </button>
 
-            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-3.5">
+            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-3">
                 <div class="text-center space-y-1">
                     <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xl rounded-xl flex items-center justify-center mx-auto mb-1">
                         <i class="fa-brands fa-whatsapp"></i>
                     </div>
                     <h3 class="text-base font-bold text-white">Fale no WhatsApp</h3>
-                    <p class="text-[11px] text-neutral-400">Informe seu nome para iniciar o atendimento</p>
+                    <p class="text-[11px] text-neutral-400">Escolha com quem deseja falar</p>
                 </div>
 
                 <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block">1. Seu Nome</label>
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">1. Escolha o Atendente</label>
+                    <div class="grid grid-cols-2 gap-2" id="sellerBtnsGeneral">
+                        <!-- AQUI VOCÊ COLOCA O NÚMERO DO VINICIUS E DA KEILA (Parâmetros: Tipo, Número DDI+DDD+Celular, Nome) -->
+                        <button type="button" onclick="setSeller('general', '5588994596846', 'Vinicius', this)" class="seller-btn-general bg-neutral-900 border-neutral-700 text-neutral-300 py-2.5 px-2 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-0.5 transition-all">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Vinicius</span>
+                        </button>
+                        <button type="button" onclick="setSeller('general', '5588999999999', 'Keila', this)" class="seller-btn-general bg-neutral-900 border-neutral-700 text-neutral-300 py-2.5 px-2 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-0.5 transition-all">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Keila</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-1 text-left">
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">2. Seu Nome</label>
                     <input type="text" id="wName" oninput="updateGeneralWhatsappLink()" placeholder="Digite seu nome..." class="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400">
                 </div>
 
                 <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block">2. Como podemos te ajudar? (Opcional)</label>
-                    <textarea id="wMessage" oninput="updateGeneralWhatsappLink()" rows="2" placeholder="Digite sua mensagem ou dúvida..." class="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 resize-none"></textarea>
+                    <label class="text-[11px] font-bold text-amber-300 uppercase block">3. Mensagem ou Dúvida (Opcional)</label>
+                    <textarea id="wMessage" oninput="updateGeneralWhatsappLink()" rows="2" placeholder="Digite sua dúvida..." class="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 resize-none"></textarea>
                 </div>
 
-                <a id="generalWhatsappBtn" href="https://wa.me/5588994596846?text=Ol%C3%A1!%20Vim%20pelo%20site." target="_blank" rel="noopener noreferrer" class="block w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1">
+                <a id="generalWhatsappBtn" href="#" onclick="return validateSeller('general')" class="block w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1">
                     <i class="fa-brands fa-whatsapp mr-1.5 text-base"></i> Iniciar Conversa
                 </a>
             </div>
@@ -326,6 +371,13 @@
 
     <script>
         let selectedBrand = 'Apple / iPhone';
+        
+        // Armazena o telefone escolhido pelo usuário em cada tela
+        let selectedSellers = {
+            buy: '',
+            service: '',
+            general: ''
+        };
 
         function showScreen(screenId) {
             document.getElementById('screenMainMenu').classList.add('hidden');
@@ -337,6 +389,42 @@
 
             document.getElementById(screenId).classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setSeller(type, phone, name, btnElement) {
+            selectedSellers[type] = phone;
+            
+            // Atualiza classes visuais dos botões do grupo correspondente
+            const selector = type === 'buy' ? '.seller-btn-buy' : (type === 'service' ? '.seller-btn-service' : '.seller-btn-general');
+            document.querySelectorAll(selector).forEach(b => {
+                b.classList.remove('bg-amber-400/20', 'border-amber-400', 'text-amber-300');
+                b.classList.add('bg-neutral-900', 'border-neutral-700', 'text-neutral-300');
+            });
+            btnElement.classList.remove('bg-neutral-900', 'border-neutral-700', 'text-neutral-300');
+            btnElement.classList.add('bg-amber-400/20', 'border-amber-400', 'text-amber-300');
+
+            // Atualiza os links dinamicamente
+            if (type === 'buy') updateBuyLink();
+            if (type === 'service') updateServiceLink();
+            if (type === 'general') updateGeneralWhatsappLink();
+        }
+
+        function validateSeller(type) {
+            if (!selectedSellers[type]) {
+                // Alerta amigável e personalizado sem usar o alert() padrão do navegador
+                const mainContainer = document.getElementById('appContainer');
+                let warning = document.getElementById('customWarningBox');
+                if(!warning) {
+                    warning = document.createElement('div');
+                    warning.id = 'customWarningBox';
+                    warning.className = 'bg-red-500/90 text-white text-xs font-bold p-2.5 rounded-xl text-center mb-2 animate-bounce';
+                    mainContainer.prepend(warning);
+                }
+                warning.innerText = '⚠️ Por favor, escolha entre Vinícius ou Keila antes de continuar!';
+                setTimeout(() => warning.remove(), 4000);
+                return false;
+            }
+            return true;
         }
 
         function setBrand(brand, btnElement) {
@@ -351,26 +439,29 @@
         }
 
         function updateBuyLink() {
+            if (!selectedSellers.buy) return;
             const name = document.getElementById('cName').value.trim();
             const model = document.getElementById('cModel').value.trim();
             const modelStr = model ? ` (${model})` : '';
             const greeting = name ? `Olá me chamo *${encodeURIComponent(name)}* e gostaria` : `Olá! Gostaria`;
 
             const msg = `${greeting} de consultar preço do celular: *${encodeURIComponent(selectedBrand)}${encodeURIComponent(modelStr)}*.`;
-            document.getElementById('buyWhatsappBtn').href = `https://wa.me/5588994596846?text=${msg}`;
+            document.getElementById('buyWhatsappBtn').href = `https://wa.me/${selectedSellers.buy}?text=${msg}`;
         }
 
         function updateServiceLink() {
+            if (!selectedSellers.service) return;
             const name = document.getElementById('aName').value.trim();
             const model = document.getElementById('aModel').value.trim();
             const defect = document.getElementById('aDefect').value.trim();
 
             const greeting = name ? `Olá me chamo *${encodeURIComponent(name)}* e gostaria` : `Olá! Gostaria`;
             const msg = `${greeting} de um orçamento de assistência para o aparelho *${encodeURIComponent(model || 'Não informado')}*. Defeito: *${encodeURIComponent(defect || 'Não informado')}*.`;
-            document.getElementById('serviceWhatsappBtn').href = `https://wa.me/5588994596846?text=${msg}`;
+            document.getElementById('serviceWhatsappBtn').href = `https://wa.me/${selectedSellers.service}?text=${msg}`;
         }
 
         function updateGeneralWhatsappLink() {
+            if (!selectedSellers.general) return;
             const name = document.getElementById('wName').value.trim();
             const customMsg = document.getElementById('wMessage').value.trim();
 
@@ -386,7 +477,7 @@
                 msg = `Olá! Vim pelo site e gostaria de atendimento.`;
             }
 
-            document.getElementById('generalWhatsappBtn').href = `https://wa.me/5588994596846?text=${msg}`;
+            document.getElementById('generalWhatsappBtn').href = `https://wa.me/${selectedSellers.general}?text=${msg}`;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -403,9 +494,6 @@
                 dot.style.animationDelay = `${Math.random() * 5}s`;
                 container.appendChild(dot);
             }
-            updateBuyLink();
-            updateServiceLink();
-            updateGeneralWhatsappLink();
         });
     </script>
 </body>
