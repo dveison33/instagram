@@ -81,9 +81,9 @@
     <!-- Top Announcement Bar -->
     <div class="bg-gradient-to-r from-yellow-700 via-amber-500 to-yellow-700 text-black font-extrabold text-xs md:text-sm py-2 px-4 text-center shadow-md">
         <span class="inline-flex items-center gap-2 tracking-wide uppercase">
-            <i class="fa-solid fa-bolt animate-bounce text-black"></i>
-            OFERTA EXCLUSIVA: Curso Completo + 3 Bônus Especiais Liberados!
-            <span id="countdown" class="bg-black/80 text-yellow-400 px-2.5 py-0.5 rounded-full font-mono text-xs font-black ml-1 border border-amber-500/50">14:59</span>
+            <i class="fa-solid fa-fire animate-bounce text-black"></i>
+            ATENÇÃO: Apenas 50 Vagas Abertas para a 1ª Turma!
+            <span class="bg-black text-yellow-400 px-2.5 py-0.5 rounded-full text-xs font-black ml-1 border border-amber-500/50">PREENCHIMENTO IMEDIATO</span>
         </span>
     </div>
 
@@ -126,18 +126,20 @@
                     Um método simples e 100% prático para dominar a manutenção de iPhones e Androids do zero. Diagnostique defeitos sem adivinhação, atraia clientes e receba <strong class="text-amber-400 font-extrabold">3 Cursos Bônus Exclusivos</strong> inclusos!
                 </p>
 
-                <!-- Hero Video/Visual Mockup -->
+                <!-- Hero Video Container (Autoplay Local Ao Carregar) -->
                 <div class="pt-4 pb-2">
-                    <div class="relative max-w-3xl mx-auto rounded-2xl overflow-hidden border-2 border-amber-500/40 bg-zinc-900 shadow-glow group cursor-pointer" onclick="document.getElementById('garanta-sua-vaga').scrollIntoView();">
-                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80" alt="Bancada de Manutenção de Celulares" class="w-full h-80 sm:h-96 object-cover brightness-75 group-hover:scale-105 transition duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col items-center justify-center p-6 text-center">
-                            <div class="w-20 h-20 btn-gold rounded-full flex items-center justify-center text-black text-3xl shadow-glow btn-pulse mb-4 group-hover:scale-110 transition">
-                                <i class="fa-solid fa-play ml-1"></i>
-                            </div>
-                            <span class="bg-black/80 backdrop-blur-md px-4 py-2 rounded-xl text-sm font-bold text-amber-300 border border-amber-500/40">
-                                MÉTODOS REVELADOS: Do Zero aos Primeiros Serviços em 7 Dias
-                            </span>
-                        </div>
+                    <!-- ================================================================= -->
+                    <!-- ONDE ALTERAR O SEU VÍDEO LOCAL:                                   -->
+                    <!-- 1. Salve seu vídeo na mesma pasta deste arquivo index.html        -->
+                    <!-- 2. Altere 'video.mp4' abaixo para o nome exato do seu arquivo     -->
+                    <!-- Nota: 'autoplay', 'muted' e 'playsinline' garantem o auto-play    -->
+                    <!-- imediato sem que o navegador bloqueie o vídeo.                    -->
+                    <!-- ================================================================= -->
+                    <div id="video-container" class="relative max-w-3xl mx-auto rounded-2xl overflow-hidden border-2 border-amber-500/40 bg-zinc-900 shadow-glow aspect-video flex items-center justify-center">
+                        <video id="hero-video" class="w-full h-full rounded-2xl object-cover" autoplay muted playsinline controls preload="auto">
+                            <source src="dveison.mp4" type="video/mp4">
+                            Seu navegador não suporta a exibição de vídeos HTML5.
+                        </video>
                     </div>
                 </div>
 
@@ -162,7 +164,7 @@
     <!-- Social Proof / Stats Bar -->
     <section class="bg-zinc-950 border-y border-amber-500/20 py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 <div class="space-y-1">
                     <div class="font-heading font-black text-3xl sm:text-4xl text-amber-400">4 Anos</div>
                     <p class="text-xs sm:text-sm text-zinc-400 font-medium">De Método Aperfeiçoado na Prática</p>
@@ -172,11 +174,7 @@
                     <p class="text-xs sm:text-sm text-zinc-400 font-medium">Para Realizar Seus Primeiros Reparos</p>
                 </div>
                 <div class="space-y-1">
-                    <div class="font-heading font-black text-3xl sm:text-4xl text-amber-400">21+</div>
-                    <p class="text-xs sm:text-sm text-zinc-400 font-medium">Técnicas e Aulas Práticas</p>
-                </div>
-                <div class="space-y-1">
-                    <div class="font-heading font-black text-3xl sm:text-4xl text-amber-300">100%</div>
+                    <div class="font-heading font-black text-3xl sm:text-4xl text-amber-400">100%</div>
                     <p class="text-xs sm:text-sm text-zinc-400 font-medium">Garantia Incondicional de Satisfação</p>
                 </div>
             </div>
@@ -392,7 +390,7 @@
                         </p>
                     </div>
                     <div class="pt-6 border-t border-zinc-800 mt-6 flex items-center justify-between">
-                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 197,00</span>
+                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 97,00</span>
                         <span class="text-amber-400 font-extrabold text-sm">HOJE: GRÁTIS</span>
                     </div>
                 </div>
@@ -412,7 +410,7 @@
                         </p>
                     </div>
                     <div class="pt-6 border-t border-zinc-800 mt-6 flex items-center justify-between">
-                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 297,00</span>
+                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 97,00</span>
                         <span class="text-amber-400 font-extrabold text-sm">HOJE: GRÁTIS</span>
                     </div>
                 </div>
@@ -473,7 +471,7 @@
                 <div class="lg:col-span-5 flex justify-center">
                     <div class="relative">
                         <div class="w-64 h-64 sm:w-80 sm:h-80 rounded-3xl overflow-hidden border-2 border-amber-500/50 shadow-glow">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Instrutor Reparo de Sucesso" class="w-full h-full object-cover">
+                            <img src="dveison.jpeg" alt="Instrutor Reparo de Sucesso" class="w-full h-full object-cover">
                         </div>
                         <div class="absolute -bottom-6 -right-6 btn-gold p-4 rounded-2xl font-heading font-bold text-center shadow-lg border border-amber-300">
                             <span class="block text-2xl text-black">4+ Anos</span>
@@ -583,12 +581,12 @@
 
                     <!-- Price display -->
                     <div class="space-y-1">
-                        <div class="text-zinc-500 line-through text-sm">De R$ 697,00 por apenas:</div>
+                        <div class="text-zinc-500 line-through text-sm">De R$ 497,00 por apenas:</div>
                         <div class="text-xs font-bold text-amber-400 uppercase tracking-widest">12x de</div>
                         <div class="font-heading font-black text-5xl sm:text-6xl text-white tracking-tight">
-                            R$ 19,<span class="text-3xl text-amber-300">78</span>
+                            R$ 14,<span class="text-3xl text-amber-300">76</span>
                         </div>
-                        <div class="text-xs text-zinc-400">ou R$ 197,00 à vista no Pix ou Cartão</div>
+                        <div class="text-xs text-zinc-400">ou R$ 147,00 à vista no Pix ou Cartão</div>
                     </div>
 
                     <!-- Buy CTA -->
@@ -690,6 +688,16 @@
 
     <!-- Interactive Scripts -->
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('hero-video');
+            if (video) {
+                // Tenta iniciar a reprodução automaticamente ao carregar a página
+                video.play().catch(error => {
+                    console.log("Autoplay aguardando interação do usuário:", error);
+                });
+            }
+        });
+
         // Profit Calculator Logic
         const repairRange = document.getElementById('repair-range');
         const repairsCount = document.getElementById('repairs-count');
@@ -719,16 +727,6 @@
                 }
             });
         });
-
-        // Countdown Timer Logic
-        let duration = 15 * 60; // 15 minutes
-        const timerDisplay = document.getElementById('countdown');
-        setInterval(() => {
-            const minutes = Math.floor(duration / 60);
-            const seconds = duration % 60;
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            if (duration > 0) duration--;
-        }, 1000);
     </script>
 </body>
 </html>
