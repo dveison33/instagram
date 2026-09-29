@@ -272,6 +272,16 @@
                             <option value="todas">Todas Categorias</option>
                         </select>
 
+                        <select id="filter-pgto" onchange="renderTransactionsTable()" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="todos">Todas Formas Pgto</option>
+                            <option value="Cartão">Todos os Cartões</option>
+                            <option value="Cartão de Crédito">Cartão de Crédito</option>
+                            <option value="Cartão de Débito">Cartão de Débito</option>
+                            <option value="Pix">Pix</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Boleto">Boleto</option>
+                        </select>
+
                         <input type="text" id="filter-busca" oninput="renderTransactionsTable()" placeholder="Buscar por descrição..." class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 outline-none w-full sm:w-48">
                     </div>
                 </div>
@@ -283,7 +293,7 @@
                                 <th class="p-3.5 pl-5">Tipo</th>
                                 <th class="p-3.5">Descrição</th>
                                 <th class="p-3.5">Categoria</th>
-                                <th class="p-3.5">Forma Pgto</th>
+                                <th class="p-3.5">Forma / Conta Pgto</th>
                                 <th class="p-3.5">Data</th>
                                 <th class="p-3.5 text-right">Valor</th>
                                 <th class="p-3.5 pr-5 text-center">Ações</th>
@@ -422,7 +432,7 @@
                                     <th class="p-2.5">Tipo</th>
                                     <th class="p-2.5">Descrição</th>
                                     <th class="p-2.5">Categoria</th>
-                                    <th class="p-2.5">Forma Pgto</th>
+                                    <th class="p-2.5">Forma / Conta Pgto</th>
                                     <th class="p-2.5 pr-4 text-right">Valor</th>
                                 </tr>
                             </thead>
@@ -466,14 +476,21 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Forma de Recebimento</label>
-                        <select id="lucro-pgto" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-xs sm:text-sm">
+                        <select id="lucro-pgto" onchange="toggleLucroExtraFields()" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-xs sm:text-sm">
                             <option value="Pix">Pix</option>
+                            <option value="Cartão de Crédito">Cartão de Crédito</option>
+                            <option value="Cartão de Débito">Cartão de Débito</option>
                             <option value="Dinheiro">Dinheiro</option>
-                            <option value="Cartão de Crédito">Cartão Crédito</option>
-                            <option value="Cartão de Débito">Cartão Débito</option>
                             <option value="Outro">Outro</option>
                         </select>
                     </div>
+                </div>
+
+                <!-- Campo Dinâmico para Cartão no Lucro -->
+                <div id="wrapper-lucro-card" class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-100 space-y-1 hidden">
+                    <label class="block text-xs font-semibold text-emerald-800 uppercase tracking-wider">Bandeira / Maquininha do Cartão</label>
+                    <input type="text" id="lucro-card-info" placeholder="Ex: Stone, Visa, Master, PagBank, Mercado Pago..." class="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-xs sm:text-sm">
+                    <p class="text-[10px] text-emerald-600">Informe a operadora ou bandeira do cartão recebido.</p>
                 </div>
 
                 <div class="pt-2 flex justify-end space-x-2">
@@ -525,15 +542,30 @@
                         <input type="date" id="retirada-data" required class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none text-xs sm:text-sm">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Forma Pagamento</label>
-                        <select id="retirada-pgto" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none text-xs sm:text-sm">
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Forma de Pagamento</label>
+                        <select id="retirada-pgto" onchange="toggleRetiradaExtraFields()" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none text-xs sm:text-sm">
                             <option value="Pix">Pix</option>
+                            <option value="Cartão de Crédito">Cartão de Crédito</option>
+                            <option value="Cartão de Débito">Cartão de Débito</option>
                             <option value="Dinheiro">Dinheiro</option>
-                            <option value="Transferência">Transferência</option>
-                            <option value="Cartão de Crédito">Cartão Crédito</option>
                             <option value="Boleto">Boleto</option>
+                            <option value="Transferência">Transferência / TED</option>
                         </select>
                     </div>
+                </div>
+
+                <!-- Dynamic field when Pix is selected -->
+                <div id="wrapper-conta-pix" class="bg-rose-50/50 p-3 rounded-xl border border-rose-100 space-y-1 hidden">
+                    <label class="block text-xs font-semibold text-rose-800 uppercase tracking-wider">Conta de Origem do Pix</label>
+                    <input type="text" id="retirada-conta-pix" placeholder="Ex: Nubank, Itaú, Bradesco, Mercado Pago..." class="w-full px-3 py-1.5 bg-white border border-rose-200 rounded-lg focus:ring-2 focus:ring-rose-500 outline-none text-xs sm:text-sm">
+                    <p class="text-[10px] text-rose-500">Especifique de qual conta bancária saiu o valor do Pix.</p>
+                </div>
+
+                <!-- Dynamic field when Cartão is selected -->
+                <div id="wrapper-conta-cartao" class="bg-rose-50/50 p-3 rounded-xl border border-rose-100 space-y-1 hidden">
+                    <label class="block text-xs font-semibold text-rose-800 uppercase tracking-wider">Cartão / Banco / Final do Cartão</label>
+                    <input type="text" id="retirada-conta-cartao" placeholder="Ex: Nubank Crédito, Cartão Itaú Master..." class="w-full px-3 py-1.5 bg-white border border-rose-200 rounded-lg focus:ring-2 focus:ring-rose-500 outline-none text-xs sm:text-sm">
+                    <p class="text-[10px] text-rose-500">Informe qual cartão de crédito ou débito foi utilizado.</p>
                 </div>
 
                 <div class="pt-2 flex justify-end space-x-2">
@@ -606,33 +638,24 @@
         import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'controle-financeiro-loja';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "AIzaSyDemoConfigForStandaloneOnly",
-            authDomain: "demo.firebaseapp.com",
-            projectId: "demo-project",
-            storageBucket: "demo.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:demo"
-        };
-        
-        <script type="module">
-  
-         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
-  
+
+        // =========================================================================
+        // 🚨 COLE AS CREDENCIAIS DO SEU BANCO DE DADOS FIREBASE AQUI:
+        // Substitua os textos entre aspas pelos dados que você copiou do Firebase
+        // =========================================================================
+
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-             apiKey: "AIzaSyDq2-2nbPPXFQJDpRT0n2TbJb2N-1bfv0Y",
-             authDomain: "sistema-financeiro-16565.firebaseapp.com",
-             projectId: "sistema-financeiro-16565",
-             storageBucket: "sistema-financeiro-16565.firebasestorage.app",
-             messagingSenderId: "328940600447",
-             appId: "1:328940600447:web:5fb2b6832b2c38b435934a",
-             measurementId: "G-TJRK56TKFS"
+            apiKey: "AIzaSyDq2-2nbPPXFQJDpRT0n2TbJb2N-1bfv0Y",
+            authDomain: "sistema-financeiro-16565.firebaseapp.com",
+            projectId: "sistema-financeiro-16565",
+            storageBucket: "sistema-financeiro-16565.firebasestorage.app",
+            messagingSenderId: "328940600447",
+            appId: "1:328940600447:web:5fb2b6832b2c38b435934a",
+            measurementId: "G-TJRK56TKFS"
         };
 
-         // Initialize Firebase
-         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+        const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
@@ -736,16 +759,54 @@
             document.getElementById('lbl-data-hoje').innerText = new Date().toLocaleDateString('pt-BR', options);
         }
 
+        function toggleLucroExtraFields() {
+            const pgtoVal = document.getElementById('lucro-pgto').value;
+            const wrapperCard = document.getElementById('wrapper-lucro-card');
+            if (pgtoVal === 'Cartão de Crédito' || pgtoVal === 'Cartão de Débito') {
+                wrapperCard.classList.remove('hidden');
+            } else {
+                wrapperCard.classList.add('hidden');
+                document.getElementById('lucro-card-info').value = '';
+            }
+        }
+
+        function toggleRetiradaExtraFields() {
+            const pgtoVal = document.getElementById('retirada-pgto').value;
+            const wrapperPix = document.getElementById('wrapper-conta-pix');
+            const wrapperCartao = document.getElementById('wrapper-conta-cartao');
+
+            if (pgtoVal === 'Pix') {
+                wrapperPix.classList.remove('hidden');
+                wrapperCartao.classList.add('hidden');
+                document.getElementById('retirada-conta-cartao').value = '';
+            } else if (pgtoVal === 'Cartão de Crédito' || pgtoVal === 'Cartão de Débito') {
+                wrapperCartao.classList.remove('hidden');
+                wrapperPix.classList.add('hidden');
+                document.getElementById('retirada-conta-pix').value = '';
+            } else {
+                wrapperPix.classList.add('hidden');
+                wrapperCartao.classList.add('hidden');
+                document.getElementById('retirada-conta-pix').value = '';
+                document.getElementById('retirada-conta-cartao').value = '';
+            }
+        }
+
         async function handleSaveLucro(e) {
             e.preventDefault();
             const valor = parseFloat(document.getElementById('lucro-valor').value);
             const desc = document.getElementById('lucro-descricao').value.trim();
             const data = document.getElementById('lucro-data').value;
             const pgto = document.getElementById('lucro-pgto').value;
+            const cardInfo = document.getElementById('lucro-card-info').value.trim();
 
             if (!valor || valor <= 0) {
                 showToast('Informe um valor válido de lucro!', 'error');
                 return;
+            }
+
+            let pgtoFinal = pgto;
+            if ((pgto === 'Cartão de Crédito' || pgto === 'Cartão de Débito') && cardInfo) {
+                pgtoFinal = `${pgto} (${cardInfo})`;
             }
 
             const txId = 'tx_' + Date.now();
@@ -755,7 +816,7 @@
                 description: desc,
                 category: 'Lucro / Vendas',
                 date: data,
-                paymentMethod: pgto,
+                paymentMethod: pgtoFinal,
                 createdAt: new Date().toISOString()
             };
 
@@ -764,6 +825,7 @@
                 closeModal('modalLucro');
                 document.getElementById('form-lucro').reset();
                 initDateInputs();
+                toggleLucroExtraFields();
                 showToast('Lucro salvo na nuvem!', 'success');
             } catch (err) {
                 showToast('Erro ao salvar na nuvem.', 'error');
@@ -777,10 +839,19 @@
             const cat = document.getElementById('retirada-categoria').value;
             const data = document.getElementById('retirada-data').value;
             const pgto = document.getElementById('retirada-pgto').value;
+            const contaPix = document.getElementById('retirada-conta-pix').value.trim();
+            const contaCartao = document.getElementById('retirada-conta-cartao').value.trim();
 
             if (!valor || valor <= 0) {
                 showToast('Informe um valor válido de retirada!', 'error');
                 return;
+            }
+
+            let pgtoFinal = pgto;
+            if (pgto === 'Pix' && contaPix) {
+                pgtoFinal = `Pix (${contaPix})`;
+            } else if ((pgto === 'Cartão de Crédito' || pgto === 'Cartão de Débito') && contaCartao) {
+                pgtoFinal = `${pgto} (${contaCartao})`;
             }
 
             const txId = 'tx_' + Date.now();
@@ -790,7 +861,9 @@
                 description: desc,
                 category: cat,
                 date: data,
-                paymentMethod: pgto,
+                paymentMethod: pgtoFinal,
+                pixAccount: contaPix || null,
+                cardInfo: contaCartao || null,
                 createdAt: new Date().toISOString()
             };
 
@@ -799,6 +872,7 @@
                 closeModal('modalRetirada');
                 document.getElementById('form-retirada').reset();
                 initDateInputs();
+                toggleRetiradaExtraFields();
                 showToast('Retirada salva na nuvem!', 'success');
             } catch (err) {
                 showToast('Erro ao salvar retirada.', 'error');
@@ -883,126 +957,36 @@
         }
 
         function openModal(modalId) {
-            if (modalId === 'modalRetirada') populateCategoryDropdowns();
+            if (modalId === 'modalLucro') {
+                toggleLucroExtraFields();
+            }
+            if (modalId === 'modalRetirada') {
+                populateCategoryDropdowns();
+                toggleRetiradaExtraFields();
+            }
             if (modalId === 'modalCategoria') renderCategoriesModalList();
             document.getElementById(modalId).classList.remove('hidden');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-        }
-
-        function formatCurrency(val) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val || 0);
-        }
-
-        function formatDateBR(dateStr) {
-            if (!dateStr) return '';
-            const [y, m, d] = dateStr.split('-');
-            return `${d}/${m}/${y}`;
-        }
-
-        function populateCategoryDropdowns() {
-            const selectRetirada = document.getElementById('retirada-categoria');
-            selectRetirada.innerHTML = state.categories.map(c => 
-                `<option value="${c.name}">${c.name}</option>`
-            ).join('');
-
-            const filterCat = document.getElementById('filter-categoria');
-            filterCat.innerHTML = `<option value="todas">Todas Categorias</option>` + 
-                state.categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
-        }
-
-        function renderCategoriesModalList() {
-            const list = document.getElementById('list-categorias-modal');
-            list.innerHTML = state.categories.map(c => `
-                <div class="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200 text-xs">
-                    <div class="flex items-center space-x-2">
-                        <span class="w-3 h-3 rounded-full" style="background-color: ${c.color}"></span>
-                        <span class="font-medium text-slate-800">${c.name}</span>
-                    </div>
-                    <button onclick="deleteCategory('${c.id}')" class="text-rose-500 hover:text-rose-700 p-1">
-                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                    </button>
-                </div>
-            `).join('');
-            lucide.createIcons();
-        }
-
-        function renderAll() {
-            renderKPIs();
-            renderRecentTable();
-            renderTransactionsTable();
-            populateCategoryDropdowns();
-            renderCharts();
-            generateReport();
-        }
-
-        function renderKPIs() {
-            const totalLucro = state.transactions
-                .filter(t => t.type === 'lucro')
-                .reduce((acc, t) => acc + t.amount, 0);
-
-            const totalRetiradas = state.transactions
-                .filter(t => t.type === 'retirada')
-                .reduce((acc, t) => acc + t.amount, 0);
-
-            const saldo = totalLucro - totalRetiradas;
-
-            const todayStr = new Date().toISOString().split('T')[0];
-            const lucroHoje = state.transactions
-                .filter(t => t.type === 'lucro' && t.date === todayStr)
-                .reduce((acc, t) => acc + t.amount, 0);
-
-            document.getElementById('kpi-entradas').innerText = formatCurrency(totalLucro);
-            document.getElementById('kpi-retiradas').innerText = formatCurrency(totalRetiradas);
-            document.getElementById('kpi-saldo').innerText = formatCurrency(saldo);
-            document.getElementById('kpi-hoje').innerText = formatCurrency(lucroHoje);
-
-            const saldoEl = document.getElementById('kpi-saldo');
-            if (saldo < 0) {
-                saldoEl.className = "text-2xl font-bold text-rose-600 mt-2";
-            } else {
-                saldoEl.className = "text-2xl font-bold text-emerald-600 mt-2";
-            }
-        }
-
-        function renderRecentTable() {
-            const recents = state.transactions.slice(0, 5);
-            const tbody = document.getElementById('tbl-recents-body');
-
-            if (recents.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum lançamento cadastrado na nuvem ainda.</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = recents.map(t => {
-                const isLucro = t.type === 'lucro';
-                const badge = isLucro 
-                    ? `<span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Lucro</span>`
-                    : `<span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">Retirada</span>`;
-                const amountClass = isLucro ? "text-emerald-600 font-bold" : "text-rose-600 font-bold";
-
-                return `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-3.5 pl-5">${badge}</td>
-                        <td class="p-3.5 font-medium text-slate-800">${t.description}</td>
-                        <td class="p-3.5 text-slate-500">${t.category || '-'}</td>
-                        <td class="p-3.5 text-slate-500">${formatDateBR(t.date)}</td>
-                        <td class="p-3.5 pr-5 text-right ${amountClass}">${isLucro ? '+' : '-'}${formatCurrency(t.amount)}</td>
-                    </tr>
-                `;
-            }).join('');
         }
 
         function renderTransactionsTable() {
             const tipo = document.getElementById('filter-tipo').value;
             const cat = document.getElementById('filter-categoria').value;
+            const pgtoFilter = document.getElementById('filter-pgto')?.value || 'todos';
             const busca = document.getElementById('filter-busca').value.toLowerCase();
 
             let filtered = state.transactions.filter(t => {
                 if (tipo !== 'todos' && t.type !== tipo) return false;
                 if (cat !== 'todas' && t.category !== cat) return false;
+                
+                if (pgtoFilter !== 'todos') {
+                    const method = (t.paymentMethod || '').toLowerCase();
+                    if (pgtoFilter === 'Cartão') {
+                        if (!method.includes('cartão') && !method.includes('cartao')) return false;
+                    } else if (!method.includes(pgtoFilter.toLowerCase())) {
+                        return false;
+                    }
+                }
+
                 if (busca && !t.description.toLowerCase().includes(busca)) return false;
                 return true;
             });
@@ -1026,7 +1010,7 @@
                         <td class="p-3.5 pl-5">${badge}</td>
                         <td class="p-3.5 font-medium text-slate-900">${t.description}</td>
                         <td class="p-3.5 text-slate-600">${t.category || '-'}</td>
-                        <td class="p-3.5 text-slate-500">${t.paymentMethod || 'Outro'}</td>
+                        <td class="p-3.5 text-slate-500 font-medium">${t.paymentMethod || 'Outro'}</td>
                         <td class="p-3.5 text-slate-500">${formatDateBR(t.date)}</td>
                         <td class="p-3.5 text-right ${amountClass}">${isLucro ? '+' : '-'}${formatCurrency(t.amount)}</td>
                         <td class="p-3.5 pr-5 text-center">
@@ -1275,7 +1259,7 @@
                     `"${t.description.replace(/"/g, '""')}"`,
                     `"${(t.category || '').replace(/"/g, '""')}"`,
                     t.date,
-                    t.paymentMethod || '',
+                    `"${(t.paymentMethod || '').replace(/"/g, '""')}"`,
                     t.amount.toFixed(2)
                 ].join(';');
                 csvContent += row + "\n";
@@ -1332,6 +1316,8 @@
         window.openModal = openModal;
         window.closeModal = closeModal;
         window.switchTab = switchTab;
+        window.toggleLucroExtraFields = toggleLucroExtraFields;
+        window.toggleRetiradaExtraFields = toggleRetiradaExtraFields;
         window.handleSaveLucro = handleSaveLucro;
         window.handleSaveRetirada = handleSaveRetirada;
         window.handleSaveCategoria = handleSaveCategoria;
@@ -1344,4 +1330,4 @@
         window.renderTransactionsTable = renderTransactionsTable;
     </script>
 </body>
-</html
+</html>
