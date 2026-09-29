@@ -77,13 +77,9 @@
                 </div>
                 <div>
                     <div class="flex items-center space-x-2">
-                        <h1 class="font-bold text-lg text-slate-900 leading-tight">Finanças da Loja</h1>
-                        <span id="sync-status" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
-                            <span class="w-1.5 h-1.5 mr-1.5 bg-amber-500 rounded-full animate-pulse"></span>
-                            Conectando Nuvem...
-                        </span>
+                        <h1 class="font-bold text-lg text-slate-900 leading-tight">DF CELULARES</h1>
                     </div>
-                    <p class="text-xs text-slate-500">Gestão de Lucros, Retiradas e Sincronização On-line</p>
+                    <p class="text-xs text-slate-500">Gestão de Lucros, Retiradas e Armazenamento Interno</p>
                 </div>
             </div>
 
@@ -97,9 +93,16 @@
                     <i data-lucide="minus-circle" class="w-4 h-4 sm:mr-1.5"></i>
                     <span class="hidden sm:inline">Nova Retirada</span>
                 </button>
+                <button onclick="openModal('modalFecharMes')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 sm:px-4 py-2 rounded-xl text-sm font-medium transition flex items-center shadow-sm" title="Calcular Fechamento Mensal">
+                    <i data-lucide="calculator" class="w-4 h-4 sm:mr-1.5"></i>
+                    <span class="hidden sm:inline">Fechar Mês</span>
+                </button>
                 <button onclick="openModal('modalCategoria')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 sm:px-4 py-2 rounded-xl text-sm font-medium transition flex items-center">
                     <i data-lucide="tag" class="w-4 h-4 sm:mr-1.5"></i>
                     <span class="hidden sm:inline">Categorias</span>
+                </button>
+                <button onclick="exportJSONBackup()" title="Baixar Cópia de Segurança dos Dados" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-xl text-sm font-medium transition flex items-center">
+                    <i data-lucide="database" class="w-4 h-4"></i>
                 </button>
             </div>
         </div>
@@ -179,7 +182,7 @@
             <div class="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h3 class="font-semibold text-slate-800 text-base">Ações Rápidas de Lançamento</h3>
-                    <p class="text-xs text-slate-500">Registre ganhos ou saídas e sincronize com a nuvem em tempo real.</p>
+                    <p class="text-xs text-slate-500">Registre ganhos ou saídas e salve no armazenamento interno do dispositivo.</p>
                 </div>
                 <div class="flex items-center gap-3 w-full md:w-auto">
                     <button onclick="openModal('modalLucro')" class="flex-1 md:flex-none px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition flex items-center justify-center shadow-sm">
@@ -187,6 +190,9 @@
                     </button>
                     <button onclick="openModal('modalRetirada')" class="flex-1 md:flex-none px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-xl transition flex items-center justify-center shadow-sm">
                         <i data-lucide="minus-circle" class="w-4 h-4 mr-2"></i> + Nova Retirada
+                    </button>
+                    <button onclick="openModal('modalFecharMes')" class="flex-1 md:flex-none px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition flex items-center justify-center shadow-sm">
+                        <i data-lucide="calculator" class="w-4 h-4 mr-2"></i> Fechar Mês
                     </button>
                     <button onclick="openModal('modalCategoria')" class="flex-1 md:flex-none px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition flex items-center justify-center">
                         <i data-lucide="tag" class="w-4 h-4 mr-2"></i> + Categoria
@@ -257,7 +263,7 @@
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h2 class="font-bold text-lg text-slate-900">Histórico de Transações</h2>
-                        <p class="text-xs text-slate-500">Gerencie e filtre todos os seus lucros e retiradas salvos no banco on-line</p>
+                        <p class="text-xs text-slate-500">Gerencie e filtre todos os seus lucros e retiradas salvos no seu computador</p>
                     </div>
                     
                     <!-- Filters -->
@@ -606,6 +612,20 @@
                 </div>
             </div>
 
+            <!-- Backup & Restore Data section -->
+            <div class="pt-3 border-t border-slate-100 space-y-2">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Cópia de Segurança (Backup)</h4>
+                <div class="flex gap-2">
+                    <button type="button" onclick="exportJSONBackup()" class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center justify-center">
+                        <i data-lucide="download" class="w-3.5 h-3.5 mr-1.5"></i> Salvar Backup (PC)
+                    </button>
+                    <label class="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center justify-center cursor-pointer">
+                        <i data-lucide="upload" class="w-3.5 h-3.5 mr-1.5"></i> Restaurar Backup
+                        <input type="file" id="input-restore-backup" accept=".json" onchange="importJSONBackup(event)" class="hidden">
+                    </label>
+                </div>
+            </div>
+
             <div class="pt-2 flex justify-end">
                 <button type="button" onclick="closeModal('modalCategoria')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl">Concluir</button>
             </div>
@@ -620,7 +640,7 @@
             </div>
             <div>
                 <h3 id="confirm-title" class="font-bold text-lg text-slate-900">Excluir Lançamento?</h3>
-                <p id="confirm-msg" class="text-xs text-slate-500 mt-1">Esta ação removerá o registro do banco de dados na nuvem.</p>
+                <p id="confirm-msg" class="text-xs text-slate-500 mt-1">Esta ação removerá o registro do seu computador.</p>
             </div>
             <div class="flex justify-center space-x-3 pt-2">
                 <button onclick="closeModal('modalConfirm')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Cancelar</button>
@@ -629,39 +649,103 @@
         </div>
     </div>
 
+    <!-- MODAL 5: FECHAR MÊS (RESUMO MENSAL E POSITIVO/NEGATIVO) -->
+    <div id="modalFecharMes" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl space-y-5 relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div class="flex items-center space-x-2">
+                    <div class="p-2 bg-indigo-100 text-indigo-700 rounded-lg">
+                        <i data-lucide="calculator" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-slate-900 leading-tight">Fechamento do Mês</h3>
+                        <p class="text-xs text-slate-500">Balanço geral de Lucros vs Saídas do período</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('modalFecharMes')" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Month Picker Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <label for="fechar-mes-select" class="text-xs font-bold uppercase text-slate-600 tracking-wider">
+                    Selecione o Mês para Fechamento:
+                </label>
+                <input type="month" id="fechar-mes-select" onchange="calcularFechamentoMes()" class="px-3.5 py-1.5 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-indigo-500 outline-none">
+            </div>
+
+            <!-- Status Result Banner (Positivo / Negativo / Neutro) -->
+            <div id="fechamento-status-banner" class="p-5 rounded-2xl border flex items-center space-x-4 transition-all">
+                <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- Summary Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
+                    <p class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Total de Lucro / Entradas</p>
+                    <p id="fechamento-lucro" class="text-xl font-extrabold text-emerald-800 mt-1">R$ 0,00</p>
+                </div>
+                <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl">
+                    <p class="text-[11px] font-bold text-rose-700 uppercase tracking-wider">Total de Saídas / Despesas</p>
+                    <p id="fechamento-saidas" class="text-xl font-extrabold text-rose-800 mt-1">R$ 0,00</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl">
+                    <p class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Resultado Final do Mês</p>
+                    <p id="fechamento-resultado" class="text-xl font-extrabold text-slate-900 mt-1">R$ 0,00</p>
+                </div>
+            </div>
+
+            <!-- Top Categories Breakdown -->
+            <div class="border border-slate-200 rounded-xl p-4 space-y-3 bg-white">
+                <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center">
+                    <i data-lucide="pie-chart" class="w-4 h-4 mr-1.5 text-rose-600"></i> Principais Despesas / Saídas no Mês
+                </h4>
+                <div id="fechamento-categorias-list" class="space-y-2 text-xs">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- Detailed Transactions of the Month -->
+            <div class="space-y-2">
+                <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider flex items-center">
+                    <i data-lucide="list" class="w-4 h-4 mr-1.5 text-indigo-600"></i> Lançamentos Deste Mês
+                </h4>
+                <div class="overflow-x-auto rounded-xl border border-slate-200 max-h-48 custom-scrollbar">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold uppercase sticky top-0 bg-white">
+                            <tr>
+                                <th class="p-2.5 pl-3">Data</th>
+                                <th class="p-2.5">Tipo</th>
+                                <th class="p-2.5">Descrição</th>
+                                <th class="p-2.5">Categoria</th>
+                                <th class="p-2.5 pr-3 text-right">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fechamento-tbl-body" class="divide-y divide-slate-100 text-slate-700">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal Action Buttons -->
+            <div class="pt-3 border-t border-slate-100 flex flex-wrap justify-end gap-2">
+                <button type="button" onclick="closeModal('modalFecharMes')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl">
+                    Fechar Janela
+                </button>
+                <button type="button" onclick="imprimirFechamentoMes()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm flex items-center">
+                    <i data-lucide="printer" class="w-4 h-4 mr-1.5"></i> Imprimir / Gerar PDF do Fechamento
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'controle-financeiro-loja';
-
-        // =========================================================================
-        // 🚨 COLE AS CREDENCIAIS DO SEU BANCO DE DADOS FIREBASE AQUI:
-        // Substitua os textos entre aspas pelos dados que você copiou do Firebase
-        // =========================================================================
-
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-        const firebaseConfig = {
-            apiKey: "AIzaSyDq2-2nbPPXFQJDpRT0n2TbJb2N-1bfv0Y",
-            authDomain: "sistema-financeiro-16565.firebaseapp.com",
-            projectId: "sistema-financeiro-16565",
-            storageBucket: "sistema-financeiro-16565.firebasestorage.app",
-            messagingSenderId: "328940600447",
-            appId: "1:328940600447:web:5fb2b6832b2c38b435934a",
-            measurementId: "G-TJRK56TKFS"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        // Firestore Public Collections Paths
-        const txCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'transactions');
-        const catCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'categories');
+    <script>
+        const STORAGE_KEY = 'loja_financas_local_db_v1';
 
         const DEFAULT_CATEGORIES = [
             { id: 'cat_prolabore', name: 'Pró-Labore / Retirada Pessoal', color: '#f59e0b' },
@@ -683,67 +767,175 @@
         let chartCategoriasInstance = null;
         let pendingDeleteId = null;
 
-        async function startCloudSync() {
+        function loadLocalData() {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    state.transactions = parsed.transactions || [];
+                    state.categories = parsed.categories && parsed.categories.length > 0 ? parsed.categories : [...DEFAULT_CATEGORIES];
                 } else {
-                    await signInAnonymously(auth);
+                    state.transactions = [];
+                    state.categories = [...DEFAULT_CATEGORIES];
+                    saveLocalData();
                 }
-
-                // Subscribe to real-time Categories
-                onSnapshot(catCollectionRef, (snapshot) => {
-                    if (snapshot.empty) {
-                        // Seed default categories into cloud
-                        DEFAULT_CATEGORIES.forEach(c => {
-                            setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', c.id), c);
-                        });
-                        state.categories = [...DEFAULT_CATEGORIES];
-                    } else {
-                        state.categories = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                    }
-                    populateCategoryDropdowns();
-                    renderCategoriesModalList();
-                    renderCharts();
-                }, (error) => {
-                    console.error("Erro na sincronização de categorias:", error);
-                });
-
-                // Subscribe to real-time Transactions
-                onSnapshot(txCollectionRef, (snapshot) => {
-                    state.transactions = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-                    // Sort descending by date
-                    state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-                    updateSyncStatus(true);
-                    renderAll();
-                }, (error) => {
-                    console.error("Erro na sincronização de transações:", error);
-                    updateSyncStatus(false);
-                });
-
             } catch (err) {
-                console.error("Erro na autenticação de nuvem:", err);
-                updateSyncStatus(false);
+                console.error("Erro ao carregar dados locais:", err);
+                state.transactions = [];
+                state.categories = [...DEFAULT_CATEGORIES];
+            }
+            // Ensure transactions are ordered descending by date
+            state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+
+        function saveLocalData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    transactions: state.transactions,
+                    categories: state.categories
+                }));
+            } catch (err) {
+                console.error("Erro ao salvar dados locais:", err);
+                showToast("Erro ao salvar dados no computador", "error");
             }
         }
 
-        function updateSyncStatus(isOnline) {
-            const statusEl = document.getElementById('sync-status');
-            if (!statusEl) return;
-            if (isOnline) {
-                statusEl.className = "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800";
-                statusEl.innerHTML = `<span class="w-1.5 h-1.5 mr-1.5 bg-emerald-500 rounded-full"></span>Nuvem Sincronizada`;
-            } else {
-                statusEl.className = "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800";
-                statusEl.innerHTML = `<span class="w-1.5 h-1.5 mr-1.5 bg-rose-500 rounded-full"></span>Off-line`;
+        function formatDateBR(dateStr) {
+            if (!dateStr) return '-';
+            const [year, month, day] = dateStr.split('-');
+            if (!year || !month || !day) return dateStr;
+            return `${day}/${month}/${year}`;
+        }
+
+        function formatCurrency(val) {
+            return (val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function closeModal(modalId) {
+            const el = document.getElementById(modalId);
+            if (el) el.classList.add('hidden');
+        }
+
+        function openModal(modalId) {
+            if (modalId === 'modalLucro') {
+                toggleLucroExtraFields();
+            }
+            if (modalId === 'modalRetirada') {
+                populateCategoryDropdowns();
+                toggleRetiradaExtraFields();
+            }
+            if (modalId === 'modalCategoria') renderCategoriesModalList();
+            if (modalId === 'modalFecharMes') {
+                initFecharMesModal();
+            }
+            const el = document.getElementById(modalId);
+            if (el) el.classList.remove('hidden');
+        }
+
+        function populateCategoryDropdowns() {
+            const catSelect = document.getElementById('retirada-categoria');
+            const filterCat = document.getElementById('filter-categoria');
+            
+            if (catSelect) {
+                catSelect.innerHTML = state.categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+            }
+            if (filterCat) {
+                const currentVal = filterCat.value;
+                filterCat.innerHTML = `<option value="todas">Todas Categorias</option>` + 
+                    state.categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+                filterCat.value = currentVal;
+            }
+        }
+
+        function renderCategoriesModalList() {
+            const listEl = document.getElementById('list-categorias-modal');
+            if (!listEl) return;
+            
+            if (state.categories.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-slate-400">Nenhuma categoria cadastrada.</p>`;
+                return;
+            }
+            
+            listEl.innerHTML = state.categories.map(c => `
+                <div class="flex items-center justify-between p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full" style="background-color: ${c.color || '#64748b'}"></span>
+                        <span class="font-medium text-slate-800">${c.name}</span>
+                    </div>
+                    <button onclick="deleteCategory('${c.id}')" class="text-rose-500 hover:text-rose-700 p-1">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            `).join('');
+            
+            lucide.createIcons();
+        }
+
+        function updateKPICards() {
+            const totalEntradas = state.transactions.filter(t => t.type === 'lucro').reduce((acc, t) => acc + t.amount, 0);
+            const totalRetiradas = state.transactions.filter(t => t.type === 'retirada').reduce((acc, t) => acc + t.amount, 0);
+            const saldo = totalEntradas - totalRetiradas;
+            
+            const todayStr = new Date().toISOString().split('T')[0];
+            const lucroHoje = state.transactions
+                .filter(t => t.type === 'lucro' && t.date === todayStr)
+                .reduce((acc, t) => acc + t.amount, 0);
+
+            const kpiEntradas = document.getElementById('kpi-entradas');
+            const kpiRetiradas = document.getElementById('kpi-retiradas');
+            const kpiSaldo = document.getElementById('kpi-saldo');
+            const kpiHoje = document.getElementById('kpi-hoje');
+
+            if (kpiEntradas) kpiEntradas.innerText = formatCurrency(totalEntradas);
+            if (kpiRetiradas) kpiRetiradas.innerText = formatCurrency(totalRetiradas);
+            if (kpiSaldo) kpiSaldo.innerText = formatCurrency(saldo);
+            if (kpiHoje) kpiHoje.innerText = formatCurrency(lucroHoje);
+        }
+
+        function renderRecentsTable() {
+            const tbody = document.getElementById('tbl-recents-body');
+            if (!tbody) return;
+            
+            const recents = state.transactions.slice(0, 5);
+            if (recents.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum lançamento registrado no computador.</td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = recents.map(t => {
+                const isLucro = t.type === 'lucro';
+                const badge = isLucro 
+                    ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">Entrada</span>`
+                    : `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-800">Retirada</span>`;
+                const amountClass = isLucro ? "text-emerald-600 font-bold" : "text-rose-600 font-bold";
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 pl-5">${badge}</td>
+                        <td class="p-3 font-medium text-slate-900">${t.description}</td>
+                        <td class="p-3 text-slate-600">${t.category || '-'}</td>
+                        <td class="p-3 text-slate-500">${formatDateBR(t.date)}</td>
+                        <td class="p-3 pr-5 text-right ${amountClass}">${isLucro ? '+' : '-'}${formatCurrency(t.amount)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderAll() {
+            updateKPICards();
+            renderRecentsTable();
+            renderTransactionsTable();
+            renderCharts();
+            populateCategoryDropdowns();
+            if (!document.getElementById('sec-relatorios').classList.contains('hidden')) {
+                generateReport();
             }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             initDateInputs();
+            loadLocalData();
+            renderAll();
             lucide.createIcons();
-            startCloudSync();
         });
 
         function initDateInputs() {
@@ -755,8 +947,184 @@
             const currentMonthStr = todayStr.substring(0, 7);
             document.getElementById('rep-mes-ano').value = currentMonthStr;
 
+            const selectFecharMes = document.getElementById('fechar-mes-select');
+            if (selectFecharMes) {
+                selectFecharMes.value = currentMonthStr;
+            }
+
             const options = { weekday: 'long', day: 'numeric', month: 'short' };
             document.getElementById('lbl-data-hoje').innerText = new Date().toLocaleDateString('pt-BR', options);
+        }
+
+        function initFecharMesModal() {
+            const selectFecharMes = document.getElementById('fechar-mes-select');
+            if (selectFecharMes && !selectFecharMes.value) {
+                const todayStr = new Date().toISOString().split('T')[0];
+                selectFecharMes.value = todayStr.substring(0, 7);
+            }
+            calcularFechamentoMes();
+        }
+
+        function calcularFechamentoMes() {
+            const mesVal = document.getElementById('fechar-mes-select')?.value;
+            if (!mesVal) return;
+
+            const [year, month] = mesVal.split('-');
+            const monthName = new Date(year, month - 1, 1).toLocaleString('pt-BR', { month: 'long' });
+            const monthFormatted = monthName.charAt(0).toUpperCase() + monthName.slice(1) + ' / ' + year;
+
+            // Filter transactions for this month
+            const txMonth = state.transactions.filter(t => t.date && t.date.startsWith(mesVal));
+
+            const totalLucro = txMonth.filter(t => t.type === 'lucro').reduce((acc, t) => acc + t.amount, 0);
+            const totalSaidas = txMonth.filter(t => t.type === 'retirada').reduce((acc, t) => acc + t.amount, 0);
+            const saldoFinal = totalLucro - totalSaidas;
+
+            // Elements
+            const bannerEl = document.getElementById('fechamento-status-banner');
+            const elLucro = document.getElementById('fechamento-lucro');
+            const elSaidas = document.getElementById('fechamento-saidas');
+            const elResultado = document.getElementById('fechamento-resultado');
+
+            if (elLucro) elLucro.innerText = formatCurrency(totalLucro);
+            if (elSaidas) elSaidas.innerText = formatCurrency(totalSaidas);
+            if (elResultado) {
+                elResultado.innerText = formatCurrency(saldoFinal);
+                elResultado.className = `text-xl font-extrabold mt-1 ${saldoFinal >= 0 ? 'text-emerald-700' : 'text-rose-700'}`;
+            }
+
+            // Render Banner Status (POSITIVO vs NEGATIVO vs NEUTRO)
+            if (bannerEl) {
+                if (saldoFinal > 0) {
+                    bannerEl.className = "p-5 rounded-2xl border bg-emerald-50 border-emerald-200 text-emerald-900 flex items-center space-x-4";
+                    bannerEl.innerHTML = `
+                        <div class="p-3 bg-emerald-600 text-white rounded-xl shadow-md">
+                            <i data-lucide="trending-up" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-emerald-600 text-white">
+                                    POSITIVO (LUCRO)
+                                </span>
+                                <span class="text-xs font-semibold text-emerald-700">${monthFormatted}</span>
+                            </div>
+                            <h4 class="text-lg font-bold text-emerald-950 mt-1">Sua loja fechou este mês no LUCRO!</h4>
+                            <p class="text-xs text-emerald-800 mt-0.5">
+                                As receitas superaram as saídas em <strong>${formatCurrency(saldoFinal)}</strong>. Margem positiva no período.
+                            </p>
+                        </div>
+                    `;
+                } else if (saldoFinal < 0) {
+                    bannerEl.className = "p-5 rounded-2xl border bg-rose-50 border-rose-200 text-rose-900 flex items-center space-x-4";
+                    bannerEl.innerHTML = `
+                        <div class="p-3 bg-rose-600 text-white rounded-xl shadow-md">
+                            <i data-lucide="trending-down" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-rose-600 text-white">
+                                    NEGATIVO (PREJUÍZO)
+                                </span>
+                                <span class="text-xs font-semibold text-rose-700">${monthFormatted}</span>
+                            </div>
+                            <h4 class="text-lg font-bold text-rose-950 mt-1">Atenção: Mês fechou no PREJUÍZO!</h4>
+                            <p class="text-xs text-rose-800 mt-0.5">
+                                As despesas e retiradas superaram os lucros em <strong>${formatCurrency(Math.abs(saldoFinal))}</strong>. Revise os gastos abaixo.
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    bannerEl.className = "p-5 rounded-2xl border bg-slate-100 border-slate-300 text-slate-800 flex items-center space-x-4";
+                    bannerEl.innerHTML = `
+                        <div class="p-3 bg-slate-600 text-white rounded-xl shadow-md">
+                            <i data-lucide="scale" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-slate-600 text-white">
+                                    PONTO DE EQUILÍBRIO
+                                </span>
+                                <span class="text-xs font-semibold text-slate-600">${monthFormatted}</span>
+                            </div>
+                            <h4 class="text-lg font-bold text-slate-900 mt-1">Mês neutro (Entradas = Saídas)</h4>
+                            <p class="text-xs text-slate-600 mt-0.5">
+                                Não houve lucro líquido e nem prejuízo no fechamento deste período.
+                            </p>
+                        </div>
+                    `;
+                }
+            }
+
+            // Categories breakdown for this month
+            const catMap = {};
+            txMonth.filter(t => t.type === 'retirada').forEach(t => {
+                const c = t.category || 'Outros';
+                catMap[c] = (catMap[c] || 0) + t.amount;
+            });
+
+            const catListEl = document.getElementById('fechamento-categorias-list');
+            if (catListEl) {
+                const entries = Object.entries(catMap).sort((a, b) => b[1] - a[1]);
+                if (entries.length === 0) {
+                    catListEl.innerHTML = `<p class="text-slate-400 text-xs">Nenhuma saída ou retirada registrada no mês selecionado.</p>`;
+                } else {
+                    catListEl.innerHTML = entries.map(([catName, val]) => {
+                        const pct = totalSaidas > 0 ? ((val / totalSaidas) * 100).toFixed(1) : 0;
+                        return `
+                            <div>
+                                <div class="flex justify-between font-medium text-slate-700">
+                                    <span>${catName}</span>
+                                    <span>${formatCurrency(val)} (${pct}%)</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-1.5 mt-1">
+                                    <div class="bg-rose-500 h-1.5 rounded-full" style="width: ${pct}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // Transactions list for this month
+            const tblBody = document.getElementById('fechamento-tbl-body');
+            if (tblBody) {
+                if (txMonth.length === 0) {
+                    tblBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum lançamento no mês de ${monthFormatted}.</td></tr>`;
+                } else {
+                    tblBody.innerHTML = txMonth.map(t => {
+                        const isLucro = t.type === 'lucro';
+                        const badge = isLucro
+                            ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">Entrada</span>`
+                            : `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-800">Saída</span>`;
+                        const amtClass = isLucro ? "text-emerald-600 font-bold" : "text-rose-600 font-bold";
+                        return `
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-2.5 pl-3 font-medium text-slate-600">${formatDateBR(t.date)}</td>
+                                <td class="p-2.5">${badge}</td>
+                                <td class="p-2.5 font-medium text-slate-900">${t.description}</td>
+                                <td class="p-2.5 text-slate-500">${t.category || '-'}</td>
+                                <td class="p-2.5 pr-3 text-right ${amtClass}">${isLucro ? '+' : '-'}${formatCurrency(t.amount)}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
+
+            lucide.createIcons();
+        }
+
+        function imprimirFechamentoMes() {
+            closeModal('modalFecharMes');
+            switchTab('relatorios');
+            setReportMode('mensal');
+            const mesVal = document.getElementById('fechar-mes-select')?.value;
+            if (mesVal) {
+                document.getElementById('rep-mes-ano').value = mesVal;
+                generateReport();
+            }
+            setTimeout(() => {
+                window.print();
+            }, 300);
         }
 
         function toggleLucroExtraFields() {
@@ -791,7 +1159,7 @@
             }
         }
 
-        async function handleSaveLucro(e) {
+        function handleSaveLucro(e) {
             e.preventDefault();
             const valor = parseFloat(document.getElementById('lucro-valor').value);
             const desc = document.getElementById('lucro-descricao').value.trim();
@@ -811,6 +1179,7 @@
 
             const txId = 'tx_' + Date.now();
             const newTx = {
+                id: txId,
                 type: 'lucro',
                 amount: valor,
                 description: desc,
@@ -820,19 +1189,17 @@
                 createdAt: new Date().toISOString()
             };
 
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'transactions', txId), newTx);
-                closeModal('modalLucro');
-                document.getElementById('form-lucro').reset();
-                initDateInputs();
-                toggleLucroExtraFields();
-                showToast('Lucro salvo na nuvem!', 'success');
-            } catch (err) {
-                showToast('Erro ao salvar na nuvem.', 'error');
-            }
+            state.transactions.unshift(newTx);
+            saveLocalData();
+            closeModal('modalLucro');
+            document.getElementById('form-lucro').reset();
+            initDateInputs();
+            toggleLucroExtraFields();
+            renderAll();
+            showToast('Lucro salvo no seu computador!', 'success');
         }
 
-        async function handleSaveRetirada(e) {
+        function handleSaveRetirada(e) {
             e.preventDefault();
             const valor = parseFloat(document.getElementById('retirada-valor').value);
             const desc = document.getElementById('retirada-descricao').value.trim();
@@ -856,6 +1223,7 @@
 
             const txId = 'tx_' + Date.now();
             const newTx = {
+                id: txId,
                 type: 'retirada',
                 amount: valor,
                 description: desc,
@@ -867,19 +1235,17 @@
                 createdAt: new Date().toISOString()
             };
 
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'transactions', txId), newTx);
-                closeModal('modalRetirada');
-                document.getElementById('form-retirada').reset();
-                initDateInputs();
-                toggleRetiradaExtraFields();
-                showToast('Retirada salva na nuvem!', 'success');
-            } catch (err) {
-                showToast('Erro ao salvar retirada.', 'error');
-            }
+            state.transactions.unshift(newTx);
+            saveLocalData();
+            closeModal('modalRetirada');
+            document.getElementById('form-retirada').reset();
+            initDateInputs();
+            toggleRetiradaExtraFields();
+            renderAll();
+            showToast('Retirada salva no seu computador!', 'success');
         }
 
-        async function handleSaveCategoria(e) {
+        function handleSaveCategoria(e) {
             e.preventDefault();
             const nomeInput = document.getElementById('cat-nome');
             const corInput = document.getElementById('cat-cor');
@@ -894,24 +1260,24 @@
             }
 
             const catId = 'cat_' + Date.now();
-            const newCat = { name: nome, color: cor };
+            const newCat = { id: catId, name: nome, color: cor };
 
-            try {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', catId), newCat);
-                nomeInput.value = '';
-                showToast('Categoria adicionada!', 'success');
-            } catch (err) {
-                showToast('Erro ao salvar categoria.', 'error');
-            }
+            state.categories.push(newCat);
+            saveLocalData();
+            nomeInput.value = '';
+            renderCategoriesModalList();
+            populateCategoryDropdowns();
+            renderCharts();
+            showToast('Categoria adicionada!', 'success');
         }
 
-        async function deleteCategory(catId) {
-            try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', catId));
-                showToast('Categoria removida da nuvem.', 'info');
-            } catch (err) {
-                showToast('Erro ao remover categoria.', 'error');
-            }
+        function deleteCategory(catId) {
+            state.categories = state.categories.filter(c => c.id !== catId);
+            saveLocalData();
+            renderCategoriesModalList();
+            populateCategoryDropdowns();
+            renderCharts();
+            showToast('Categoria removida do computador.', 'info');
         }
 
         function promptDeleteTransaction(txId) {
@@ -920,16 +1286,14 @@
             document.getElementById('btn-confirm-action').onclick = confirmDeleteTransaction;
         }
 
-        async function confirmDeleteTransaction() {
+        function confirmDeleteTransaction() {
             if (pendingDeleteId) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'transactions', pendingDeleteId));
-                    pendingDeleteId = null;
-                    closeModal('modalConfirm');
-                    showToast('Lançamento excluído da nuvem.', 'info');
-                } catch (err) {
-                    showToast('Erro ao excluir lançamento.', 'error');
-                }
+                state.transactions = state.transactions.filter(t => t.id !== pendingDeleteId);
+                saveLocalData();
+                pendingDeleteId = null;
+                closeModal('modalConfirm');
+                renderAll();
+                showToast('Lançamento excluído do seu computador.', 'info');
             }
         }
 
@@ -954,18 +1318,6 @@
             } else if (tabName === 'relatorios') {
                 generateReport();
             }
-        }
-
-        function openModal(modalId) {
-            if (modalId === 'modalLucro') {
-                toggleLucroExtraFields();
-            }
-            if (modalId === 'modalRetirada') {
-                populateCategoryDropdowns();
-                toggleRetiradaExtraFields();
-            }
-            if (modalId === 'modalCategoria') renderCategoriesModalList();
-            document.getElementById(modalId).classList.remove('hidden');
         }
 
         function renderTransactionsTable() {
@@ -1276,6 +1628,41 @@
             showToast('Arquivo CSV baixado com sucesso!', 'success');
         }
 
+        function exportJSONBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `backup_financas_loja_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+            showToast('Cópia de segurança baixada!', 'success');
+        }
+
+        function importJSONBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported && (imported.transactions || imported.categories)) {
+                        state.transactions = imported.transactions || [];
+                        state.categories = imported.categories || [...DEFAULT_CATEGORIES];
+                        saveLocalData();
+                        renderAll();
+                        showToast('Backup restaurado com sucesso!', 'success');
+                    } else {
+                        showToast('Arquivo de backup inválido.', 'error');
+                    }
+                } catch (err) {
+                    showToast('Erro ao ler o arquivo de backup.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1312,7 +1699,7 @@
             }, 3000);
         }
 
-        // Expose functions globally for onclick attributes
+        // Expose functions globally for inline onclick attributes
         window.openModal = openModal;
         window.closeModal = closeModal;
         window.switchTab = switchTab;
@@ -1327,7 +1714,12 @@
         window.setReportMode = setReportMode;
         window.generateReport = generateReport;
         window.exportCSV = exportCSV;
+        window.exportJSONBackup = exportJSONBackup;
+        window.importJSONBackup = importJSONBackup;
         window.renderTransactionsTable = renderTransactionsTable;
+        window.initFecharMesModal = initFecharMesModal;
+        window.calcularFechamentoMes = calcularFechamentoMes;
+        window.imprimirFechamentoMes = imprimirFechamentoMes;
     </script>
 </body>
 </html>
