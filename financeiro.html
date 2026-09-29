@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro da Loja - Nuvem</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        store: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Top Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-emerald-600 text-white rounded-xl shadow-sm">
+                    <i data-lucide="store" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h1 class="font-bold text-lg text-slate-900 leading-tight">Finanças da Loja</h1>
+                        <span id="sync-status" class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                            <span class="w-1.5 h-1.5 mr-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+                            Conectando Nuvem...
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-500">Gestão de Lucros, Retiradas e Sincronização On-line</p>
+                </div>
+            </div>
+
+            <!-- Header Quick Action Buttons -->
+            <div class="flex items-center space-x-2">
+                <button onclick="openModal('modalLucro')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 sm:px-4 py-2 rounded-xl text-sm font-medium transition flex items-center shadow-sm">
+                    <i data-lucide="plus-circle" class="w-4 h-4 sm:mr-1.5"></i>
+                    <span class="hidden sm:inline">Entrada / Lucro</span>
+                </button>
+                <button onclick="openModal('modalRetirada')" class="bg-rose-600 hover:bg-rose-700 text-white px-3 sm:px-4 py-2 rounded-xl text-sm font-medium transition flex items-center shadow-sm">
+                    <i data-lucide="minus-circle" class="w-4 h-4 sm:mr-1.5"></i>
+                    <span class="hidden sm:inline">Nova Retirada</span>
+                </button>
+                <button onclick="openModal('modalCategoria')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 sm:px-4 py-2 rounded-xl text-sm font-medium transition flex items-center">
+                    <i data-lucide="tag" class="w-4 h-4 sm:mr-1.5"></i>
+                    <span class="hidden sm:inline">Categorias</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white border-b border-slate-200 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-1 sm:space-x-8 overflow-x-auto custom-scrollbar">
+            <button id="tab-dashboard" onclick="switchTab('dashboard')" class="py-3 px-3 border-b-2 font-medium text-sm border-emerald-600 text-emerald-600 flex items-center whitespace-nowrap">
+                <i data-lucide="layout-dashboard" class="w-4 h-4 mr-2"></i> Dashboard Geral
+            </button>
+            <button id="tab-transacoes" onclick="switchTab('transacoes')" class="py-3 px-3 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700 flex items-center whitespace-nowrap">
+                <i data-lucide="list-ordered" class="w-4 h-4 mr-2"></i> Histórico de Lançamentos
+            </button>
+            <button id="tab-relatorios" onclick="switchTab('relatorios')" class="py-3 px-3 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700 flex items-center whitespace-nowrap">
+                <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> Relatório Semanal & Mensal
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+        
+        <!-- SECTION 1: DASHBOARD -->
+        <section id="sec-dashboard" class="space-y-6">
+            <!-- KPI Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Total Lucro/Entradas -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Lucro / Entradas</span>
+                        <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+                            <i data-lucide="trending-up" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <p id="kpi-entradas" class="text-2xl font-bold text-slate-900 mt-2">R$ 0,00</p>
+                    <p class="text-xs text-slate-500 mt-1">Total de receitas na nuvem</p>
+                </div>
+
+                <!-- Total Retiradas/Despesas -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Total Retiradas</span>
+                        <div class="p-2 bg-rose-50 text-rose-600 rounded-lg">
+                            <i data-lucide="trending-down" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <p id="kpi-retiradas" class="text-2xl font-bold text-slate-900 mt-2">R$ 0,00</p>
+                    <p class="text-xs text-slate-500 mt-1">Saídas e despesas registradas</p>
+                </div>
+
+                <!-- Saldo Líquido -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Saldo Líquido</span>
+                        <div id="kpi-saldo-icon" class="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+                            <i data-lucide="wallet" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <p id="kpi-saldo" class="text-2xl font-bold text-slate-900 mt-2">R$ 0,00</p>
+                    <p class="text-xs text-slate-500 mt-1">Entradas - Retiradas</p>
+                </div>
+
+                <!-- Lucro do Dia Atual -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-700 text-white">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase text-emerald-100 tracking-wider">Lucro Hoje</span>
+                        <div class="p-2 bg-white/20 text-white rounded-lg backdrop-blur-sm">
+                            <i data-lucide="calendar" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                    <p id="kpi-hoje" class="text-2xl font-bold mt-2">R$ 0,00</p>
+                    <p class="text-xs text-emerald-100 mt-1" id="lbl-data-hoje">Hoje</p>
+                </div>
+            </div>
+
+            <!-- Fast Action Banner -->
+            <div class="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <h3 class="font-semibold text-slate-800 text-base">Ações Rápidas de Lançamento</h3>
+                    <p class="text-xs text-slate-500">Registre ganhos ou saídas e sincronize com a nuvem em tempo real.</p>
+                </div>
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <button onclick="openModal('modalLucro')" class="flex-1 md:flex-none px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition flex items-center justify-center shadow-sm">
+                        <i data-lucide="plus-circle" class="w-4 h-4 mr-2"></i> + Lucro do Dia
+                    </button>
+                    <button onclick="openModal('modalRetirada')" class="flex-1 md:flex-none px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-xl transition flex items-center justify-center shadow-sm">
+                        <i data-lucide="minus-circle" class="w-4 h-4 mr-2"></i> + Nova Retirada
+                    </button>
+                    <button onclick="openModal('modalCategoria')" class="flex-1 md:flex-none px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition flex items-center justify-center">
+                        <i data-lucide="tag" class="w-4 h-4 mr-2"></i> + Categoria
+                    </button>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Chart 1: Evolução Financeira -->
+                <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-slate-800 flex items-center">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 mr-2 text-emerald-600"></i> Movimentação Recente
+                        </h3>
+                        <span class="text-xs text-slate-400">Últimos 7 dias</span>
+                    </div>
+                    <div class="h-64 sm:h-72 w-full relative">
+                        <canvas id="chartEvolucao"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Retiradas por Categoria -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-slate-800 flex items-center">
+                            <i data-lucide="pie-chart" class="w-5 h-5 mr-2 text-rose-600"></i> Retiradas por Categoria
+                        </h3>
+                    </div>
+                    <div class="h-64 sm:h-72 w-full relative flex items-center justify-center">
+                        <canvas id="chartCategorias"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Table Preview -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                    <h3 class="font-bold text-slate-800 flex items-center">
+                        <i data-lucide="clock" class="w-5 h-5 mr-2 text-indigo-600"></i> Últimos Lançamentos
+                    </h3>
+                    <button onclick="switchTab('transacoes')" class="text-xs text-emerald-600 font-semibold hover:underline flex items-center">
+                        Ver Todos <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i>
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold uppercase tracking-wider">
+                            <tr>
+                                <th class="p-3.5 pl-5">Tipo</th>
+                                <th class="p-3.5">Descrição</th>
+                                <th class="p-3.5">Categoria</th>
+                                <th class="p-3.5">Data</th>
+                                <th class="p-3.5 pr-5 text-right">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-recents-body" class="divide-y divide-slate-100 text-slate-700">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: TRANSACTIONS LIST -->
+        <section id="sec-transacoes" class="space-y-6 hidden">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="font-bold text-lg text-slate-900">Histórico de Transações</h2>
+                        <p class="text-xs text-slate-500">Gerencie e filtre todos os seus lucros e retiradas salvos no banco on-line</p>
+                    </div>
+                    
+                    <!-- Filters -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <select id="filter-tipo" onchange="renderTransactionsTable()" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="todos">Todos os Tipos</option>
+                            <option value="lucro">Lucro / Entradas</option>
+                            <option value="retirada">Retiradas / Despesas</option>
+                        </select>
+
+                        <select id="filter-categoria" onchange="renderTransactionsTable()" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="todas">Todas Categorias</option>
+                        </select>
+
+                        <input type="text" id="filter-busca" oninput="renderTransactionsTable()" placeholder="Buscar por descrição..." class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-500 outline-none w-full sm:w-48">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-left text-xs sm:text-sm">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold uppercase tracking-wider">
+                            <tr>
+                                <th class="p-3.5 pl-5">Tipo</th>
+                                <th class="p-3.5">Descrição</th>
+                                <th class="p-3.5">Categoria</th>
+                                <th class="p-3.5">Forma Pgto</th>
+                                <th class="p-3.5">Data</th>
+                                <th class="p-3.5 text-right">Valor</th>
+                                <th class="p-3.5 pr-5 text-center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-transacoes-body" class="divide-y divide-slate-100 text-slate-700">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: REPORTS (SEMANAL & MENSAL) -->
+        <section id="sec-relatorios" class="space-y-6 hidden">
+            <!-- Report Controls -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm no-print space-y-4">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="font-bold text-xl text-slate-900">Gerador de Relatórios Financeiros</h2>
+                        <p class="text-xs text-slate-500">Selecione o tipo de relatório e o período para consolidar os dados salvos na nuvem.</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-3">
+                        <!-- Mode Selector -->
+                        <div class="bg-slate-100 p-1 rounded-xl flex">
+                            <button id="btn-mode-semanal" onclick="setReportMode('semanal')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-white text-emerald-700 shadow-sm">
+                                Semanal
+                            </button>
+                            <button id="btn-mode-mensal" onclick="setReportMode('mensal')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition hover:text-slate-900">
+                                Mensal
+                            </button>
+                        </div>
+
+                        <!-- Date Inputs based on mode -->
+                        <div id="wrapper-date-semanal" class="flex items-center space-x-2">
+                            <label class="text-xs text-slate-500 font-medium">Semana de:</label>
+                            <input type="date" id="rep-semana-inicio" onchange="generateReport()" class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+
+                        <div id="wrapper-date-mensal" class="flex items-center space-x-2 hidden">
+                            <label class="text-xs text-slate-500 font-medium">Mês / Ano:</label>
+                            <input type="month" id="rep-mes-ano" onchange="generateReport()" class="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </div>
+
+                        <!-- Print & Export Buttons -->
+                        <button onclick="window.print()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
+                            <i data-lucide="printer" class="w-4 h-4 mr-1.5"></i> Imprimir / PDF
+                        </button>
+                        <button onclick="exportCSV()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold flex items-center transition shadow-sm">
+                            <i data-lucide="download" class="w-4 h-4 mr-1.5"></i> Exportar CSV
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Printable Report Document Card -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-md space-y-6" id="report-print-area">
+                <!-- Report Title Banner -->
+                <div class="flex items-center justify-between border-b border-slate-200 pb-5">
+                    <div>
+                        <span id="rep-badge-tipo" class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider">
+                            Relatório Semanal
+                        </span>
+                        <h3 id="rep-title" class="text-2xl font-extrabold text-slate-900 mt-2">Relatório Financeiro da Loja</h3>
+                        <p id="rep-period-text" class="text-sm text-slate-500 mt-1">Período: --/--/---- até --/--/----</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-slate-800 text-lg">Controle Financeiro</div>
+                        <p class="text-xs text-slate-400" id="rep-emissao-data">Gerado em: --/--/----</p>
+                    </div>
+                </div>
+
+                <!-- Report Summary Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="p-4 bg-emerald-50/70 border border-emerald-100 rounded-xl">
+                        <p class="text-xs text-emerald-700 font-semibold uppercase tracking-wider">Total de Lucro / Entradas</p>
+                        <p id="rep-total-lucro" class="text-2xl font-bold text-emerald-800 mt-1">R$ 0,00</p>
+                    </div>
+                    <div class="p-4 bg-rose-50/70 border border-rose-100 rounded-xl">
+                        <p class="text-xs text-rose-700 font-semibold uppercase tracking-wider">Total de Retiradas</p>
+                        <p id="rep-total-retiradas" class="text-2xl font-bold text-rose-800 mt-1">R$ 0,00</p>
+                    </div>
+                    <div class="p-4 bg-indigo-50/70 border border-indigo-100 rounded-xl">
+                        <p class="text-xs text-indigo-700 font-semibold uppercase tracking-wider">Resultado Líquido</p>
+                        <p id="rep-resultado-liquido" class="text-2xl font-bold text-indigo-800 mt-1">R$ 0,00</p>
+                    </div>
+                </div>
+
+                <!-- Report Details Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border border-slate-200 rounded-xl p-4 space-y-3">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center">
+                            <i data-lucide="pie-chart" class="w-4 h-4 mr-1.5 text-rose-600"></i> Detalhamento de Despesas por Categoria
+                        </h4>
+                        <div id="rep-list-categorias" class="space-y-2 text-xs">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-4 space-y-3">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center">
+                            <i data-lucide="award" class="w-4 h-4 mr-1.5 text-amber-500"></i> Destaques do Período
+                        </h4>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Média Diária de Lucro:</span>
+                                <span id="rep-media-diaria" class="font-semibold text-slate-800">R$ 0,00</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Maior Categoria de Gasto:</span>
+                                <span id="rep-maior-gasto" class="font-semibold text-slate-800">Nenhuma</span>
+                            </div>
+                            <div class="flex justify-between py-1.5 border-b border-slate-100">
+                                <span class="text-slate-500">Total de Registros no Período:</span>
+                                <span id="rep-qtd-registros" class="font-semibold text-slate-800">0</span>
+                            </div>
+                            <div class="flex justify-between py-1.5">
+                                <span class="text-slate-500">Margem de Lucro Bruta:</span>
+                                <span id="rep-margem" class="font-semibold text-slate-800">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Table of Entries -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-slate-800 text-sm flex items-center">
+                        <i data-lucide="list" class="w-4 h-4 mr-1.5 text-slate-600"></i> Lançamentos no Período Selecionado
+                    </h4>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 text-slate-600 font-semibold uppercase">
+                                <tr>
+                                    <th class="p-2.5 pl-4">Data</th>
+                                    <th class="p-2.5">Tipo</th>
+                                    <th class="p-2.5">Descrição</th>
+                                    <th class="p-2.5">Categoria</th>
+                                    <th class="p-2.5">Forma Pgto</th>
+                                    <th class="p-2.5 pr-4 text-right">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rep-tbl-body" class="divide-y divide-slate-100">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL 1: REGISTRAR LUCRO DO DIA / ENTRADA -->
+    <div id="modalLucro" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 relative">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-lg text-slate-900 flex items-center">
+                    <i data-lucide="plus-circle" class="w-5 h-5 text-emerald-600 mr-2"></i> Registrar Lucro / Entrada
+                </h3>
+                <button onclick="closeModal('modalLucro')" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="form-lucro" onsubmit="handleSaveLucro(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Valor do Lucro / Receita (R$)</label>
+                    <input type="number" step="0.01" min="0.01" id="lucro-valor" required placeholder="0,00" class="w-full text-lg font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Descrição</label>
+                    <input type="text" id="lucro-descricao" required placeholder="Ex: Lucro de vendas do dia, Venda de peças..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Data</label>
+                        <input type="date" id="lucro-data" required class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-xs sm:text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Forma de Recebimento</label>
+                        <select id="lucro-pgto" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-xs sm:text-sm">
+                            <option value="Pix">Pix</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Cartão de Crédito">Cartão Crédito</option>
+                            <option value="Cartão de Débito">Cartão Débito</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex justify-end space-x-2">
+                    <button type="button" onclick="closeModal('modalLucro')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-sm">Salvar Lucro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: REGISTRAR RETIRADA / DESPESA -->
+    <div id="modalRetirada" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 relative">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-lg text-slate-900 flex items-center">
+                    <i data-lucide="minus-circle" class="w-5 h-5 text-rose-600 mr-2"></i> Registrar Retirada / Despesa
+                </h3>
+                <button onclick="closeModal('modalRetirada')" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="form-retirada" onsubmit="handleSaveRetirada(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Valor da Retirada (R$)</label>
+                    <input type="number" step="0.01" min="0.01" id="retirada-valor" required placeholder="0,00" class="w-full text-lg font-bold px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Descrição</label>
+                    <input type="text" id="retirada-descricao" required placeholder="Ex: Retirada Pró-Labore, Pagamento de luz, Fornecedor X..." class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Categoria</label>
+                        <button type="button" onclick="closeModal('modalRetirada'); openModal('modalCategoria');" class="text-xs text-emerald-600 font-semibold hover:underline">
+                            + Nova Categoria
+                        </button>
+                    </div>
+                    <select id="retirada-categoria" required class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none text-sm">
+                        <!-- Populated via JS -->
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Data</label>
+                        <input type="date" id="retirada-data" required class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none text-xs sm:text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Forma Pagamento</label>
+                        <select id="retirada-pgto" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-rose-500 outline-none text-xs sm:text-sm">
+                            <option value="Pix">Pix</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Transferência">Transferência</option>
+                            <option value="Cartão de Crédito">Cartão Crédito</option>
+                            <option value="Boleto">Boleto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-2 flex justify-end space-x-2">
+                    <button type="button" onclick="closeModal('modalRetirada')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-xl shadow-sm">Salvar Retirada</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: GERENCIAR CATEGORIAS -->
+    <div id="modalCategoria" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 relative max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-lg text-slate-900 flex items-center">
+                    <i data-lucide="tag" class="w-5 h-5 text-indigo-600 mr-2"></i> Gerenciar Categorias
+                </h3>
+                <button onclick="closeModal('modalCategoria')" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Add Category Form -->
+            <form id="form-categoria" onsubmit="handleSaveCategoria(event)" class="space-y-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Adicionar Nova Categoria</h4>
+                <div class="flex gap-2">
+                    <input type="text" id="cat-nome" required placeholder="Nome (Ex: Aluguel, Pró-Labore...)" class="flex-grow px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <input type="color" id="cat-cor" value="#ef4444" class="w-9 h-8 p-0.5 bg-white border border-slate-300 rounded-lg cursor-pointer">
+                    <button type="submit" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg transition">Adicionar</button>
+                </div>
+            </form>
+
+            <!-- Existing Categories List -->
+            <div class="space-y-2">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Categorias Atuais</h4>
+                <div id="list-categorias-modal" class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <div class="pt-2 flex justify-end">
+                <button type="button" onclick="closeModal('modalCategoria')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl">Concluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: CONFIRMATION MODAL -->
+    <div id="modalConfirm" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl space-y-4 text-center">
+            <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto">
+                <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <h3 id="confirm-title" class="font-bold text-lg text-slate-900">Excluir Lançamento?</h3>
+                <p id="confirm-msg" class="text-xs text-slate-500 mt-1">Esta ação removerá o registro do banco de dados na nuvem.</p>
+            </div>
+            <div class="flex justify-center space-x-3 pt-2">
+                <button onclick="closeModal('modalConfirm')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Cancelar</button>
+                <button id="btn-confirm-action" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-sm">Confirmar Exclusão</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'controle-financeiro-loja';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "AIzaSyDemoConfigForStandaloneOnly",
+            authDomain: "demo.firebaseapp.com",
+            projectId: "demo-project",
+            storageBucket: "demo.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:demo"
+        };
+        
+        <script type="module">
+  
+         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+  
+        const firebaseConfig = {
+             apiKey: "AIzaSyDq2-2nbPPXFQJDpRT0n2TbJb2N-1bfv0Y",
+             authDomain: "sistema-financeiro-16565.firebaseapp.com",
+             projectId: "sistema-financeiro-16565",
+             storageBucket: "sistema-financeiro-16565.firebasestorage.app",
+             messagingSenderId: "328940600447",
+             appId: "1:328940600447:web:5fb2b6832b2c38b435934a",
+             measurementId: "G-TJRK56TKFS"
+        };
+
+         // Initialize Firebase
+         const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Firestore Public Collections Paths
+        const txCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'transactions');
+        const catCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'categories');
+
+        const DEFAULT_CATEGORIES = [
+            { id: 'cat_prolabore', name: 'Pró-Labore / Retirada Pessoal', color: '#f59e0b' },
+            { id: 'cat_fornecedores', name: 'Fornecedores / Estoque', color: '#3b82f6' },
+            { id: 'cat_aluguel', name: 'Aluguel / Condomínio', color: '#ef4444' },
+            { id: 'cat_energia', name: 'Energia / Água / Internet', color: '#10b981' },
+            { id: 'cat_marketing', name: 'Marketing / Anúncios', color: '#8b5cf6' },
+            { id: 'cat_impostos', name: 'Impostos / Taxas', color: '#64748b' },
+            { id: 'cat_outros', name: 'Outras Despesas', color: '#6b7280' }
+        ];
+
+        let state = {
+            transactions: [],
+            categories: [],
+            reportMode: 'semanal'
+        };
+
+        let chartEvolucaoInstance = null;
+        let chartCategoriasInstance = null;
+        let pendingDeleteId = null;
+
+        async function startCloudSync() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                // Subscribe to real-time Categories
+                onSnapshot(catCollectionRef, (snapshot) => {
+                    if (snapshot.empty) {
+                        // Seed default categories into cloud
+                        DEFAULT_CATEGORIES.forEach(c => {
+                            setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', c.id), c);
+                        });
+                        state.categories = [...DEFAULT_CATEGORIES];
+                    } else {
+                        state.categories = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    }
+                    populateCategoryDropdowns();
+                    renderCategoriesModalList();
+                    renderCharts();
+                }, (error) => {
+                    console.error("Erro na sincronização de categorias:", error);
+                });
+
+                // Subscribe to real-time Transactions
+                onSnapshot(txCollectionRef, (snapshot) => {
+                    state.transactions = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    // Sort descending by date
+                    state.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                    updateSyncStatus(true);
+                    renderAll();
+                }, (error) => {
+                    console.error("Erro na sincronização de transações:", error);
+                    updateSyncStatus(false);
+                });
+
+            } catch (err) {
+                console.error("Erro na autenticação de nuvem:", err);
+                updateSyncStatus(false);
+            }
+        }
+
+        function updateSyncStatus(isOnline) {
+            const statusEl = document.getElementById('sync-status');
+            if (!statusEl) return;
+            if (isOnline) {
+                statusEl.className = "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800";
+                statusEl.innerHTML = `<span class="w-1.5 h-1.5 mr-1.5 bg-emerald-500 rounded-full"></span>Nuvem Sincronizada`;
+            } else {
+                statusEl.className = "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800";
+                statusEl.innerHTML = `<span class="w-1.5 h-1.5 mr-1.5 bg-rose-500 rounded-full"></span>Off-line`;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initDateInputs();
+            lucide.createIcons();
+            startCloudSync();
+        });
+
+        function initDateInputs() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('lucro-data').value = todayStr;
+            document.getElementById('retirada-data').value = todayStr;
+            document.getElementById('rep-semana-inicio').value = todayStr;
+            
+            const currentMonthStr = todayStr.substring(0, 7);
+            document.getElementById('rep-mes-ano').value = currentMonthStr;
+
+            const options = { weekday: 'long', day: 'numeric', month: 'short' };
+            document.getElementById('lbl-data-hoje').innerText = new Date().toLocaleDateString('pt-BR', options);
+        }
+
+        async function handleSaveLucro(e) {
+            e.preventDefault();
+            const valor = parseFloat(document.getElementById('lucro-valor').value);
+            const desc = document.getElementById('lucro-descricao').value.trim();
+            const data = document.getElementById('lucro-data').value;
+            const pgto = document.getElementById('lucro-pgto').value;
+
+            if (!valor || valor <= 0) {
+                showToast('Informe um valor válido de lucro!', 'error');
+                return;
+            }
+
+            const txId = 'tx_' + Date.now();
+            const newTx = {
+                type: 'lucro',
+                amount: valor,
+                description: desc,
+                category: 'Lucro / Vendas',
+                date: data,
+                paymentMethod: pgto,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'transactions', txId), newTx);
+                closeModal('modalLucro');
+                document.getElementById('form-lucro').reset();
+                initDateInputs();
+                showToast('Lucro salvo na nuvem!', 'success');
+            } catch (err) {
+                showToast('Erro ao salvar na nuvem.', 'error');
+            }
+        }
+
+        async function handleSaveRetirada(e) {
+            e.preventDefault();
+            const valor = parseFloat(document.getElementById('retirada-valor').value);
+            const desc = document.getElementById('retirada-descricao').value.trim();
+            const cat = document.getElementById('retirada-categoria').value;
+            const data = document.getElementById('retirada-data').value;
+            const pgto = document.getElementById('retirada-pgto').value;
+
+            if (!valor || valor <= 0) {
+                showToast('Informe um valor válido de retirada!', 'error');
+                return;
+            }
+
+            const txId = 'tx_' + Date.now();
+            const newTx = {
+                type: 'retirada',
+                amount: valor,
+                description: desc,
+                category: cat,
+                date: data,
+                paymentMethod: pgto,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'transactions', txId), newTx);
+                closeModal('modalRetirada');
+                document.getElementById('form-retirada').reset();
+                initDateInputs();
+                showToast('Retirada salva na nuvem!', 'success');
+            } catch (err) {
+                showToast('Erro ao salvar retirada.', 'error');
+            }
+        }
+
+        async function handleSaveCategoria(e) {
+            e.preventDefault();
+            const nomeInput = document.getElementById('cat-nome');
+            const corInput = document.getElementById('cat-cor');
+            const nome = nomeInput.value.trim();
+            const cor = corInput.value;
+
+            if (!nome) return;
+
+            if (state.categories.some(c => c.name.toLowerCase() === nome.toLowerCase())) {
+                showToast('Esta categoria já existe!', 'error');
+                return;
+            }
+
+            const catId = 'cat_' + Date.now();
+            const newCat = { name: nome, color: cor };
+
+            try {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', catId), newCat);
+                nomeInput.value = '';
+                showToast('Categoria adicionada!', 'success');
+            } catch (err) {
+                showToast('Erro ao salvar categoria.', 'error');
+            }
+        }
+
+        async function deleteCategory(catId) {
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'categories', catId));
+                showToast('Categoria removida da nuvem.', 'info');
+            } catch (err) {
+                showToast('Erro ao remover categoria.', 'error');
+            }
+        }
+
+        function promptDeleteTransaction(txId) {
+            pendingDeleteId = txId;
+            openModal('modalConfirm');
+            document.getElementById('btn-confirm-action').onclick = confirmDeleteTransaction;
+        }
+
+        async function confirmDeleteTransaction() {
+            if (pendingDeleteId) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'transactions', pendingDeleteId));
+                    pendingDeleteId = null;
+                    closeModal('modalConfirm');
+                    showToast('Lançamento excluído da nuvem.', 'info');
+                } catch (err) {
+                    showToast('Erro ao excluir lançamento.', 'error');
+                }
+            }
+        }
+
+        function switchTab(tabName) {
+            const tabs = ['dashboard', 'transacoes', 'relatorios'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const sec = document.getElementById(`sec-${t}`);
+                if (t === tabName) {
+                    btn.className = "py-3 px-3 border-b-2 font-medium text-sm border-emerald-600 text-emerald-600 flex items-center whitespace-nowrap";
+                    sec.classList.remove('hidden');
+                } else {
+                    btn.className = "py-3 px-3 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700 flex items-center whitespace-nowrap";
+                    sec.classList.add('hidden');
+                }
+            });
+
+            if (tabName === 'dashboard') {
+                renderCharts();
+            } else if (tabName === 'transacoes') {
+                renderTransactionsTable();
+            } else if (tabName === 'relatorios') {
+                generateReport();
+            }
+        }
+
+        function openModal(modalId) {
+            if (modalId === 'modalRetirada') populateCategoryDropdowns();
+            if (modalId === 'modalCategoria') renderCategoriesModalList();
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function formatCurrency(val) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val || 0);
+        }
+
+        function formatDateBR(dateStr) {
+            if (!dateStr) return '';
+            const [y, m, d] = dateStr.split('-');
+            return `${d}/${m}/${y}`;
+        }
+
+        function populateCategoryDropdowns() {
+            const selectRetirada = document.getElementById('retirada-categoria');
+            selectRetirada.innerHTML = state.categories.map(c => 
+                `<option value="${c.name}">${c.name}</option>`
+            ).join('');
+
+            const filterCat = document.getElementById('filter-categoria');
+            filterCat.innerHTML = `<option value="todas">Todas Categorias</option>` + 
+                state.categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+        }
+
+        function renderCategoriesModalList() {
+            const list = document.getElementById('list-categorias-modal');
+            list.innerHTML = state.categories.map(c => `
+                <div class="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200 text-xs">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full" style="background-color: ${c.color}"></span>
+                        <span class="font-medium text-slate-800">${c.name}</span>
+                    </div>
+                    <button onclick="deleteCategory('${c.id}')" class="text-rose-500 hover:text-rose-700 p-1">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function renderAll() {
+            renderKPIs();
+            renderRecentTable();
+            renderTransactionsTable();
+            populateCategoryDropdowns();
+            renderCharts();
+            generateReport();
+        }
+
+        function renderKPIs() {
+            const totalLucro = state.transactions
+                .filter(t => t.type === 'lucro')
+                .reduce((acc, t) => acc + t.amount, 0);
+
+            const totalRetiradas = state.transactions
+                .filter(t => t.type === 'retirada')
+                .reduce((acc, t) => acc + t.amount, 0);
+
+            const saldo = totalLucro - totalRetiradas;
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            const lucroHoje = state.transactions
+                .filter(t => t.type === 'lucro' && t.date === todayStr)
+                .reduce((acc, t) => acc + t.amount, 0);
+
+            document.getElementById('kpi-entradas').innerText = formatCurrency(totalLucro);
+            document.getElementById('kpi-retiradas').innerText = formatCurrency(totalRetiradas);
+            document.getElementById('kpi-saldo').innerText = formatCurrency(saldo);
+            document.getElementById('kpi-hoje').innerText = formatCurrency(lucroHoje);
+
+            const saldoEl = document.getElementById('kpi-saldo');
+            if (saldo < 0) {
+                saldoEl.className = "text-2xl font-bold text-rose-600 mt-2";
+            } else {
+                saldoEl.className = "text-2xl font-bold text-emerald-600 mt-2";
+            }
+        }
+
+        function renderRecentTable() {
+            const recents = state.transactions.slice(0, 5);
+            const tbody = document.getElementById('tbl-recents-body');
+
+            if (recents.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum lançamento cadastrado na nuvem ainda.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = recents.map(t => {
+                const isLucro = t.type === 'lucro';
+                const badge = isLucro 
+                    ? `<span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Lucro</span>`
+                    : `<span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">Retirada</span>`;
+                const amountClass = isLucro ? "text-emerald-600 font-bold" : "text-rose-600 font-bold";
+
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3.5 pl-5">${badge}</td>
+                        <td class="p-3.5 font-medium text-slate-800">${t.description}</td>
+                        <td class="p-3.5 text-slate-500">${t.category || '-'}</td>
+                        <td class="p-3.5 text-slate-500">${formatDateBR(t.date)}</td>
+                        <td class="p-3.5 pr-5 text-right ${amountClass}">${isLucro ? '+' : '-'}${formatCurrency(t.amount)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderTransactionsTable() {
+            const tipo = document.getElementById('filter-tipo').value;
+            const cat = document.getElementById('filter-categoria').value;
+            const busca = document.getElementById('filter-busca').value.toLowerCase();
+
+            let filtered = state.transactions.filter(t => {
+                if (tipo !== 'todos' && t.type !== tipo) return false;
+                if (cat !== 'todas' && t.category !== cat) return false;
+                if (busca && !t.description.toLowerCase().includes(busca)) return false;
+                return true;
+            });
+
+            const tbody = document.getElementById('tbl-transacoes-body');
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Nenhuma transação encontrada com esses filtros.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(t => {
+                const isLucro = t.type === 'lucro';
+                const badge = isLucro 
+                    ? `<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Entrada / Lucro</span>`
+                    : `<span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">Retirada</span>`;
+                const amountClass = isLucro ? "text-emerald-600 font-bold" : "text-rose-600 font-bold";
+
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3.5 pl-5">${badge}</td>
+                        <td class="p-3.5 font-medium text-slate-900">${t.description}</td>
+                        <td class="p-3.5 text-slate-600">${t.category || '-'}</td>
+                        <td class="p-3.5 text-slate-500">${t.paymentMethod || 'Outro'}</td>
+                        <td class="p-3.5 text-slate-500">${formatDateBR(t.date)}</td>
+                        <td class="p-3.5 text-right ${amountClass}">${isLucro ? '+' : '-'}${formatCurrency(t.amount)}</td>
+                        <td class="p-3.5 pr-5 text-center">
+                            <button onclick="promptDeleteTransaction('${t.id}')" class="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition" title="Excluir">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function renderCharts() {
+            const ctxEvol = document.getElementById('chartEvolucao')?.getContext('2d');
+            if (!ctxEvol) return;
+
+            const labels = [];
+            const lucrosData = [];
+            const retiradasData = [];
+
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const dateStr = d.toISOString().split('T')[0];
+                labels.push(formatDateBR(dateStr).substring(0, 5));
+
+                const dayLucro = state.transactions
+                    .filter(t => t.type === 'lucro' && t.date === dateStr)
+                    .reduce((acc, t) => acc + t.amount, 0);
+
+                const dayRetirada = state.transactions
+                    .filter(t => t.type === 'retirada' && t.date === dateStr)
+                    .reduce((acc, t) => acc + t.amount, 0);
+
+                lucrosData.push(dayLucro);
+                retiradasData.push(dayRetirada);
+            }
+
+            if (chartEvolucaoInstance) chartEvolucaoInstance.destroy();
+
+            chartEvolucaoInstance = new Chart(ctxEvol, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Lucro / Entradas', data: lucrosData, backgroundColor: '#22c55e', borderRadius: 6 },
+                        { label: 'Retiradas', data: retiradasData, backgroundColor: '#f43f5e', borderRadius: 6 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top' } },
+                    scales: { y: { beginAtZero: true, ticks: { callback: v => 'R$ ' + v } } }
+                }
+            });
+
+            const ctxCat = document.getElementById('chartCategorias')?.getContext('2d');
+            if (!ctxCat) return;
+
+            const catMap = {};
+            state.transactions.filter(t => t.type === 'retirada').forEach(t => {
+                const catName = t.category || 'Outros';
+                catMap[catName] = (catMap[catName] || 0) + t.amount;
+            });
+
+            const catLabels = Object.keys(catMap);
+            const catValues = Object.values(catMap);
+
+            if (chartCategoriasInstance) chartCategoriasInstance.destroy();
+
+            if (catLabels.length === 0) {
+                chartCategoriasInstance = new Chart(ctxCat, {
+                    type: 'doughnut',
+                    data: { labels: ['Sem Despesas'], datasets: [{ data: [1], backgroundColor: ['#e2e8f0'] }] },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+            } else {
+                const colors = catLabels.map(label => {
+                    const found = state.categories.find(c => c.name === label);
+                    return found ? found.color : '#94a3b8';
+                });
+
+                chartCategoriasInstance = new Chart(ctxCat, {
+                    type: 'doughnut',
+                    data: { labels: catLabels, datasets: [{ data: catValues, backgroundColor: colors }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                });
+            }
+        }
+
+        function setReportMode(mode) {
+            state.reportMode = mode;
+            const btnSem = document.getElementById('btn-mode-semanal');
+            const btnMen = document.getElementById('btn-mode-mensal');
+            const wrapSem = document.getElementById('wrapper-date-semanal');
+            const wrapMen = document.getElementById('wrapper-date-mensal');
+
+            if (mode === 'semanal') {
+                btnSem.className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-white text-emerald-700 shadow-sm";
+                btnMen.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition hover:text-slate-900";
+                wrapSem.classList.remove('hidden');
+                wrapMen.classList.add('hidden');
+            } else {
+                btnMen.className = "px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-white text-emerald-700 shadow-sm";
+                btnSem.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 transition hover:text-slate-900";
+                wrapMen.classList.remove('hidden');
+                wrapSem.classList.add('hidden');
+            }
+
+            generateReport();
+        }
+
+        function generateReport() {
+            let filtered = [];
+            let startDateStr = '';
+            let endDateStr = '';
+            let titleText = '';
+
+            if (state.reportMode === 'semanal') {
+                const semStartVal = document.getElementById('rep-semana-inicio').value;
+                if (!semStartVal) return;
+
+                const startDate = new Date(semStartVal + 'T00:00:00');
+                const endDate = new Date(startDate);
+                endDate.setDate(endDate.getDate() + 6);
+
+                startDateStr = startDate.toISOString().split('T')[0];
+                endDateStr = endDate.toISOString().split('T')[0];
+
+                titleText = `Relatório Semanal (${formatDateBR(startDateStr)} a ${formatDateBR(endDateStr)})`;
+                document.getElementById('rep-badge-tipo').innerText = 'Relatório Semanal';
+
+                filtered = state.transactions.filter(t => t.date >= startDateStr && t.date <= endDateStr);
+
+            } else {
+                const mesAnoVal = document.getElementById('rep-mes-ano').value;
+                if (!mesAnoVal) return;
+
+                const [year, month] = mesAnoVal.split('-');
+                const daysInMonth = new Date(year, month, 0).getDate();
+
+                startDateStr = `${mesAnoVal}-01`;
+                endDateStr = `${mesAnoVal}-${daysInMonth < 10 ? '0' + daysInMonth : daysInMonth}`;
+
+                const monthName = new Date(year, month - 1, 1).toLocaleString('pt-BR', { month: 'long' });
+                titleText = `Relatório Mensal de ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} / ${year}`;
+                document.getElementById('rep-badge-tipo').innerText = 'Relatório Mensal';
+
+                filtered = state.transactions.filter(t => t.date.startsWith(mesAnoVal));
+            }
+
+            document.getElementById('rep-title').innerText = titleText;
+            document.getElementById('rep-period-text').innerText = `Período analisado: ${formatDateBR(startDateStr)} até ${formatDateBR(endDateStr)}`;
+            document.getElementById('rep-emissao-data').innerText = `Gerado em: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`;
+
+            const totalLucro = filtered.filter(t => t.type === 'lucro').reduce((acc, t) => acc + t.amount, 0);
+            const totalRetiradas = filtered.filter(t => t.type === 'retirada').reduce((acc, t) => acc + t.amount, 0);
+            const resultado = totalLucro - totalRetiradas;
+
+            document.getElementById('rep-total-lucro').innerText = formatCurrency(totalLucro);
+            document.getElementById('rep-total-retiradas').innerText = formatCurrency(totalRetiradas);
+            document.getElementById('rep-resultado-liquido').innerText = formatCurrency(resultado);
+
+            const daysCount = state.reportMode === 'semanal' ? 7 : 30;
+            const mediaDiaria = totalLucro / daysCount;
+            document.getElementById('rep-media-diaria').innerText = formatCurrency(mediaDiaria);
+
+            const margem = totalLucro > 0 ? ((resultado / totalLucro) * 100).toFixed(1) + '%' : '0%';
+            document.getElementById('rep-margem').innerText = margem;
+            document.getElementById('rep-qtd-registros').innerText = filtered.length;
+
+            const catMap = {};
+            filtered.filter(t => t.type === 'retirada').forEach(t => {
+                const c = t.category || 'Outros';
+                catMap[c] = (catMap[c] || 0) + t.amount;
+            });
+
+            let maiorGastoCat = 'Nenhuma';
+            let maxGastoVal = 0;
+
+            const listCatEl = document.getElementById('rep-list-categorias');
+            if (Object.keys(catMap).length === 0) {
+                listCatEl.innerHTML = `<p class="text-slate-400">Nenhuma retirada registrada no período.</p>`;
+            } else {
+                listCatEl.innerHTML = Object.entries(catMap).map(([catName, val]) => {
+                    if (val > maxGastoVal) {
+                        maxGastoVal = val;
+                        maiorGastoCat = `${catName} (${formatCurrency(val)})`;
+                    }
+                    const pct = totalRetiradas > 0 ? ((val / totalRetiradas) * 100).toFixed(1) : 0;
+                    return `
+                        <div>
+                            <div class="flex justify-between font-medium text-slate-700">
+                                <span>${catName}</span>
+                                <span>${formatCurrency(val)} (${pct}%)</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-1.5 mt-1">
+                                <div class="bg-rose-500 h-1.5 rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('rep-maior-gasto').innerText = maiorGastoCat;
+
+            const repTbody = document.getElementById('rep-tbl-body');
+            if (filtered.length === 0) {
+                repTbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Sem movimentações no período selecionado.</td></tr>`;
+            } else {
+                repTbody.innerHTML = filtered.map(t => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2.5 pl-4">${formatDateBR(t.date)}</td>
+                        <td class="p-2.5">
+                            <span class="font-bold ${t.type === 'lucro' ? 'text-emerald-600' : 'text-rose-600'}">
+                                ${t.type === 'lucro' ? 'Lucro' : 'Retirada'}
+                            </span>
+                        </td>
+                        <td class="p-2.5 font-medium text-slate-800">${t.description}</td>
+                        <td class="p-2.5 text-slate-500">${t.category || '-'}</td>
+                        <td class="p-2.5 text-slate-500">${t.paymentMethod || '-'}</td>
+                        <td class="p-2.5 pr-4 text-right font-bold ${t.type === 'lucro' ? 'text-emerald-600' : 'text-rose-600'}">
+                            ${t.type === 'lucro' ? '+' : '-'}${formatCurrency(t.amount)}
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function exportCSV() {
+            if (state.transactions.length === 0) {
+                showToast('Nenhum dado para exportar!', 'error');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "ID;Tipo;Descricao;Categoria;Data;FormaPgto;Valor\n";
+
+            state.transactions.forEach(t => {
+                const row = [
+                    t.id,
+                    t.type,
+                    `"${t.description.replace(/"/g, '""')}"`,
+                    `"${(t.category || '').replace(/"/g, '""')}"`,
+                    t.date,
+                    t.paymentMethod || '',
+                    t.amount.toFixed(2)
+                ].join(';');
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `financas_loja_relatorio_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast('Arquivo CSV baixado com sucesso!', 'success');
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            let bgClass = "bg-slate-900 text-white";
+            let iconName = "info";
+
+            if (type === 'success') {
+                bgClass = "bg-emerald-600 text-white";
+                iconName = "check-circle";
+            } else if (type === 'error') {
+                bgClass = "bg-rose-600 text-white";
+                iconName = "alert-circle";
+            }
+
+            toast.className = `${bgClass} px-4 py-3 rounded-xl shadow-lg text-xs font-semibold flex items-center space-x-2 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto`;
+            toast.innerHTML = `
+                <i data-lucide="${iconName}" class="w-4 h-4"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Expose functions globally for onclick attributes
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.switchTab = switchTab;
+        window.handleSaveLucro = handleSaveLucro;
+        window.handleSaveRetirada = handleSaveRetirada;
+        window.handleSaveCategoria = handleSaveCategoria;
+        window.deleteCategory = deleteCategory;
+        window.promptDeleteTransaction = promptDeleteTransaction;
+        window.confirmDeleteTransaction = confirmDeleteTransaction;
+        window.setReportMode = setReportMode;
+        window.generateReport = generateReport;
+        window.exportCSV = exportCSV;
+        window.renderTransactionsTable = renderTransactionsTable;
+    </script>
+</body>
+</html
