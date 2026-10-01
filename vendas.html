@@ -80,6 +80,10 @@
 
     <!-- Top Announcement Bar -->
     <div class="bg-gradient-to-r from-yellow-700 via-amber-500 to-yellow-700 text-black font-extrabold text-xs md:text-sm py-2 px-4 text-center shadow-md">
+        <!-- ================================================================= -->
+        <!-- ONDE ALTERAR O NÚMERO DE VAGAS:                                  -->
+        <!-- Altere o número '50' abaixo para a quantidade desejada de vagas. -->
+        <!-- ================================================================= -->
         <span class="inline-flex items-center gap-2 tracking-wide uppercase">
             <i class="fa-solid fa-fire animate-bounce text-black"></i>
             ATENÇÃO: Apenas 50 Vagas Abertas para a 1ª Turma!
@@ -126,20 +130,25 @@
                     Um método simples e 100% prático para dominar a manutenção de iPhones e Androids do zero. Diagnostique defeitos sem adivinhação, atraia clientes e receba <strong class="text-amber-400 font-extrabold">3 Cursos Bônus Exclusivos</strong> inclusos!
                 </p>
 
-                <!-- Hero Video Container (Autoplay Local Ao Carregar) -->
+                <!-- Hero Video Container (YouTube / Embed Pronto) -->
                 <div class="pt-4 pb-2">
                     <!-- ================================================================= -->
-                    <!-- ONDE ALTERAR O SEU VÍDEO LOCAL:                                   -->
-                    <!-- 1. Salve seu vídeo na mesma pasta deste arquivo index.html        -->
-                    <!-- 2. Altere 'video.mp4' abaixo para o nome exato do seu arquivo     -->
-                    <!-- Nota: 'autoplay', 'muted' e 'playsinline' garantem o auto-play    -->
-                    <!-- imediato sem que o navegador bloqueie o vídeo.                    -->
+                    <!-- ONDE ALTERAR O SEU VÍDEO DO YOUTUBE:                              -->
+                    <!-- 1. Suba seu vídeo no YouTube como "Não Listado"                   -->
+                    <!-- 2. Pegue o ID do vídeo (exemplo: se o link for                    -->
+                    <!--    youtube.com/watch?v=abc123xyz, o ID é 'abc123xyz')             -->
+                    <!-- 3. Substitua 'SEU_ID_DO_VIDEO' abaixo pelo seu ID do vídeo.        -->
                     <!-- ================================================================= -->
                     <div id="video-container" class="relative max-w-3xl mx-auto rounded-2xl overflow-hidden border-2 border-amber-500/40 bg-zinc-900 shadow-glow aspect-video flex items-center justify-center">
-                        <video id="hero-video" class="w-full h-full rounded-2xl object-cover" autoplay muted playsinline controls preload="auto">
-                            <source src="dveison.mp4" type="video/mp4">
-                            Seu navegador não suporta a exibição de vídeos HTML5.
-                        </video>
+                        <iframe 
+                            id="hero-video-iframe"
+                            class="w-full h-full rounded-2xl" 
+                            src="https://www.youtube.com/embed/SEU_ID_DO_VIDEO?autoplay=0&rel=0&controls=1&enablejsapi=1" 
+                            title="Vídeo de Apresentação - Reparo de Sucesso" 
+                            frameborder="0" 
+                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
                     </div>
                 </div>
 
@@ -390,7 +399,7 @@
                         </p>
                     </div>
                     <div class="pt-6 border-t border-zinc-800 mt-6 flex items-center justify-between">
-                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 97,00</span>
+                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 197,00</span>
                         <span class="text-amber-400 font-extrabold text-sm">HOJE: GRÁTIS</span>
                     </div>
                 </div>
@@ -410,7 +419,7 @@
                         </p>
                     </div>
                     <div class="pt-6 border-t border-zinc-800 mt-6 flex items-center justify-between">
-                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 97,00</span>
+                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 297,00</span>
                         <span class="text-amber-400 font-extrabold text-sm">HOJE: GRÁTIS</span>
                     </div>
                 </div>
@@ -537,7 +546,7 @@
             <div class="max-w-xl mx-auto bg-black border-2 border-amber-500/60 rounded-3xl p-8 sm:p-10 shadow-glow relative overflow-hidden">
                 <!-- Top Ribbon -->
                 <div class="absolute top-0 right-0 btn-gold font-black text-xs px-8 py-1.5 uppercase transform rotate-12 translate-x-6 translate-y-3 shadow-md">
-                    PROMOÇÃO VIP
+                    PRÉ-VENDA
                 </div>
 
                 <div class="text-center space-y-6">
@@ -581,18 +590,22 @@
 
                     <!-- Price display -->
                     <div class="space-y-1">
-                        <div class="text-zinc-500 line-through text-sm">De R$ 497,00 por apenas:</div>
-                        <div class="text-xs font-bold text-amber-400 uppercase tracking-widest">12x de</div>
+                        <div class="text-zinc-500 line-through text-sm">De R$ 297,00 por apenas:</div>
+                        <div class="text-xs font-bold text-amber-400 uppercase tracking-widest">VALOR DE PRÉ-VENDA • 12x de</div>
                         <div class="font-heading font-black text-5xl sm:text-6xl text-white tracking-tight">
                             R$ 14,<span class="text-3xl text-amber-300">76</span>
                         </div>
                         <div class="text-xs text-zinc-400">ou R$ 147,00 à vista no Pix ou Cartão</div>
                     </div>
 
-                    <!-- Buy CTA -->
-                    <button onclick="document.getElementById('checkout-modal').classList.remove('hidden')" class="block w-full btn-gold font-black text-xl py-5 rounded-2xl shadow-glow btn-pulse transition duration-200">
+                    <!-- ================================================================= -->
+                    <!-- ONDE COLOCAR O SEU LINK DE CHECKOUT DA KIWIFY:                    -->
+                    <!-- Substitua 'https://pay.kiwify.com.br/SEU_LINK_AQUI' pelo seu      -->
+                    <!-- link direto de checkout retornado na Kiwify.                      -->
+                    <!-- ================================================================= -->
+                    <a href="https://kiwify.app/tkiGRn1" target="_blank" rel="noopener noreferrer" class="block w-full btn-gold font-black text-xl py-5 rounded-2xl shadow-glow btn-pulse transition duration-200 text-center">
                         SIM! QUERO COMEÇAR AGORA
-                    </button>
+                    </a>
 
                     <!-- Security Badge -->
                     <div class="flex items-center justify-center gap-4 text-xs text-zinc-400 pt-2">
@@ -603,25 +616,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Modal Mock Checkout -->
-    <div id="checkout-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
-        <div class="bg-zinc-950 border border-amber-500/50 rounded-2xl p-6 sm:p-8 max-w-md w-full space-y-4 text-center relative shadow-glow">
-            <button onclick="document.getElementById('checkout-modal').classList.add('hidden')" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="w-16 h-16 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-3xl mx-auto border border-amber-500/40">
-                <i class="fa-solid fa-cart-shopping"></i>
-            </div>
-            <h3 class="font-heading font-bold text-2xl text-white">Quase lá!</h3>
-            <p class="text-zinc-300 text-sm leading-relaxed">
-                Você será redirecionado para a página de pagamento 100% segura com acesso imediato ao Curso + 3 Bônus Exclusivos.
-            </p>
-            <button onclick="document.getElementById('checkout-modal').classList.add('hidden')" class="w-full btn-gold font-bold py-3.5 rounded-xl transition">
-                Ir para Pagamento Seguro
-            </button>
-        </div>
-    </div>
 
     <!-- FAQ Section -->
     <section class="py-20 bg-black">
@@ -688,16 +682,6 @@
 
     <!-- Interactive Scripts -->
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('hero-video');
-            if (video) {
-                // Tenta iniciar a reprodução automaticamente ao carregar a página
-                video.play().catch(error => {
-                    console.log("Autoplay aguardando interação do usuário:", error);
-                });
-            }
-        });
-
         // Profit Calculator Logic
         const repairRange = document.getElementById('repair-range');
         const repairsCount = document.getElementById('repairs-count');
