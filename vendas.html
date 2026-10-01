@@ -2,7 +2,7 @@
 <html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Reparo de Sucesso | Curso Prático de Manutenção de Celulares</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,9 +36,9 @@
                         }
                     },
                     boxShadow: {
-                        'glow': '0 0 30px -5px rgba(234, 179, 8, 0.35)',
-                        'glow-lg': '0 0 50px -5px rgba(234, 179, 8, 0.5)',
-                        'card-gold': '0 10px 30px -10px rgba(212, 175, 55, 0.15)',
+                        'glow': '0 0 25px -5px rgba(234, 179, 8, 0.4)',
+                        'glow-lg': '0 0 40px -5px rgba(234, 179, 8, 0.6)',
+                        'card-gold': '0 8px 25px -8px rgba(212, 175, 55, 0.2)',
                     }
                 }
             }
@@ -51,637 +51,590 @@
             -webkit-text-fill-color: transparent;
         }
         .gradient-gold-card {
-            background: linear-gradient(145deg, rgba(26,26,26,0.95) 0%, rgba(10,10,10,0.98) 100%);
+            background: linear-gradient(145deg, rgba(22,22,22,0.98) 0%, rgba(8,8,8,0.99) 100%);
         }
         .btn-gold {
             background: linear-gradient(135deg, #fde047 0%, #eab308 50%, #ca8a04 100%);
             color: #000000;
         }
-        .btn-gold:hover {
+        .btn-gold:active {
+            transform: scale(0.98);
             background: linear-gradient(135deg, #fef08a 0%, #facc15 50%, #eab308 100%);
         }
         .btn-pulse {
-            animation: pulse-glow 2.2s infinite;
+            animation: pulse-glow 2s infinite;
         }
         @keyframes pulse-glow {
             0%, 100% {
                 box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.8);
             }
             50% {
-                box-shadow: 0 0 0 18px rgba(234, 179, 8, 0);
+                box-shadow: 0 0 0 14px rgba(234, 179, 8, 0);
             }
         }
-        .border-gold-glow {
-            border-color: rgba(234, 179, 8, 0.35);
+        /* Mobile Specific Range Slider Styling */
+        input[type=range]::-webkit-slider-thumb {
+            width: 26px;
+            height: 26px;
         }
     </style>
 </head>
-<body class="bg-black text-zinc-100 font-sans antialiased selection:bg-amber-500 selection:text-black">
+<body class="bg-black text-zinc-100 font-sans antialiased selection:bg-amber-500 selection:text-black pb-24 sm:pb-0">
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-gradient-to-r from-yellow-700 via-amber-500 to-yellow-700 text-black font-extrabold text-xs md:text-sm py-2 px-4 text-center shadow-md">
+    <!-- Top Announcement Bar (Mobile Optimized) -->
+    <div class="bg-gradient-to-r from-yellow-700 via-amber-500 to-yellow-700 text-black font-extrabold text-[11px] sm:text-xs py-2 px-3 text-center shadow-md">
         <!-- ================================================================= -->
         <!-- ONDE ALTERAR O NÚMERO DE VAGAS:                                  -->
         <!-- Altere o número '50' abaixo para a quantidade desejada de vagas. -->
         <!-- ================================================================= -->
-        <span class="inline-flex items-center gap-2 tracking-wide uppercase">
-            <i class="fa-solid fa-fire animate-bounce text-black"></i>
-            ATENÇÃO: Apenas 50 Vagas Abertas para a 1ª Turma!
-            <span class="bg-black text-yellow-400 px-2.5 py-0.5 rounded-full text-xs font-black ml-1 border border-amber-500/50">PREENCHIMENTO IMEDIATO</span>
+        <span class="inline-flex items-center justify-center gap-1.5 tracking-tight uppercase flex-wrap">
+            <i class="fa-solid fa-fire text-black animate-bounce"></i>
+            ATENÇÃO: Apenas 50 Vagas Abertas!
+            <span class="bg-black text-yellow-400 px-2 py-0.5 rounded-md text-[10px] font-black border border-amber-500/50">1ª TURMA</span>
         </span>
     </div>
 
-    <!-- Sticky Navigation -->
-    <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-amber-500/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2 font-heading font-extrabold text-xl md:text-2xl tracking-tight">
-                <span class="p-2 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/30">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
+    <!-- Header Compacto Para Celulares -->
+    <header class="sticky top-0 z-40 bg-black/95 backdrop-blur-md border-b border-amber-500/20 py-3 px-4">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 font-heading font-black text-lg tracking-tight">
+                <span class="p-1.5 bg-amber-500/10 text-amber-400 rounded-lg border border-amber-500/30">
+                    <i class="fa-solid fa-screwdriver-wrench text-sm"></i>
                 </span>
                 <span>REPARO DE <span class="gradient-gold-text">SUCESSO</span></span>
             </a>
-            <a href="#garanta-sua-vaga" class="hidden sm:inline-flex items-center gap-2 btn-gold font-extrabold px-5 py-2.5 rounded-xl transition duration-200 text-sm shadow-glow">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>Garantir Vaga</span>
+            <a href="#garanta-sua-vaga" class="btn-gold font-black text-xs px-3 py-2 rounded-xl shadow-sm uppercase tracking-wider">
+                Garantir Vaga
             </a>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28 bg-gradient-to-b from-black via-zinc-950 to-black">
-        <!-- Background Decorative Golden Lights -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-        <div class="absolute top-1/3 right-10 w-80 h-80 bg-yellow-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <!-- Hero Section Otimizada para Telas de Celular -->
+    <section class="relative pt-6 pb-12 bg-gradient-to-b from-black via-zinc-950 to-black px-4">
+        <div class="absolute top-10 left-1/2 -translate-x-1/2 w-72 h-72 bg-amber-500/15 rounded-full blur-[90px] pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center max-w-4xl mx-auto space-y-6">
-                <!-- Badge -->
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-300 text-xs md:text-sm font-semibold tracking-wide uppercase shadow-sm">
-                    <i class="fa-solid fa-crown text-amber-400"></i> Método Prático Desenvolvido em 4 Anos de Bancada
+        <div class="max-w-md mx-auto space-y-5 text-center relative z-10">
+            <!-- Badge Mobile -->
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-300 text-[11px] font-bold uppercase tracking-wide">
+                <i class="fa-solid fa-crown text-amber-400 text-xs"></i> Método Prático de Bancada
+            </div>
+
+            <!-- Headline Principal Ajustada para Telas Pequenas -->
+            <h1 class="font-heading font-black text-2xl sm:text-4xl text-white tracking-tight leading-tight">
+                Aprenda a Consertar Celulares e Lucre <span class="gradient-gold-text">Na Sua Primeira Semana!</span>
+            </h1>
+
+            <!-- Subheadline Mobile -->
+            <p class="text-zinc-300 text-sm leading-relaxed">
+                Domine iPhones e Androids do zero. Diagnostique defeitos sem adivinhação, atria clientes e leve <strong class="text-amber-400 font-extrabold">3 Cursos Bônus Inclusos!</strong>
+            </p>
+
+            <!-- Player de Vídeo em Destaque Mobile (Borda a Borda) -->
+            <div class="pt-2 -mx-4 sm:mx-0">
+                <!-- ================================================================= -->
+                <!-- ATENÇÃO: USE APENAS O ID DO VÍDEO DO YOUTUBE, NÃO O LINK COMPLETO!-->
+                <!-- Se o seu link for: https://youtu.be/abc123xyz                     -->
+                <!-- O ID é APENAS o código no final: abc123xyz                        -->
+                <!-- ================================================================= -->
+                <div id="video-container" class="relative w-full rounded-none sm:rounded-2xl overflow-hidden border-y-2 sm:border-2 border-amber-500/60 bg-zinc-900 shadow-glow aspect-video flex items-center justify-center">
+                    <iframe 
+                        id="hero-video-iframe"
+                        class="w-full h-full" 
+                        src="https://www.youtube-nocookie.com/embed/-Jcqh-zqoh0?autoplay=0&rel=0&controls=1&enablejsapi=1" 
+                        title="Vídeo de Apresentação" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
                 </div>
+            </div>
 
-                <!-- Main Headline -->
-                <h1 class="font-heading font-black text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-tight">
-                    Aprenda a Consertar Celulares e Comece a Lucrar <span class="gradient-gold-text">Na Sua Primeira Semana</span> de Curso!
-                </h1>
+            <!-- Botão de Ação CTA Grande (Touch Friendly) -->
+            <div class="pt-2 space-y-3">
+                <!-- ================================================================= -->
+                <!-- ONDE COLOCAR O SEU LINK DE CHECKOUT DA KIWIFY:                    -->
+                <!-- Substitua 'https://pay.kiwify.com.br/SEU_LINK_AQUI' pelo seu link  -->
+                <!-- ================================================================= -->
+                <a href="https://pay.kiwify.com.br/SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="w-full btn-gold font-black text-base py-4 rounded-xl shadow-glow btn-pulse flex items-center justify-center gap-2 tracking-wide uppercase">
+                    <i class="fa-solid fa-circle-check text-lg"></i>
+                    <span>Quero Minha Vaga com Desconto</span>
+                </a>
 
-                <!-- Subheadline -->
-                <p class="text-zinc-300 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">
-                    Um método simples e 100% prático para dominar a manutenção de iPhones e Androids do zero. Diagnostique defeitos sem adivinhação, atraia clientes e receba <strong class="text-amber-400 font-extrabold">3 Cursos Bônus Exclusivos</strong> inclusos!
-                </p>
-
-                <!-- Hero Video Container (YouTube / Embed Pronto) -->
-                <div class="pt-4 pb-2">
-                    <!-- ================================================================= -->
-                    <!-- ONDE ALTERAR O SEU VÍDEO DO YOUTUBE:                              -->
-                    <!-- 1. Suba seu vídeo no YouTube como "Não Listado"                   -->
-                    <!-- 2. Pegue o ID do vídeo (exemplo: se o link for                    -->
-                    <!--    youtube.com/watch?v=abc123xyz, o ID é 'abc123xyz')             -->
-                    <!-- 3. Substitua 'SEU_ID_DO_VIDEO' abaixo pelo seu ID do vídeo.        -->
-                    <!-- ================================================================= -->
-                    <div id="video-container" class="relative max-w-3xl mx-auto rounded-2xl overflow-hidden border-2 border-amber-500/40 bg-zinc-900 shadow-glow aspect-video flex items-center justify-center">
-                        <iframe 
-                            id="hero-video-iframe"
-                            class="w-full h-full rounded-2xl" 
-                            src="https://www.youtube.com/embed/-Jcqh-zqoh0?si=ahay1UAOF2LW4QM_?autoplay=0&rel=0&controls=1&enablejsapi=1"
-                            title="Vídeo de Apresentação - Reparo de Sucesso" 
-                            frameborder="0" 
-                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                </div>
-
-                <!-- Call to Action Button -->
-                <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="#garanta-sua-vaga" class="w-full sm:w-auto btn-gold font-black text-lg sm:text-xl px-10 py-5 rounded-2xl shadow-glow btn-pulse transition duration-300 transform hover:-translate-y-1 text-center flex items-center justify-center gap-3">
-                        <i class="fa-solid fa-circle-check text-2xl text-black"></i>
-                        <span>QUERO MINHA VAGA COM DESCONTO</span>
-                    </a>
-                </div>
-
-                <!-- Security Highlights under CTA -->
-                <div class="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-zinc-400 font-medium pt-2">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-lock text-amber-400"></i> Acesso Imediato</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-amber-400"></i> 7 Dias de Garantia Total</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-gift text-amber-400"></i> 3 Cursos Bônus Inclusos</span>
+                <!-- Prova e Garantias do topo -->
+                <div class="flex items-center justify-center gap-4 text-[11px] text-zinc-400 font-medium">
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-lock text-amber-400"></i> Acesso Imediato</span>
+                    <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved text-amber-400"></i> 7 Dias Garantia</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Social Proof / Stats Bar -->
-    <section class="bg-zinc-950 border-y border-amber-500/20 py-10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="space-y-1">
-                    <div class="font-heading font-black text-3xl sm:text-4xl text-amber-400">4 Anos</div>
-                    <p class="text-xs sm:text-sm text-zinc-400 font-medium">De Método Aperfeiçoado na Prática</p>
-                </div>
-                <div class="space-y-1">
-                    <div class="font-heading font-black text-3xl sm:text-4xl text-amber-300">7 Dias</div>
-                    <p class="text-xs sm:text-sm text-zinc-400 font-medium">Para Realizar Seus Primeiros Reparos</p>
-                </div>
-                <div class="space-y-1">
-                    <div class="font-heading font-black text-3xl sm:text-4xl text-amber-400">100%</div>
-                    <p class="text-xs sm:text-sm text-zinc-400 font-medium">Garantia Incondicional de Satisfação</p>
-                </div>
+    <!-- Barra de Prova Social Adaptada para Celular -->
+    <section class="bg-zinc-950 border-y border-amber-500/20 py-6 px-4">
+        <div class="max-w-md mx-auto grid grid-cols-3 gap-2 text-center">
+            <div class="space-y-0.5">
+                <div class="font-heading font-black text-xl text-amber-400">4 Anos</div>
+                <p class="text-[10px] text-zinc-400 font-medium leading-tight">Método Testado</p>
+            </div>
+            <div class="space-y-0.5 border-x border-zinc-800 px-1">
+                <div class="font-heading font-black text-xl text-amber-300">7 Dias</div>
+                <p class="text-[10px] text-zinc-400 font-medium leading-tight">Primeiros Reparos</p>
+            </div>
+            <div class="space-y-0.5">
+                <div class="font-heading font-black text-xl text-amber-400">100%</div>
+                <p class="text-[10px] text-zinc-400 font-medium leading-tight">Garantia Total</p>
             </div>
         </div>
     </section>
 
-    <!-- Who Is This Course For -->
-    <section class="py-20 bg-black">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-4 rounded-full inline-block border border-amber-500/30">
-                    Para Quem É O Treinamento
-                </h2>
-                <h3 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">
+    <!-- Seção Para Quem É no Celular -->
+    <section class="py-10 px-4 bg-black">
+        <div class="max-w-md mx-auto space-y-6">
+            <div class="text-center space-y-2">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-3 rounded-full border border-amber-500/30">
+                    Para Quem É O Curso
+                </span>
+                <h2 class="font-heading font-extrabold text-xl text-white">
                     Este Treinamento É Perfeito Para Você Que:
-                </h3>
+                </h2>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="space-y-4">
                 <!-- Card 1 -->
-                <div class="gradient-gold-card p-8 rounded-2xl border border-amber-500/20 hover:border-amber-400 transition duration-300 relative group shadow-card-gold">
-                    <div class="w-14 h-14 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition border border-amber-500/30">
+                <div class="gradient-gold-card p-5 rounded-xl border border-amber-500/20 shadow-card-gold flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-amber-500/10 text-amber-400 rounded-lg flex items-center justify-center text-lg shrink-0 border border-amber-500/30 mt-0.5">
                         <i class="fa-solid fa-user-ninja"></i>
                     </div>
-                    <h4 class="font-heading font-bold text-xl text-white mb-3">Está Começando do Zero</h4>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        Não precisa ter experiência prévia com eletrônica. Você vai aprender a anatomia dos aparelhos e a abrir qualquer celular com total segurança.
-                    </p>
+                    <div>
+                        <h3 class="font-heading font-bold text-base text-white mb-1">Está Começando do Zero</h3>
+                        <p class="text-zinc-400 text-xs leading-relaxed">
+                            Não precisa ter experiência prévia. Aprenda a abrir qualquer Android e iPhone com total segurança.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="gradient-gold-card p-8 rounded-2xl border border-amber-500/20 hover:border-amber-400 transition duration-300 relative group shadow-card-gold">
-                    <div class="w-14 h-14 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition border border-amber-500/30">
+                <div class="gradient-gold-card p-5 rounded-xl border border-amber-500/20 shadow-card-gold flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-amber-500/10 text-amber-400 rounded-lg flex items-center justify-center text-lg shrink-0 border border-amber-500/30 mt-0.5">
                         <i class="fa-solid fa-sack-dollar"></i>
                     </div>
-                    <h4 class="font-heading font-bold text-xl text-white mb-3">Quer uma Renda Extra ou Nova Profissão</h4>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        O mercado de celulares é gigantesco. Aprenda a captar seus primeiros clientes logo nos primeiros dias e montar sua própria fonte de renda.
-                    </p>
+                    <div>
+                        <h3 class="font-heading font-bold text-base text-white mb-1">Quer Nova Profissão ou Renda Extra</h3>
+                        <p class="text-zinc-400 text-xs leading-relaxed">
+                            Aprenda a captar seus primeiros clientes logo nos primeiros 7 dias e conquiste sua independência financeira.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="gradient-gold-card p-8 rounded-2xl border border-amber-500/20 hover:border-amber-400 transition duration-300 relative group shadow-card-gold">
-                    <div class="w-14 h-14 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition border border-amber-500/30">
+                <div class="gradient-gold-card p-5 rounded-xl border border-amber-500/20 shadow-card-gold flex gap-4 items-start">
+                    <div class="w-10 h-10 bg-amber-500/10 text-amber-400 rounded-lg flex items-center justify-center text-lg shrink-0 border border-amber-500/30 mt-0.5">
                         <i class="fa-solid fa-arrow-trend-up"></i>
                     </div>
-                    <h4 class="font-heading font-bold text-xl text-white mb-3">Quer Lucrar Com Compra e Revenda</h4>
-                    <p class="text-zinc-400 text-sm leading-relaxed">
-                        Aprenda a avaliar aparelhos danificados, comprá-los por um valor muito baixo, consertar com baixo custo e vender lucrando alto no mercado.
+                    <div>
+                        <h3 class="font-heading font-bold text-base text-white mb-1">Quer Lucrar com Compra e Revenda</h3>
+                        <p class="text-zinc-400 text-xs leading-relaxed">
+                            Avalie celulares quebrados, compre barato, conserte a baixo custo e revenda lucrando alto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grade Curricular Curada para Celular -->
+    <section class="py-10 px-4 bg-zinc-950 border-t border-amber-500/20">
+        <div class="max-w-md mx-auto space-y-6">
+            <div class="text-center space-y-2">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-3 rounded-full border border-amber-500/30">
+                    Grade Prática
+                </span>
+                <h2 class="font-heading font-extrabold text-xl text-white">
+                    Tudo O Que Você Vai Dominar no Curso Base
+                </h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Módulo 1 -->
+                <div class="bg-black p-5 rounded-xl border border-amber-500/20 space-y-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 bg-amber-500/20 text-amber-400 font-bold rounded-md flex items-center justify-center text-xs border border-amber-500/40">01</span>
+                        <h3 class="font-heading font-bold text-sm text-white">Fundamentos & Abertura</h3>
+                    </div>
+                    <ul class="space-y-2 text-zinc-300 text-xs pl-1">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Eletrônica aplicada exclusivamente a celulares</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Anatomia dos aparelhos e componentes internos</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Abertura segura de iPhone e Android sem rasgar flex</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Módulo 2 -->
+                <div class="bg-black p-5 rounded-xl border border-amber-500/20 space-y-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 bg-amber-500/20 text-amber-400 font-bold rounded-md flex items-center justify-center text-xs border border-amber-500/40">02</span>
+                        <h3 class="font-heading font-bold text-sm text-white">Substituição de Peças</h3>
+                    </div>
+                    <ul class="space-y-2 text-zinc-300 text-xs pl-1">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Troca de Tela, Bateria e Conectores de Carga</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Troca de Câmeras, Sensores, Microfones e Flex</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Sub-placas, Antenas (Dados/NFC) e Alto-falantes</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Módulo 3 -->
+                <div class="bg-black p-5 rounded-xl border border-amber-500/20 space-y-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 bg-amber-500/20 text-amber-400 font-bold rounded-md flex items-center justify-center text-xs border border-amber-500/40">03</span>
+                        <h3 class="font-heading font-bold text-sm text-white">Diagnóstico Preciso Sem Adivinhação</h3>
+                    </div>
+                    <ul class="space-y-2 text-zinc-300 text-xs pl-1">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Descubra o defeito exato antes de comprar peças</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Elimine o erro comum de trocar peças à toa</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Módulo 4 -->
+                <div class="bg-black p-5 rounded-xl border border-amber-500/20 space-y-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 bg-amber-500/20 text-amber-400 font-bold rounded-md flex items-center justify-center text-xs border border-amber-500/40">04</span>
+                        <h3 class="font-heading font-bold text-sm text-white">Clientes & Precificação</h3>
+                    </div>
+                    <ul class="space-y-2 text-zinc-300 text-xs pl-1">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Passo a passo para atrair seus primeiros clientes</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-amber-400 mt-0.5 text-xs"></i>
+                            <span>Como precificar corretamente e zerar prejuízos</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cursos Bônus em Carrossel/Cards para Celular -->
+    <section class="py-10 px-4 bg-gradient-to-b from-black via-zinc-950 to-black border-y border-amber-500/30">
+        <div class="max-w-md mx-auto space-y-6">
+            <div class="text-center space-y-2">
+                <span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider inline-flex items-center gap-1.5">
+                    <i class="fa-solid fa-gift text-amber-400"></i> 3 BÔNUS EXCLUSIVOS
+                </span>
+                <h2 class="font-heading font-black text-2xl text-white">
+                    Garante Hoje e Leve 3 Cursos <span class="gradient-gold-text">Grátis!</span>
+                </h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Bônus 1 -->
+                <div class="bg-black border border-amber-500/40 rounded-2xl p-5 shadow-glow space-y-3 relative">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-500/40">BÔNUS 01</span>
+                        <i class="fa-brands fa-apple text-2xl text-amber-400"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-base text-white">
+                        Troca de Bateria e Tela de iPhone SEM Mensagem
+                    </h3>
+                    <p class="text-zinc-300 text-xs leading-relaxed">
+                        Procedimento avançado para trocar tela/bateria mantendo a saúde do sistema sem aviso de "peça desconhecida".
+                    </p>
+                    <div class="pt-3 border-t border-zinc-800 flex items-center justify-between">
+                        <span class="text-[10px] text-zinc-500 line-through">De R$ 197,00</span>
+                        <span class="text-amber-400 font-black text-xs">HOJE: GRÁTIS</span>
+                    </div>
+                </div>
+
+                <!-- Bônus 2 -->
+                <div class="bg-black border border-amber-500/40 rounded-2xl p-5 shadow-glow space-y-3 relative">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-500/40">BÔNUS 02</span>
+                        <i class="fa-solid fa-coins text-2xl text-amber-400"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-base text-white">
+                        Avaliação, Compra e Revenda de Danificados
+                    </h3>
+                    <p class="text-zinc-300 text-xs leading-relaxed">
+                        Aprenda a avaliar celulares quebrados, comprar por valor muito baixo e revender consertado lucrando alto.
+                    </p>
+                    <div class="pt-3 border-t border-zinc-800 flex items-center justify-between">
+                        <span class="text-[10px] text-zinc-500 line-through">De R$ 197,00</span>
+                        <span class="text-amber-400 font-black text-xs">HOJE: GRÁTIS</span>
+                    </div>
+                </div>
+
+                <!-- Bônus 3 -->
+                <div class="bg-black border border-amber-500/40 rounded-2xl p-5 shadow-glow space-y-3 relative">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-500/40">BÔNUS 03</span>
+                        <i class="fa-solid fa-laptop-code text-2xl text-amber-400"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-base text-white">
+                        Formatação e Instalação em PCs e Notebooks
+                    </h3>
+                    <p class="text-zinc-300 text-xs leading-relaxed">
+                        Aprenda a formatar e otimizar computadores criando mais uma fonte de renda extra com seus clientes!
+                    </p>
+                    <div class="pt-3 border-t border-zinc-800 flex items-center justify-between">
+                        <span class="text-[10px] text-zinc-500 line-through">De R$ 297,00</span>
+                        <span class="text-amber-400 font-black text-xs">HOJE: GRÁTIS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulador Interativo Otimizado para Toque no Celular -->
+    <section class="py-10 px-4 bg-black">
+        <div class="max-w-md mx-auto">
+            <div class="bg-zinc-950 border border-amber-500/30 rounded-2xl p-6 shadow-glow text-center space-y-5">
+                <div class="space-y-1">
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-3 rounded-full border border-amber-500/30">
+                        SIMULADOR DE LUCRO
+                    </span>
+                    <h2 class="font-heading font-extrabold text-lg text-white">
+                        Quanto Você Pode Lucrar por Mês?
+                    </h2>
+                </div>
+
+                <!-- Controle Deslizante Mobile -->
+                <div class="space-y-4 bg-black p-4 rounded-xl border border-amber-500/20 text-left">
+                    <div class="flex justify-between items-center text-xs font-semibold">
+                        <span class="text-zinc-300">Serviços por semana:</span>
+                        <span id="repairs-count" class="text-amber-400 font-bold text-sm">3 serviços</span>
+                    </div>
+                    <input type="range" id="repair-range" min="1" max="15" value="3" class="w-full accent-amber-500 cursor-pointer h-3 bg-zinc-800 rounded-lg">
+                </div>
+
+                <!-- Resultado -->
+                <div class="bg-gradient-to-r from-amber-950/40 via-zinc-900 to-amber-950/40 p-4 rounded-xl border border-amber-500/40">
+                    <div class="text-zinc-400 text-[10px] font-bold uppercase tracking-wider mb-0.5">Lucro Estimado Mensal</div>
+                    <div id="monthly-total" class="font-heading font-black text-3xl text-amber-400">R$ 1.440,00</div>
+                    <p class="text-[9px] text-zinc-500 mt-1">
+                        *Estimativa baseada em serviços simples na sua primeira semana.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Course Syllabus / What You Will Learn -->
-    <section class="py-20 bg-zinc-950 border-t border-amber-500/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <span class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-4 rounded-full border border-amber-500/30">
-                    Grade Curricular Principal
+    <!-- Seção do Mentor no Celular -->
+    <section class="py-10 px-4 bg-zinc-950 border-t border-amber-500/20">
+        <div class="max-w-md mx-auto space-y-5 text-center">
+            <!-- ================================================================= -->
+            <!-- ONDE ALTERAR A FOTO DO INSTRUTOR:                                 -->
+            <!-- Substitua o link em 'src' pela URL da sua foto de perfil.          -->
+            <!-- ================================================================= -->
+            <div class="relative w-44 h-44 mx-auto">
+                <div class="w-full h-full rounded-2xl overflow-hidden border-2 border-amber-500/50 shadow-glow">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Instrutor" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute -bottom-3 right-0 btn-gold px-3 py-1 rounded-xl font-heading font-bold text-center text-xs shadow-md border border-amber-300">
+                    <span class="block text-sm text-black">4+ Anos</span>
+                    <span class="text-[9px] text-black font-semibold">Bancada</span>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-3 rounded-full border border-amber-500/30">
+                    Seu Mentor
                 </span>
-                <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">
-                    Tudo O Que Você Vai Dominar No Curso Base
+                <h2 class="font-heading font-extrabold text-xl text-white">
+                    Eu Também Comecei do Zero. Hoje Vou Te Encurtar Anos de Erros!
                 </h2>
-                <p class="text-zinc-400">
-                    Conteúdo direto ao ponto, gravado em bancada com riqueza de detalhes para você não ficar com nenhuma dúvida.
+                <p class="text-zinc-300 text-xs leading-relaxed">
+                    Em 4 anos de bancada, enfrentei o medo de danificar celulares caros e prejuízos com peças erradas. Criei um <strong class="text-amber-400">método direto ao ponto</strong> para você ter segurança total logo na primeira semana!
                 </p>
             </div>
-
-            <!-- Syllabus Grid -->
-            <div class="grid lg:grid-cols-2 gap-6">
-                <!-- Module 1 -->
-                <div class="bg-black p-7 rounded-2xl border border-amber-500/20 hover:border-amber-500/40 transition space-y-4 shadow-card-gold">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 bg-amber-500/20 text-amber-400 font-bold rounded-lg flex items-center justify-center text-lg border border-amber-500/40">01</span>
-                        <h3 class="font-heading font-bold text-lg text-white">Fundamentos & Abertura de Aparelhos</h3>
-                    </div>
-                    <ul class="space-y-3 text-zinc-300 text-sm pl-2">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span><strong>Introdução à Eletrônica:</strong> Aplicada exclusivamente a bancadas de celulares.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span><strong>Anatomia dos Aparelhos:</strong> Conheça cada componente interno de forma descomplicada.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span><strong>Abertura de iPhone e Android:</strong> Processo seguro sem rasgar flex ou quebrar tampas.</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Module 2 -->
-                <div class="bg-black p-7 rounded-2xl border border-amber-500/20 hover:border-amber-500/40 transition space-y-4 shadow-card-gold">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 bg-amber-500/20 text-amber-400 font-bold rounded-lg flex items-center justify-center text-lg border border-amber-500/40">02</span>
-                        <h3 class="font-heading font-bold text-lg text-white">Substituição Completa de Componentes</h3>
-                    </div>
-                    <ul class="space-y-3 text-zinc-300 text-sm pl-2">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span>Troca de Tela (Display/Touch) e Bateria de diversas marcas e modelos.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span>Substituição de Conector de Carga, Dock de Carga, Sub-placa e Botões internos e externos.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span>Troca de Câmeras, Sensores, Microfones, Flex internos, Alto-falantes e Antenas (Dados e NFC).</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Module 3 -->
-                <div class="bg-black p-7 rounded-2xl border border-amber-500/20 hover:border-amber-500/40 transition space-y-4 shadow-card-gold">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 bg-amber-500/20 text-amber-400 font-bold rounded-lg flex items-center justify-center text-lg border border-amber-500/40">03</span>
-                        <h3 class="font-heading font-bold text-lg text-white">Diagnóstico Preciso Sem Adivinhação</h3>
-                    </div>
-                    <ul class="space-y-3 text-zinc-300 text-sm pl-2">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span><strong>Análise Técnica de Defeitos:</strong> Descubra o defeito exato antes de comprar qualquer peça.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span>Elimine o erro comum de gastar dinheiro comprando peças de teste em vão.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span>Testes práticos de bancada para identificar curto e falhas rapidamente.</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Module 4 -->
-                <div class="bg-black p-7 rounded-2xl border border-amber-500/20 hover:border-amber-500/40 transition space-y-4 shadow-card-gold">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 bg-amber-500/20 text-amber-400 font-bold rounded-lg flex items-center justify-center text-lg border border-amber-500/40">04</span>
-                        <h3 class="font-heading font-bold text-lg text-white">Clientes & Precificação Blindada</h3>
-                    </div>
-                    <ul class="space-y-3 text-zinc-300 text-sm pl-2">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span><strong>Como Conseguir Seus Primeiros Clientes:</strong> O passo a passo exato que utilizei no início.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span><strong>Forma Certa de Precificação:</strong> Calcule margens corretamente e minimize perdas.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-amber-400 mt-1"></i>
-                            <span>Estratégias de atendimento profissional e termos de garantia.</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- Special Included Bonus Section -->
-    <section class="py-20 bg-gradient-to-b from-black via-zinc-950 to-black border-y border-amber-500/30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
-                <span class="bg-amber-500/20 text-amber-300 border border-amber-500/50 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2">
-                    <i class="fa-solid fa-gift text-amber-400"></i> CURSOS BÔNUS EXCLUSIVOS INCLUSOS
-                </span>
-                <h2 class="font-heading font-black text-3xl sm:text-5xl text-white">
-                    Garante Hoje e Leve Mais 3 Cursos Completos <span class="gradient-gold-text">Totalmente Grátis!</span>
-                </h2>
-                <p class="text-zinc-300 text-sm sm:text-base">
-                    Estes treinamentos são comercializados separadamente, mas garantindo sua vaga nesta oferta você receberá acesso vitalício sem pagar nada a mais.
-                </p>
-            </div>
-
-            <!-- Grid of 3 Bonus Courses -->
-            <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Bonus Card 1 -->
-                <div class="bg-black border border-amber-500/40 rounded-3xl p-8 relative overflow-hidden shadow-glow flex flex-col justify-between hover:border-amber-400 transition">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/40">CURSO BÔNUS 01</span>
-                            <i class="fa-brands fa-apple text-3xl text-amber-400"></i>
-                        </div>
-                        <h3 class="font-heading font-extrabold text-xl text-white">
-                            Troca de Bateria e Tela de iPhone SEM Mensagem
-                        </h3>
-                        <p class="text-zinc-300 text-sm leading-relaxed">
-                            Aprenda os procedimentos avançados para substituir telas e baterias de iPhones sem que o sistema exiba a mensagem de "peça desconhecida", mantendo a saúde do sistema em 100%. Um diferencial para você cobrar mais caro!
-                        </p>
-                    </div>
-                    <div class="pt-6 border-t border-zinc-800 mt-6 flex items-center justify-between">
-                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 197,00</span>
-                        <span class="text-amber-400 font-extrabold text-sm">HOJE: GRÁTIS</span>
-                    </div>
-                </div>
-
-                <!-- Bonus Card 2 -->
-                <div class="bg-black border border-amber-500/40 rounded-3xl p-8 relative overflow-hidden shadow-glow flex flex-col justify-between hover:border-amber-400 transition">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/40">CURSO BÔNUS 02</span>
-                            <i class="fa-solid fa-coins text-3xl text-amber-400"></i>
-                        </div>
-                        <h3 class="font-heading font-extrabold text-xl text-white">
-                            Avaliação, Compra e Revenda de Aparelhos Danificados
-                        </h3>
-                        <p class="text-zinc-300 text-sm leading-relaxed">
-                            Descubra como avaliar o valor exato de celulares quebrados, comprar muito abaixo do preço de mercado, efetuar o conserto a baixo custo e revender com margens de lucro altíssimas.
-                        </p>
-                    </div>
-                    <div class="pt-6 border-t border-zinc-800 mt-6 flex items-center justify-between">
-                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 197,00</span>
-                        <span class="text-amber-400 font-extrabold text-sm">HOJE: GRÁTIS</span>
-                    </div>
-                </div>
-
-                <!-- Bonus Card 3 -->
-                <div class="bg-black border border-amber-500/40 rounded-3xl p-8 relative overflow-hidden shadow-glow flex flex-col justify-between hover:border-amber-400 transition">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="bg-amber-500/20 text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/40">CURSO BÔNUS 03</span>
-                            <i class="fa-solid fa-laptop-code text-3xl text-amber-400"></i>
-                        </div>
-                        <h3 class="font-heading font-extrabold text-xl text-white">
-                            Instalação e Formatação de Computadores & Notebooks
-                        </h3>
-                        <p class="text-zinc-300 text-sm leading-relaxed">
-                            Aprenda a formatar, instalar sistemas operacionais e otimizar PCs e notebooks. Crie uma linha extra de faturamento oferecendo manutenção em computadores para os mesmos clientes de celular!
-                        </p>
-                    </div>
-                    <div class="pt-6 border-t border-zinc-800 mt-6 flex items-center justify-between">
-                        <span class="text-xs text-zinc-500 line-through">Vendido por R$ 297,00</span>
-                        <span class="text-amber-400 font-extrabold text-sm">HOJE: GRÁTIS</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Profit Calculator -->
-    <section class="py-20 bg-black">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-zinc-950 border border-amber-500/30 rounded-3xl p-8 sm:p-10 shadow-glow text-center space-y-8">
-                <div class="space-y-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-4 rounded-full border border-amber-500/30">
-                        SIMULADOR INTERATIVO DE LUCRO
-                    </span>
-                    <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-white">
-                        Quanto Você Pode Lucrar Como Técnico?
-                    </h2>
-                    <p class="text-zinc-400 text-sm">
-                        Simule a quantidade de serviços simples por semana e veja o retorno estimado no mês:
-                    </p>
-                </div>
-
-                <!-- Slider Controls -->
-                <div class="space-y-6 max-w-md mx-auto bg-black p-6 rounded-2xl border border-amber-500/20">
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-sm font-semibold">
-                            <span class="text-zinc-300">Reparos por semana:</span>
-                            <span id="repairs-count" class="text-amber-400 font-bold text-lg">3 serviços</span>
-                        </div>
-                        <input type="range" id="repair-range" min="1" max="15" value="3" class="w-full accent-amber-500 cursor-pointer h-2 bg-zinc-800 rounded-lg">
-                    </div>
-
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-sm font-semibold">
-                            <span class="text-zinc-300">Lucro médio por serviço:</span>
-                            <span id="profit-margin" class="text-amber-300 font-bold text-lg">R$ 120,00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Calculation Output -->
-                <div class="bg-gradient-to-r from-amber-950/40 via-zinc-900 to-amber-950/40 p-6 rounded-2xl border border-amber-500/40">
-                    <div class="text-zinc-400 text-xs font-bold uppercase tracking-wider mb-1">Lucro Estimado Mensal</div>
-                    <div id="monthly-total" class="font-heading font-black text-4xl sm:text-5xl text-amber-400">R$ 1.440,00</div>
-                    <p class="text-xs text-zinc-400 mt-2">
-                        *Estimativa baseada no lucro líquido de serviços simples de troca de tela/bateria na primeira semana.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Instructor Section -->
-    <section class="py-20 bg-zinc-950 border-t border-amber-500/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-12 gap-12 items-center">
-                <div class="lg:col-span-5 flex justify-center">
-                    <div class="relative">
-                        <div class="w-64 h-64 sm:w-80 sm:h-80 rounded-3xl overflow-hidden border-2 border-amber-500/50 shadow-glow">
-                            <img src="dveison.jpeg" alt="Instrutor Reparo de Sucesso" class="w-full h-full object-cover">
-                        </div>
-                        <div class="absolute -bottom-6 -right-6 btn-gold p-4 rounded-2xl font-heading font-bold text-center shadow-lg border border-amber-300">
-                            <span class="block text-2xl text-black">4+ Anos</span>
-                            <span class="text-xs text-black font-semibold">De Bancada</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-7 space-y-6">
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-4 rounded-full border border-amber-500/30">
-                        Quem Será Seu Mentor
-                    </span>
-                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">
-                        Eu Também Comecei do Zero. Hoje Vou Te Encurtar Anos de Erros!
-                    </h2>
-                    <p class="text-zinc-300 leading-relaxed text-sm sm:text-base">
-                        Quando iniciei na manutenção de celulares há 4 anos, enfrentei todas as dificuldades possíveis: medo de danificar aparelhos caros, falta de clientes e prejuízo com peças erradas por não saber diagnosticar.
-                    </p>
-                    <p class="text-zinc-300 leading-relaxed text-sm sm:text-base">
-                        Após centenas de aparelhos reparados, criei um <strong class="text-amber-400">método prático, direto ao ponto e testado</strong>. Te entrego exatamente os caminhos para você ter segurança de bancada e conseguir seus primeiros ganhos na primeira semana.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Guarantee Section -->
-    <section class="py-16 bg-black">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="bg-gradient-to-b from-zinc-950 to-black border border-amber-500/40 rounded-3xl p-8 sm:p-12 relative shadow-glow">
-                <div class="w-20 h-20 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 border border-amber-500/40 shadow-sm">
+    <!-- Garantia 7 Dias Mobile -->
+    <section class="py-8 px-4 bg-black">
+        <div class="max-w-md mx-auto text-center">
+            <div class="bg-gradient-to-b from-zinc-950 to-black border border-amber-500/40 rounded-2xl p-6 shadow-glow space-y-3">
+                <div class="w-14 h-14 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center text-2xl mx-auto border border-amber-500/40">
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
-                <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-white mb-4">
-                    Garantia Total Incondicional de 7 Dias
+                <h2 class="font-heading font-extrabold text-lg text-white">
+                    Garantia Total de 7 Dias
                 </h2>
-                <p class="text-zinc-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed mb-6">
-                    O risco é 100% meu. Inscreva-se no curso, assista às aulas e aplique o método. Se por qualquer motivo você não ficar completamente satisfeito, basta solicitar a devolução em até 7 dias e devolveremos 100% do seu dinheiro, sem burocracia.
+                <p class="text-zinc-300 text-xs leading-relaxed">
+                    Assista às aulas e aplique o método. Se não gostar por qualquer motivo, devoleremos 100% do seu dinheiro sem burocracia.
                 </p>
-                <span class="inline-flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-widest">
-                    <i class="fa-solid fa-check-double"></i> Satisfação Garantida ou Seu Dinheiro de Volta
-                </span>
             </div>
         </div>
     </section>
 
-    <!-- Pricing / Checkout Offer Section -->
-    <section id="garanta-sua-vaga" class="py-20 bg-zinc-950 border-t border-amber-500/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
-                <span class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-4 rounded-full border border-amber-500/30">
+    <!-- Checkout / Seção da Oferta Promocional no Celular -->
+    <section id="garanta-sua-vaga" class="py-10 px-4 bg-zinc-950 border-t border-amber-500/20">
+        <div class="max-w-md mx-auto space-y-6">
+            <div class="text-center space-y-1">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-3 rounded-full border border-amber-500/30">
                     Oportunidade por Tempo Limitado
                 </span>
-                <h2 class="font-heading font-black text-3xl sm:text-5xl text-white">
+                <h2 class="font-heading font-black text-2xl text-white">
                     Sua Nova Profissão Começa Hoje
                 </h2>
-                <p class="text-zinc-400">
-                    Tenha acesso imediato ao Curso Principal + os 3 Cursos Bônus Exclusivos com 7 Dias de Garantia.
-                </p>
             </div>
 
-            <!-- Pricing Card -->
-            <div class="max-w-xl mx-auto bg-black border-2 border-amber-500/60 rounded-3xl p-8 sm:p-10 shadow-glow relative overflow-hidden">
-                <!-- Top Ribbon -->
-                <div class="absolute top-0 right-0 btn-gold font-black text-xs px-8 py-1.5 uppercase transform rotate-12 translate-x-6 translate-y-3 shadow-md">
+            <!-- Card de Oferta Promocional -->
+            <div class="bg-black border-2 border-amber-500/60 rounded-2xl p-6 shadow-glow relative overflow-hidden space-y-5">
+                <!-- Ribbon de Destaque -->
+                <div class="absolute top-0 right-0 btn-gold font-black text-[9px] px-6 py-1 uppercase transform rotate-12 translate-x-4 translate-y-2 shadow-md">
                     PRÉ-VENDA
                 </div>
 
-                <div class="text-center space-y-6">
-                    <h3 class="font-heading font-bold text-2xl text-white">Curso Reparo de Sucesso + 3 Bônus</h3>
+                <div class="text-center space-y-4">
+                    <h3 class="font-heading font-bold text-lg text-white">Curso Reparo de Sucesso + 3 Bônus</h3>
 
-                    <!-- Features checklist -->
-                    <ul class="text-left text-sm space-y-3 text-zinc-300 border-y border-zinc-800 py-6">
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-circle-check text-amber-400 text-lg"></i>
-                            <span>Acesso completo ao Curso Base Reparo de Sucesso</span>
+                    <!-- Lista de Benefícios Compacta -->
+                    <ul class="text-left text-xs space-y-2 text-zinc-300 border-y border-zinc-800 py-4">
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-amber-400 text-sm"></i>
+                            <span>Curso Completo Reparo de Sucesso</span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-circle-check text-amber-400 text-lg"></i>
-                            <span>Abertura, troca de tela, bateria, câmeras, sub-placas e conectores</span>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-amber-400 text-sm"></i>
+                            <span>Método de Diagnóstico sem gastar à toa</span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-circle-check text-amber-400 text-lg"></i>
-                            <span>Método de Diagnóstico sem gastar com peças erradas</span>
+                        <li class="flex items-center gap-2 text-amber-300 font-medium">
+                            <i class="fa-solid fa-gift text-amber-400 text-sm"></i>
+                            <span>BÔNUS 1: Tela/Bateria iPhone sem mensagem</span>
                         </li>
-                        <li class="flex items-center gap-3 text-amber-300 font-semibold">
-                            <i class="fa-solid fa-gift text-amber-400 text-lg"></i>
-                            <span>BÔNUS 1: Troca de Bateria e Tela iPhone SEM Mensagem</span>
+                        <li class="flex items-center gap-2 text-amber-300 font-medium">
+                            <i class="fa-solid fa-gift text-amber-400 text-sm"></i>
+                            <span>BÔNUS 2: Avaliação e Revenda de Danificados</span>
                         </li>
-                        <li class="flex items-center gap-3 text-amber-300 font-semibold">
-                            <i class="fa-solid fa-gift text-amber-400 text-lg"></i>
-                            <span>BÔNUS 2: Avaliação, Compra e Revenda de Danificados</span>
+                        <li class="flex items-center gap-2 text-amber-300 font-medium">
+                            <i class="fa-solid fa-gift text-amber-400 text-sm"></i>
+                            <span>BÔNUS 3: Formatação em PCs e Notebooks</span>
                         </li>
-                        <li class="flex items-center gap-3 text-amber-300 font-semibold">
-                            <i class="fa-solid fa-gift text-amber-400 text-lg"></i>
-                            <span>BÔNUS 3: Curso Instalação e Formatação de PCs e Notebooks</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-circle-check text-amber-400 text-lg"></i>
-                            <span>Passo a Passo de Captação dos Primeiros Clientes e Precificação</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-circle-check text-amber-400 text-lg"></i>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-amber-400 text-sm"></i>
                             <span>7 Dias de Garantia Total Incondicional</span>
                         </li>
                     </ul>
 
-                    <!-- Price display -->
+                    <!-- Ancoragem e Exibição do Preço -->
                     <div class="space-y-1">
-                        <div class="text-zinc-500 line-through text-sm">De R$ 297,00 por apenas:</div>
-                        <div class="text-xs font-bold text-amber-400 uppercase tracking-widest">VALOR DE PRÉ-VENDA • 12x de</div>
-                        <div class="font-heading font-black text-5xl sm:text-6xl text-white tracking-tight">
-                            R$ 15,<span class="text-3xl text-amber-300">20</span>
+                        <div class="text-zinc-500 line-through text-xs">De R$ 297,00 por apenas:</div>
+                        <div class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">OFERTA DE PRÉ-VENDA • 12x DE</div>
+                        <div class="font-heading font-black text-4xl text-white tracking-tight">
+                            R$ 14,<span class="text-2xl text-amber-300">76</span>
                         </div>
-                        <div class="text-xs text-zinc-400">ou R$ 147,00 à vista no Pix ou Cartão</div>
+                        <div class="text-[11px] text-zinc-400">ou R$ 147,00 à vista no Pix ou Cartão</div>
                     </div>
 
                     <!-- ================================================================= -->
                     <!-- ONDE COLOCAR O SEU LINK DE CHECKOUT DA KIWIFY:                    -->
-                    <!-- Substitua 'https://pay.kiwify.com.br/SEU_LINK_AQUI' pelo seu      -->
-                    <!-- link direto de checkout retornado na Kiwify.                      -->
+                    <!-- Substitua 'https://pay.kiwify.com.br/SEU_LINK_AQUI' pelo seu link  -->
                     <!-- ================================================================= -->
-                    <a href="https://pay.kiwify.com.br/5Ma3m5X" target="_blank" rel="noopener noreferrer" class="block w-full btn-gold font-black text-xl py-5 rounded-2xl shadow-glow btn-pulse transition duration-200 text-center">
+                    <a href="https://pay.kiwify.com.br/SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="block w-full btn-gold font-black text-lg py-4 rounded-xl shadow-glow btn-pulse text-center uppercase tracking-wider">
                         SIM! QUERO COMEÇAR AGORA
                     </a>
 
-                    <!-- Security Badge -->
-                    <div class="flex items-center justify-center gap-4 text-xs text-zinc-400 pt-2">
+                    <div class="flex items-center justify-center gap-3 text-[10px] text-zinc-400">
                         <span><i class="fa-solid fa-lock text-amber-400"></i> Pagamento Seguro</span>
+                        <span><i class="fa-solid fa-bolt text-amber-400"></i> Acesso Imediato</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="py-20 bg-black">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                <span class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 py-1 px-4 rounded-full border border-amber-500/30">
-                    Tire Suas Dúvidas
-                </span>
-                <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white">
+    <!-- FAQ Accordion Mobile -->
+    <section class="py-10 px-4 bg-black">
+        <div class="max-w-md mx-auto space-y-5">
+            <div class="text-center">
+                <h2 class="font-heading font-extrabold text-xl text-white">
                     Perguntas Frequentes
                 </h2>
             </div>
 
-            <!-- Accordion Items -->
-            <div class="space-y-4">
-                <!-- Q1 -->
-                <div class="bg-zinc-950 border border-amber-500/20 rounded-2xl overflow-hidden">
-                    <button class="w-full p-6 text-left font-heading font-bold text-white flex justify-between items-center focus:outline-none faq-btn">
-                        <span>Preciso ter ferramentas caras para começar?</span>
-                        <i class="fa-solid fa-chevron-down text-amber-400 transition-transform"></i>
+            <div class="space-y-3">
+                <div class="bg-zinc-950 border border-amber-500/20 rounded-xl overflow-hidden">
+                    <button class="w-full p-4 text-left font-heading font-bold text-xs text-white flex justify-between items-center focus:outline-none faq-btn">
+                        <span>Preciso de ferramentas caras?</span>
+                        <i class="fa-solid fa-chevron-down text-amber-400 text-xs transition-transform"></i>
                     </button>
-                    <div class="px-6 pb-6 text-zinc-300 text-sm hidden faq-answer">
-                        Não! Ensino no curso como você pode começar com um kit básico e muito barato. Com os lucros dos seus primeiros serviços você poderá adquirir novos equipamentos.
+                    <div class="px-4 pb-4 text-zinc-300 text-xs hidden faq-answer">
+                        Não! Ensino no curso como começar com um kit básico e barato. Com o lucro dos seus primeiros reparos você compra equipamentos novos.
                     </div>
                 </div>
 
-                <!-- Q2 -->
-                <div class="bg-zinc-950 border border-amber-500/20 rounded-2xl overflow-hidden">
-                    <button class="w-full p-6 text-left font-heading font-bold text-white flex justify-between items-center focus:outline-none faq-btn">
+                <div class="bg-zinc-950 border border-amber-500/20 rounded-xl overflow-hidden">
+                    <button class="w-full p-4 text-left font-heading font-bold text-xs text-white flex justify-between items-center focus:outline-none faq-btn">
                         <span>Como recebo os 3 cursos bônus?</span>
-                        <i class="fa-solid fa-chevron-down text-amber-400 transition-transform"></i>
+                        <i class="fa-solid fa-chevron-down text-amber-400 text-xs transition-transform"></i>
                     </button>
-                    <div class="px-6 pb-6 text-zinc-300 text-sm hidden faq-answer">
-                        Os 3 cursos bônus (Troca sem mensagem no iPhone, Avaliação/Revenda de Aparelhos e Formatação de PCs/Notebooks) estarão totalmente liberados na sua área de membros assim que sua inscrição for confirmada.
+                    <div class="px-4 pb-4 text-zinc-300 text-xs hidden faq-answer">
+                        Os 3 bônus estarão totalmente liberados na sua área de membros da Kiwify assim que sua inscrição for confirmada.
                     </div>
                 </div>
 
-                <!-- Q3 -->
-                <div class="bg-zinc-950 border border-amber-500/20 rounded-2xl overflow-hidden">
-                    <button class="w-full p-6 text-left font-heading font-bold text-white flex justify-between items-center focus:outline-none faq-btn">
-                        <span>Nunca abri um celular antes, vou conseguir aprender?</span>
-                        <i class="fa-solid fa-chevron-down text-amber-400 transition-transform"></i>
+                <div class="bg-zinc-950 border border-amber-500/20 rounded-xl overflow-hidden">
+                    <button class="w-full p-4 text-left font-heading font-bold text-xs text-white flex justify-between items-center focus:outline-none faq-btn">
+                        <span>Nunca mexi em celulares, consigo aprender?</span>
+                        <i class="fa-solid fa-chevron-down text-amber-400 text-xs transition-transform"></i>
                     </button>
-                    <div class="px-6 pb-6 text-zinc-300 text-sm hidden faq-answer">
-                        Com certeza. O treinamento foi estruturado para quem está começando do zero absoluto. Acompanhando as aulas práticas em bancada, com uma semana você já conseguirá realizar seus primeiros reparos.
+                    <div class="px-4 pb-4 text-zinc-300 text-xs hidden faq-answer">
+                        Sim! O treinamento foi feito para quem está começando do zero absoluto. Em 1 semana você já estará apto para os primeiros serviços.
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-zinc-950 border-t border-amber-500/20 py-12 text-center text-xs text-zinc-500">
-        <div class="max-w-7xl mx-auto px-4 space-y-4">
-            <p class="font-heading font-bold text-zinc-300 text-base">
+    <!-- Rodapé -->
+    <footer class="bg-zinc-950 border-t border-amber-500/20 py-8 text-center text-[10px] text-zinc-500 px-4">
+        <div class="max-w-md mx-auto space-y-2">
+            <p class="font-heading font-bold text-zinc-300 text-sm">
                 REPARO DE <span class="gradient-gold-text">SUCESSO</span>
             </p>
             <p>© 2026 Reparo de Sucesso - Todos os direitos reservados.</p>
-            <p class="max-w-xl mx-auto text-zinc-600">
-                Aviso Legal: Os resultados podem variar conforme a aplicação do aluno. Este site não tem vínculo direto com o Facebook ou Google.
-            </p>
         </div>
     </footer>
 
-    <!-- Interactive Scripts -->
+    <!-- BARRA FIXA FLUTUANTE NO RODAPÉ DO CELULAR (STICKY MOBILE CTA) -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-md border-t border-amber-500/40 p-3 shadow-2xl flex items-center justify-between gap-3 sm:hidden">
+        <div>
+            <div class="text-[9px] text-amber-400 font-bold uppercase tracking-wider">Apenas 50 Vagas</div>
+            <div class="font-heading font-black text-amber-300 text-base">R$ 147,00 <span class="text-[9px] text-zinc-400 font-normal">à vista</span></div>
+        </div>
+        <a href="https://pay.kiwify.com.br/SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="btn-gold font-black text-xs px-5 py-3 rounded-xl shadow-glow uppercase tracking-wider text-center flex-1 max-w-[180px]">
+            Garantir Vaga <i class="fa-solid fa-arrow-right ml-1"></i>
+        </a>
+    </div>
+
+    <!-- Scripts de Interatividade Mobile -->
     <script>
-        // Profit Calculator Logic
+        // Simulador de Lucros Interativo
         const repairRange = document.getElementById('repair-range');
         const repairsCount = document.getElementById('repairs-count');
         const monthlyTotal = document.getElementById('monthly-total');
@@ -689,11 +642,11 @@
         repairRange.addEventListener('input', (e) => {
             const count = parseInt(e.target.value);
             repairsCount.textContent = `${count} serviço${count > 1 ? 's' : ''}`;
-            const total = count * 120 * 4; // 120 BRL average profit per repair * 4 weeks
+            const total = count * 120 * 4;
             monthlyTotal.textContent = `R$ ${total.toLocaleString('pt-BR')},00`;
         });
 
-        // FAQ Accordion Toggle
+        // FAQ Accordion
         const faqBtns = document.querySelectorAll('.faq-btn');
         faqBtns.forEach(btn => {
             btn.addEventListener('click', () => {
