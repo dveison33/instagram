@@ -136,7 +136,7 @@
                 <!-- Se o seu link for: https://youtu.be/abc123xyz                     -->
                 <!-- O ID é APENAS o código no final: abc123xyz                        -->
                 <!-- ================================================================= -->
-                <div id="video-container" class="relative w-full rounded-none sm:rounded-2xl overflow-hidden border-y-2 sm:border-2 border-amber-500/60 bg-zinc-900 shadow-glow aspect-video flex items-center justify-center">
+                <div id="video-container" class="relative w-full rounded-none sm:rounded-2xl overflow-hidden border-y-2 sm:border-2 border-amber-500/60 bg-zinc-900 shadow-glow aspect-video flex items-center justify-center transition-all duration-700 ease-in-out">
                     <iframe 
                         id="hero-video-iframe"
                         class="w-full h-full" 
@@ -634,6 +634,44 @@
 
     <!-- Scripts de Interatividade Mobile -->
     <script>
+        // Carrega a API do YouTube Iframe para detectar quando o vídeo termina
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('hero-video-iframe', {
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // Quando o estado do vídeo mudar (Ex: Quando Chegar ao Fim)
+        function onPlayerStateChange(event) {
+            // YT.PlayerState.ENDED (código 0) indica que o vídeo terminou
+            if (event.data === YT.PlayerState.ENDED || event.data === 0) {
+                const videoContainer = document.getElementById('video-container');
+                if (videoContainer) {
+                    // Animação de fechamento do vídeo
+                    videoContainer.style.opacity = '0';
+                    videoContainer.style.transform = 'scale(0.95)';
+                    
+                    setTimeout(() => {
+                        videoContainer.style.display = 'none';
+                        
+                        // Rola a página suavemente direto para a Oferta / Botão de Compra
+                        const checkoutSection = document.getElementById('garanta-sua-vaga');
+                        if (checkoutSection) {
+                            checkoutSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 600);
+                }
+            }
+        }
+
         // Simulador de Lucros Interativo
         const repairRange = document.getElementById('repair-range');
         const repairsCount = document.getElementById('repairs-count');
