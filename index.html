@@ -63,10 +63,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .bg-gold-gradient {
-            background: linear-gradient(135deg, #fde047 0%, #eab308 50%, #ca8a04 100%);
-        }
-
         /* Continuous subtle float animation for main logo */
         @keyframes logoMotion {
             0% { transform: translateY(0) scale(1) rotate(0deg); }
@@ -141,13 +137,9 @@
 </head>
 <body class="font-sans antialiased flex flex-col justify-between items-center py-3 sm:py-6 px-3 selection:bg-amber-400 selection:text-black">
 
-    <!-- Background Animated Dots -->
     <div id="starsContainer" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
-
-    <!-- Toast Notification Container -->
     <div id="toastContainer" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-xs space-y-2 pointer-events-none px-4"></div>
 
-    <!-- Container do App -->
     <main id="appContainer" class="w-full max-w-sm mx-auto z-10 my-auto flex flex-col justify-center min-h-[92vh] sm:min-h-0 sm:bg-neutral-950/85 sm:border sm:border-amber-500/30 sm:shadow-[0_0_60px_rgba(0,0,0,0.9)] sm:rounded-[42px] sm:p-5 sm:backdrop-blur-md">
 
         <!-- ================= TELA 1: MENU PRINCIPAL ================= -->
@@ -171,31 +163,12 @@
                 </div>
 
                 <p class="text-[12px] font-medium tracking-wide text-neutral-300 px-2 leading-snug">
-                    Seu próximo celular ou manutenção está aqui! 📱🔥<br>
-                    <span class="text-amber-200/90 text-[11px]">Escolha a opção desejada abaixo para iniciar o atendimento 👇</span>
+                    Seu próximo celular ou manutenção está aqui! 📱🔥
                 </p>
             </section>
 
             <!-- BOTÕES DO MENU -->
             <section class="space-y-2.5 max-w-[300px] mx-auto pt-1">
-                <!-- Comprar Aparelho -->
-                <button type="button" onclick="showScreen('screenComprar')" class="w-full bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-300 text-black p-3.5 rounded-2xl flex items-center justify-start gap-3.5 shadow-lg font-extrabold text-sm btn-effect">
-                    <div class="w-9 h-9 rounded-xl bg-black/10 flex items-center justify-center text-black text-base shrink-0">
-                        <i class="fa-solid fa-mobile-screen-button"></i>
-                    </div>
-                    <span class="truncate">Comprar Meu Celular</span>
-                    <i class="fa-solid fa-chevron-right ml-auto text-xs opacity-60"></i>
-                </button>
-
-                <!-- Assistência Técnica -->
-                <button type="button" onclick="showScreen('screenAssistencia')" class="w-full bg-[#161410] gold-border text-white p-3.5 rounded-2xl flex items-center justify-start gap-3.5 font-bold text-sm btn-effect hover:bg-neutral-900">
-                    <div class="w-9 h-9 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-base shrink-0">
-                        <i class="fa-solid fa-screwdriver-wrench"></i>
-                    </div>
-                    <span class="truncate">Assistência Técnica</span>
-                    <i class="fa-solid fa-chevron-right ml-auto text-xs opacity-40"></i>
-                </button>
-
                 <!-- WhatsApp Geral / Vendedores -->
                 <button type="button" onclick="showScreen('screenWhatsapp')" class="w-full bg-[#161410] gold-border text-white p-3.5 rounded-2xl flex items-center justify-start gap-3.5 font-bold text-sm btn-effect hover:bg-neutral-900 text-left">
                     <div class="w-9 h-9 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-lg shrink-0">
@@ -225,238 +198,213 @@
             </section>
         </div>
 
-        <!-- ================= TELA 2: COMPRAR APARELHO ================= -->
-        <div id="screenComprar" class="hidden screen-fade space-y-3 max-w-[300px] mx-auto w-full">
-            <button type="button" onclick="showScreen('screenMainMenu')" class="text-neutral-400 hover:text-amber-400 text-xs font-bold flex items-center gap-2 bg-neutral-900 px-3 py-2 rounded-xl border border-neutral-800 transition-colors">
-                <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
-            </button>
-
-            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-3.5">
-                <div class="text-center space-y-1">
-                    <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-lg rounded-xl flex items-center justify-center mx-auto mb-1">
-                        <i class="fa-solid fa-mobile-screen-button"></i>
-                    </div>
-                    <h3 class="text-base font-bold text-white">Comprar Aparelho</h3>
-                    <p class="text-[11px] text-neutral-400">Escolha o atendente e solicite cotação</p>
-                </div>
-
-                <!-- 1. VENDEDOR -->
-                <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">1. Escolha o Vendedor</label>
-                    <div class="grid grid-cols-3 gap-1.5" id="sellerBtnsBuy">
-                        <!-- Vinícius -->
-                        <button type="button" onclick="setSeller('buy', 'vinicius', this)" class="seller-btn-buy bg-neutral-900 border-neutral-800 text-neutral-300 py-2 px-1 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-1.5 transition-all hover:border-amber-400/50">
-                            <div class="relative w-10 h-10 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
-                                <!-- 📸 FOTO VINÍCIUS: Substitua o Link/URL entre as aspas do src="" abaixo -->
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" alt="Vinícius" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=V'">
-                                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black"></span>
-                            </div>
-                            <span class="truncate w-full text-center text-[11px]">Vinícius</span>
-                        </button>
-                        <!-- Marta (No Meio) -->
-                        <button type="button" onclick="setSeller('buy', 'marta', this)" class="seller-btn-buy bg-neutral-900 border-neutral-800 text-neutral-300 py-2 px-1 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-1.5 transition-all hover:border-amber-400/50">
-                            <div class="relative w-10 h-10 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
-                                <!-- 📸 FOTO MARTA: Substitua o Link/URL entre as aspas do src="" abaixo -->
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80" alt="Marta" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=M'">
-                                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black"></span>
-                            </div>
-                            <span class="truncate w-full text-center text-[11px]">Marta</span>
-                        </button>
-                        <!-- Keila -->
-                        <button type="button" onclick="setSeller('buy', 'keila', this)" class="seller-btn-buy bg-neutral-900 border-neutral-800 text-neutral-300 py-2 px-1 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-1.5 transition-all hover:border-amber-400/50">
-                            <div class="relative w-10 h-10 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
-                                <!-- 📸 FOTO KEILA: Substitua o Link/URL entre as aspas do src="" abaixo -->
-                                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&auto=format&fit=crop&q=80" alt="Keila" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=K'">
-                                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black"></span>
-                            </div>
-                            <span class="truncate w-full text-center text-[11px]">Keila</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 2. NOME -->
-                <div class="space-y-1 text-left">
-                    <label for="cName" class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">2. Seu Nome</label>
-                    <input type="text" id="cName" oninput="updateBuyLink()" placeholder="Digite seu nome..." class="w-full bg-neutral-900/90 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 transition-colors">
-                </div>
-
-                <!-- 3. MARCA -->
-                <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">3. Marca Desejada</label>
-                    <div class="grid grid-cols-3 gap-1.5" id="brandBtns">
-                        <button type="button" onclick="setBrand('Apple / iPhone', this)" class="b-btn bg-amber-400/20 border-amber-400 text-amber-300 py-2 rounded-xl text-xs font-bold border transition-all">Apple</button>
-                        <button type="button" onclick="setBrand('Samsung', this)" class="b-btn bg-neutral-900 border-neutral-800 text-neutral-300 py-2 rounded-xl text-xs font-bold border transition-all">Samsung</button>
-                        <button type="button" onclick="setBrand('Xiaomi', this)" class="b-btn bg-neutral-900 border-neutral-800 text-neutral-300 py-2 rounded-xl text-xs font-bold border transition-all">Xiaomi</button>
-                        <button type="button" onclick="setBrand('Motorola', this)" class="b-btn bg-neutral-900 border-neutral-800 text-neutral-300 py-2 rounded-xl text-xs font-bold border transition-all">Motorola</button>
-                        <button type="button" onclick="setBrand('Realme', this)" class="b-btn bg-neutral-900 border-neutral-800 text-neutral-300 py-2 rounded-xl text-xs font-bold border transition-all">Realme</button>
-                        <button type="button" onclick="setBrand('Outra Marca', this)" class="b-btn bg-neutral-900 border-neutral-800 text-neutral-300 py-2 rounded-xl text-xs font-bold border transition-all">Outra</button>
-                    </div>
-                </div>
-
-                <!-- 4. MODELO -->
-                <div class="space-y-1 text-left">
-                    <label for="cModel" class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">4. Modelo Específico</label>
-                    <input type="text" id="cModel" oninput="updateBuyLink()" placeholder="Ex: iPhone 13, Galaxy S23, Redmi Note 13..." class="w-full bg-neutral-900/90 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 transition-colors">
-                </div>
-
-                <!-- BOTÃO AÇÃO -->
-                <a id="buyWhatsappBtn" href="#" onclick="return handleSellerClick(event, 'buy')" class="block w-full py-3.5 bg-gradient-to-r from-amber-400 to-yellow-300 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1 btn-effect">
-                    <i class="fa-brands fa-whatsapp mr-1.5 text-base"></i> Chamar Vendedor
-                </a>
-            </div>
-        </div>
-
-        <!-- ================= TELA 3: ASSISTÊNCIA TÉCNICA ================= -->
-        <div id="screenAssistencia" class="hidden screen-fade space-y-3 max-w-[300px] mx-auto w-full">
-            <button type="button" onclick="showScreen('screenMainMenu')" class="text-neutral-400 hover:text-amber-400 text-xs font-bold flex items-center gap-2 bg-neutral-900 px-3 py-2 rounded-xl border border-neutral-800 transition-colors">
-                <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
-            </button>
-
-            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-3.5">
-                <div class="text-center space-y-1">
-                    <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-lg rounded-xl flex items-center justify-center mx-auto mb-1">
-                        <i class="fa-solid fa-screwdriver-wrench"></i>
-                    </div>
-                    <h3 class="text-base font-bold text-white">Assistência Técnica</h3>
-                    <p class="text-[11px] text-neutral-400">Solicite um orçamento sem compromisso</p>
-                </div>
-
-                <!-- 1. ATENDENTE -->
-                <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">1. Escolha o Atendente</label>
-                    <div class="grid grid-cols-3 gap-1.5" id="sellerBtnsService">
-                        <!-- Vinícius -->
-                        <button type="button" onclick="setSeller('service', 'vinicius', this)" class="seller-btn-service bg-neutral-900 border-neutral-800 text-neutral-300 py-2 px-1 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-1.5 transition-all hover:border-amber-400/50">
-                            <div class="relative w-10 h-10 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
-                                <!-- 📸 FOTO VINÍCIUS: Substitua o Link/URL entre as aspas do src="" abaixo -->
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" alt="Vinícius" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=V'">
-                                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black"></span>
-                            </div>
-                            <span class="truncate w-full text-center text-[11px]">Vinícius</span>
-                        </button>
-                        <!-- Marta (No Meio) -->
-                        <button type="button" onclick="setSeller('service', 'marta', this)" class="seller-btn-service bg-neutral-900 border-neutral-800 text-neutral-300 py-2 px-1 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-1.5 transition-all hover:border-amber-400/50">
-                            <div class="relative w-10 h-10 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
-                                <!-- 📸 FOTO MARTA: Substitua o Link/URL entre as aspas do src="" abaixo -->
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80" alt="Marta" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=M'">
-                                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black"></span>
-                            </div>
-                            <span class="truncate w-full text-center text-[11px]">Marta</span>
-                        </button>
-                        <!-- Keila -->
-                        <button type="button" onclick="setSeller('service', 'keila', this)" class="seller-btn-service bg-neutral-900 border-neutral-800 text-neutral-300 py-2 px-1 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-1.5 transition-all hover:border-amber-400/50">
-                            <div class="relative w-10 h-10 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
-                                <!-- 📸 FOTO KEILA: Substitua o Link/URL entre as aspas do src="" abaixo -->
-                                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&auto=format&fit=crop&q=80" alt="Keila" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=K'">
-                                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black"></span>
-                            </div>
-                            <span class="truncate w-full text-center text-[11px]">Keila</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 2. NOME -->
-                <div class="space-y-1 text-left">
-                    <label for="aName" class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">2. Seu Nome</label>
-                    <input type="text" id="aName" oninput="updateServiceLink()" placeholder="Digite seu nome..." class="w-full bg-neutral-900/90 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 transition-colors">
-                </div>
-
-                <!-- 3. MODELO -->
-                <div class="space-y-1 text-left">
-                    <label for="aModel" class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">3. Modelo do Aparelho</label>
-                    <input type="text" id="aModel" oninput="updateServiceLink()" placeholder="Ex: iPhone 11, Moto G8, Galaxy A32..." class="w-full bg-neutral-900/90 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 transition-colors">
-                </div>
-
-                <!-- ATALHOS RÁPIDOS DE DEFEITO -->
-                <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">4. Atalhos de Defeito Comum</label>
-                    <div class="flex flex-wrap gap-1">
-                        <button type="button" onclick="appendDefect('Troca de Tela/Visor')" class="text-[10px] bg-neutral-800 hover:bg-neutral-700 text-neutral-200 px-2 py-1 rounded-lg border border-neutral-700">📱 Tela Quebrada</button>
-                        <button type="button" onclick="appendDefect('Troca de Bateria')" class="text-[10px] bg-neutral-800 hover:bg-neutral-700 text-neutral-200 px-2 py-1 rounded-lg border border-neutral-700">🔋 Bateria viciada</button>
-                        <button type="button" onclick="appendDefect('Não carrega / Conector')" class="text-[10px] bg-neutral-800 hover:bg-neutral-700 text-neutral-200 px-2 py-1 rounded-lg border border-neutral-700">⚡ Não carrega</button>
-                    </div>
-                </div>
-
-                <!-- 5. DEFEITO -->
-                <div class="space-y-1 text-left">
-                    <label for="aDefect" class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">5. Descrição do Defeito</label>
-                    <textarea id="aDefect" oninput="updateServiceLink()" rows="2" placeholder="Descreva o problema..." class="w-full bg-neutral-900/90 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 resize-none transition-colors"></textarea>
-                </div>
-
-                <a id="serviceWhatsappBtn" href="#" onclick="return handleSellerClick(event, 'service')" class="block w-full py-3.5 bg-gradient-to-r from-amber-400 to-yellow-300 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1 btn-effect">
-                    <i class="fa-brands fa-whatsapp mr-1.5 text-base"></i> Solicitar Orçamento
-                </a>
-            </div>
-        </div>
-
-        <!-- ================= TELA 4: WHATSAPP DIRETO ================= -->
+        <!-- ================= TELA 2: WHATSAPP PASSO A PASSO (WIZARD) ================= -->
         <div id="screenWhatsapp" class="hidden screen-fade space-y-3 max-w-[300px] mx-auto w-full">
-            <button type="button" onclick="showScreen('screenMainMenu')" class="text-neutral-400 hover:text-amber-400 text-xs font-bold flex items-center gap-2 bg-neutral-900 px-3 py-2 rounded-xl border border-neutral-800 transition-colors">
-                <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
-            </button>
+            <!-- NAVEGAÇÃO DE TOPO -->
+            <div class="flex items-center justify-between gap-2">
+                <button type="button" onclick="prevStep()" class="text-neutral-400 hover:text-amber-400 text-xs font-bold flex items-center gap-1.5 bg-neutral-900 px-3 py-1.5 rounded-xl border border-neutral-800 transition-colors">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar
+                </button>
+                <span id="waStepIndicatorText" class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider bg-amber-400/10 px-2.5 py-1 rounded-lg border border-amber-400/20">
+                    Etapa 1 de 4
+                </span>
+            </div>
 
-            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-3.5">
-                <div class="text-center space-y-1">
-                    <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xl rounded-xl flex items-center justify-center mx-auto mb-1">
-                        <i class="fa-brands fa-whatsapp"></i>
+            <!-- BARRA DE PROGRESSO -->
+            <div class="w-full bg-neutral-900 rounded-full h-1.5 overflow-hidden border border-neutral-800">
+                <div id="waProgressBar" class="bg-gradient-to-r from-amber-500 to-yellow-300 h-full transition-all duration-300" style="width: 25%;"></div>
+            </div>
+
+            <!-- CARD PRINCIPAL DAS PERGUNTAS -->
+            <div class="bg-[#161410] gold-border rounded-2xl p-4 sm:p-5 space-y-4">
+                
+                <!-- PERGUNTA 1: PRODUTO / SERVIÇO -->
+                <div id="waStep1" class="space-y-3 screen-fade">
+                    <div class="text-center space-y-1">
+                        <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-lg rounded-xl flex items-center justify-center mx-auto">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+                        <h3 id="waStep1Title" class="text-base font-bold text-white">O que você procura?</h3>
+                        <p id="waStep1Sub" class="text-[11px] text-neutral-400">Selecione uma opção para continuar</p>
                     </div>
-                    <h3 class="text-base font-bold text-white">Fale com um Atendente</h3>
-                    <p class="text-[11px] text-neutral-400">Escolha o membro da equipe</p>
+
+                    <!-- CATEGORIAS PRINCIPAIS -->
+                    <div class="grid grid-cols-1 gap-2" id="subjectBtns">
+                        <button type="button" onclick="handleMainSubject('Acessórios', this)" class="subj-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2 text-sm"><span class="text-lg">🎧</span> Acessórios</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+                        <button type="button" onclick="setSubject('Android', this)" class="subj-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2 text-sm"><i class="fa-brands fa-android text-lg text-emerald-400"></i> Android</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+                        <button type="button" onclick="setSubject('iPhone', this)" class="subj-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2 text-sm"><i class="fa-brands fa-apple text-lg"></i> iPhone</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+                        <button type="button" onclick="setSubject('Assistência Técnica', this)" class="subj-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-3 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2 text-sm"><span class="text-lg">🛠️</span> Assistência Técnica</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+                    </div>
+
+                    <!-- SUB-MENU DE ACESSÓRIOS -->
+                    <div class="grid grid-cols-1 gap-2 hidden" id="accessorySubBtns">
+                        <button type="button" onclick="setAccessory('Fone', this)" class="acc-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-2.5 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2"><span class="text-base">🎧</span> Fone</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+                        <button type="button" onclick="setAccessory('Película', this)" class="acc-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-2.5 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2"><span class="text-base">🛡️</span> Película</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+                        <button type="button" onclick="setAccessory('Capinha', this)" class="acc-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-2.5 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2"><span class="text-base">📱</span> Capinha</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+                        <button type="button" onclick="setAccessory('Caixinha', this)" class="acc-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-2.5 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2"><span class="text-base">🔊</span> Caixinha</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+                        <button type="button" onclick="setAccessory('Carregador', this)" class="acc-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-2.5 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2"><span class="text-base">🔌</span> Carregador</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+                        <button type="button" onclick="toggleAccessoryOther(this)" class="acc-btn bg-neutral-900 border-neutral-800 text-neutral-300 p-2.5 rounded-xl text-xs font-bold border transition-all flex items-center justify-between hover:border-amber-400/50">
+                            <span class="flex items-center gap-2"><span class="text-base">❓</span> Outros</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-40"></i>
+                        </button>
+
+                        <!-- CAMPO DE DESCRIÇÃO QUANDO APERTA EM "OUTROS" -->
+                        <div id="accOtherInputContainer" class="hidden space-y-2 pt-1 border-t border-neutral-800 mt-1">
+                            <label for="accOtherText" class="text-[10px] font-bold text-amber-300 uppercase block tracking-wider text-left">Descreva o acessório:</label>
+                            <input type="text" id="accOtherText" placeholder="Ex: Suporte para carro, cabo HDMI..." class="w-full bg-neutral-900 border border-neutral-700 text-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-amber-400">
+                            <button type="button" onclick="confirmAccessoryOther()" class="w-full py-2.5 bg-gradient-to-r from-amber-400 to-yellow-300 text-black font-extrabold text-xs rounded-xl shadow btn-effect">
+                                Confirmar e Avançar <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+
+                        <button type="button" onclick="resetToMainSubjects()" class="text-[11px] text-neutral-400 hover:text-amber-400 text-center w-full pt-1 transition-colors flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-arrow-left text-[10px]"></i> Voltar às categorias
+                        </button>
+                    </div>
                 </div>
 
-                <!-- 1. ATENDENTE -->
-                <div class="space-y-1 text-left">
-                    <label class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">1. Escolha o Atendente</label>
-                    <div class="grid grid-cols-3 gap-1.5" id="sellerBtnsGeneral">
+                <!-- PERGUNTA 2: NOME DO CLIENTE -->
+                <div id="waStep2" class="hidden space-y-3 screen-fade">
+                    <div class="text-center space-y-1">
+                        <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-lg rounded-xl flex items-center justify-center mx-auto">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Qual é o seu nome?</h3>
+                        <p class="text-[11px] text-neutral-400">Para personalizar seu atendimento</p>
+                    </div>
+
+                    <div class="space-y-2 py-2">
+                        <input type="text" id="wName" oninput="updateGeneralWhatsappLink()" placeholder="Digite seu nome completo..." class="w-full bg-neutral-900/90 border border-neutral-700 text-white rounded-xl px-3.5 py-3 text-sm focus:outline-none focus:border-amber-400 transition-colors">
+                    </div>
+
+                    <button type="button" onclick="nextStep(2)" class="w-full py-3.5 bg-gradient-to-r from-amber-400 to-yellow-300 text-black font-extrabold text-xs rounded-xl shadow-lg btn-effect">
+                        Próximo Passo <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- PERGUNTA 3: SELEÇÃO DE ATENDENTE -->
+                <div id="waStep3" class="hidden space-y-3 screen-fade">
+                    <div class="text-center space-y-1">
+                        <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-lg rounded-xl flex items-center justify-center mx-auto">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Escolha o Atendente</h3>
+                        <p class="text-[11px] text-neutral-400">Quem você gostaria que te atenda?</p>
+                    </div>
+
+                    <div class="flex flex-col gap-2" id="sellerBtnsGeneral">
                         <!-- Vinícius -->
-                        <button type="button" onclick="setSeller('general', 'vinicius', this)" class="seller-btn-general bg-neutral-900 border-neutral-800 text-neutral-300 py-2 px-1 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-1.5 transition-all hover:border-amber-400/50">
-                            <div class="relative w-10 h-10 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
-                                <!-- 📸 FOTO VINÍCIUS: Substitua o Link/URL entre as aspas do src="" abaixo -->
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" alt="Vinícius" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=V'">
+                        <button type="button" onclick="setSeller('general', 'vinicius', this)" class="seller-btn-general bg-neutral-900 border-neutral-800 text-neutral-300 py-2.5 px-3 rounded-xl text-xs font-bold border flex items-center gap-3 transition-all hover:border-amber-400/50 text-left">
+                            <div class="relative w-9 h-9 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
+                                <!-- 📸 [ALTERAR FOTO DO VINÍCIUS]: Mude o link no 'src' abaixo para a imagem desejada -->
+                                <img src="vinicius.jpeg" alt="Vinícius" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=V'">
                                 <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black"></span>
                             </div>
-                            <span class="truncate w-full text-center text-[11px]">Vinícius</span>
+                            <div class="flex flex-col grow">
+                                <span class="text-xs font-bold text-white">Vinícius</span>
+                                <span class="text-[10px] text-neutral-400 font-medium">Atendente Online</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[10px] opacity-40 ml-auto"></i>
                         </button>
-                        <!-- Marta (No Meio) -->
-                        <button type="button" onclick="setSeller('general', 'marta', this)" class="seller-btn-general bg-neutral-900 border-neutral-800 text-neutral-300 py-2 px-1 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-1.5 transition-all hover:border-amber-400/50">
-                            <div class="relative w-10 h-10 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
-                                <!-- 📸 FOTO MARTA: Substitua o Link/URL entre as aspas do src="" abaixo -->
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80" alt="Marta" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=M'">
+
+                        <!-- Guadalupe (No Meio) -->
+                        <button type="button" onclick="setSeller('general', 'guadalupe', this)" class="seller-btn-general bg-neutral-900 border-neutral-800 text-neutral-300 py-2.5 px-3 rounded-xl text-xs font-bold border flex items-center gap-3 transition-all hover:border-amber-400/50 text-left">
+                            <div class="relative w-9 h-9 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
+                                <!-- 📸 [ALTERAR FOTO DA GUADALUPE]: Mude o link no 'src' abaixo para a imagem desejada -->
+                                <img src="guadalupe.jpeg" alt="Guadalupe" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=G'">
                                 <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black"></span>
                             </div>
-                            <span class="truncate w-full text-center text-[11px]">Marta</span>
+                            <div class="flex flex-col grow">
+                                <span class="text-xs font-bold text-white">Guadalupe</span>
+                                <span class="text-[10px] text-neutral-400 font-medium">Atendente Online</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[10px] opacity-40 ml-auto"></i>
                         </button>
+
                         <!-- Keila -->
-                        <button type="button" onclick="setSeller('general', 'keila', this)" class="seller-btn-general bg-neutral-900 border-neutral-800 text-neutral-300 py-2 px-1 rounded-xl text-xs font-bold border text-center flex flex-col items-center justify-center gap-1.5 transition-all hover:border-amber-400/50">
-                            <div class="relative w-10 h-10 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
-                                <!-- 📸 FOTO KEILA: Substitua o Link/URL entre as aspas do src="" abaixo -->
-                                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&auto=format&fit=crop&q=80" alt="Keila" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=K'">
+                        <button type="button" onclick="setSeller('general', 'keila', this)" class="seller-btn-general bg-neutral-900 border-neutral-800 text-neutral-300 py-2.5 px-3 rounded-xl text-xs font-bold border flex items-center gap-3 transition-all hover:border-amber-400/50 text-left">
+                            <div class="relative w-9 h-9 rounded-full overflow-hidden border border-amber-400/30 bg-neutral-800 shrink-0">
+                                <!-- 📸 [ALTERAR FOTO DA KEILA]: Mude o link no 'src' abaixo para a imagem desejada -->
+                                <img src="keila.jpeg" alt="Keila" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/1a1a1a/facc15?text=K'">
                                 <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border border-black"></span>
                             </div>
-                            <span class="truncate w-full text-center text-[11px]">Keila</span>
+                            <div class="flex flex-col grow">
+                                <span class="text-xs font-bold text-white">Keila</span>
+                                <span class="text-[10px] text-neutral-400 font-medium">Atendente Online</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[10px] opacity-40 ml-auto"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- 2. NOME -->
-                <div class="space-y-1 text-left">
-                    <label for="wName" class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">2. Seu Nome</label>
-                    <input type="text" id="wName" oninput="updateGeneralWhatsappLink()" placeholder="Digite seu nome..." class="w-full bg-neutral-900/90 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 transition-colors">
+                <!-- PERGUNTA 4: OBSERVAÇÃO & CONFIRMAÇÃO -->
+                <div id="waStep4" class="hidden space-y-3 screen-fade">
+                    <div class="text-center space-y-1">
+                        <div class="w-10 h-10 bg-amber-400/10 border border-amber-400/30 text-amber-400 text-lg rounded-xl flex items-center justify-center mx-auto">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Finalizar Atendimento</h3>
+                        <p class="text-[11px] text-neutral-400">Confira suas escolhas e adicione observações</p>
+                    </div>
+
+                    <!-- RESUMO DAS ESCOLHAS -->
+                    <div class="bg-neutral-900/90 rounded-xl p-3 border border-neutral-800 space-y-1.5 text-xs text-left">
+                        <div class="flex justify-between items-center text-neutral-400 border-b border-neutral-800/80 pb-1.5">
+                            <span>Assunto:</span>
+                            <span id="summarySubject" class="text-amber-400 font-bold">Não selecionado</span>
+                        </div>
+                        <div class="flex justify-between items-center text-neutral-400 border-b border-neutral-800/80 pb-1.5">
+                            <span>Nome:</span>
+                            <span id="summaryName" class="text-white font-bold">Não informado</span>
+                        </div>
+                        <div class="flex justify-between items-center text-neutral-400">
+                            <span>Atendente:</span>
+                            <span id="summarySeller" class="text-amber-400 font-bold">Não escolhido</span>
+                        </div>
+                    </div>
+
+                    <!-- INPUT MENSAGEM / OBSERVAÇÃO -->
+                    <div class="space-y-1 text-left">
+                        <label for="wMessage" class="text-[10px] font-bold text-amber-300 uppercase block tracking-wider">Observação / Modelo (Opcional)</label>
+                        <textarea id="wMessage" oninput="updateGeneralWhatsappLink()" rows="2" placeholder="Ex: Dúvida sobre valor, modelo do celular..." class="w-full bg-neutral-900/90 border border-neutral-700 text-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-amber-400 resize-none transition-colors"></textarea>
+                    </div>
+
+                    <a id="generalWhatsappBtn" href="#" onclick="return handleSellerClick(event, 'general')" class="block w-full py-3.5 bg-gradient-to-r from-amber-400 to-yellow-300 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1 btn-effect">
+                        <i class="fa-brands fa-whatsapp mr-1.5 text-base"></i> Abrir no WhatsApp
+                    </a>
                 </div>
 
-                <!-- 3. MENSAGEM -->
-                <div class="space-y-1 text-left">
-                    <label for="wMessage" class="text-[11px] font-bold text-amber-300 uppercase block tracking-wider">3. Sua Mensagem (Opcional)</label>
-                    <textarea id="wMessage" oninput="updateGeneralWhatsappLink()" rows="2" placeholder="Como podemos te ajudar hoje?" class="w-full bg-neutral-900/90 border border-neutral-700 text-white rounded-xl px-3 py-2 text-base sm:text-xs focus:outline-none focus:border-amber-400 resize-none transition-colors"></textarea>
-                </div>
-
-                <a id="generalWhatsappBtn" href="#" onclick="return handleSellerClick(event, 'general')" class="block w-full py-3.5 bg-gradient-to-r from-amber-400 to-yellow-300 text-black text-center font-extrabold text-sm rounded-xl shadow-lg mt-1 btn-effect">
-                    <i class="fa-brands fa-whatsapp mr-1.5 text-base"></i> Iniciar Conversa
-                </a>
             </div>
         </div>
 
-        <!-- ================= TELA 5: LOCALIZAÇÃO ================= -->
+        <!-- ================= TELA 3: LOCALIZAÇÃO ================= -->
         <div id="screenLocalizacao" class="hidden screen-fade space-y-3.5 max-w-[300px] mx-auto w-full">
             <button type="button" onclick="showScreen('screenMainMenu')" class="text-neutral-400 hover:text-amber-400 text-xs font-bold flex items-center gap-2 bg-neutral-900 px-3 py-2 rounded-xl border border-neutral-800 transition-colors">
                 <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
@@ -488,7 +436,7 @@
             </div>
         </div>
 
-        <!-- ================= TELA 6: AVALIAÇÃO ================= -->
+        <!-- ================= TELA 4: AVALIAÇÃO ================= -->
         <div id="screenAvaliacao" class="hidden screen-fade space-y-3.5 max-w-[300px] mx-auto w-full">
             <button type="button" onclick="showScreen('screenMainMenu')" class="text-neutral-400 hover:text-amber-400 text-xs font-bold flex items-center gap-2 bg-neutral-900 px-3 py-2 rounded-xl border border-neutral-800 transition-colors">
                 <i class="fa-solid fa-arrow-left"></i> Voltar ao Menu
@@ -533,53 +481,204 @@
                 vinicius: {
                     name: "Vinícius",
                     phone: "5588988545200",
-                    // 📸 FOTO DE VINÍCIUS: Altere a URL/link entre as aspas abaixo
+                    /* 📸 [ALTERAR FOTO VINÍCIUS AQUI EM JS] */
                     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80"
                 },
-                marta: {
-                    name: "Marta",
+                guadalupe: {
+                    name: "Guadalupe",
                     phone: "5588981443470",
-                    // 📸 FOTO DE MARTA: Altere a URL/link entre as aspas abaixo
+                    /* 📸 [ALTERAR FOTO GUADALUPE AQUI EM JS] */
                     avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80"
                 },
                 keila: {
                     name: "Keila",
                     phone: "5588994596846",
-                    // 📸 FOTO DE KEILA: Altere a URL/link entre as aspas abaixo
+                    /* 📸 [ALTERAR FOTO KEILA AQUI EM JS] */
                     avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=120&auto=format&fit=crop&q=80"
                 }
             }
         };
 
-        let selectedBrand = 'Apple / iPhone';
+        let selectedSubject = '';
+        let currentStep = 1;
         
         // Estado dos vendedores selecionados por tela
         let selectedSellers = {
-            buy: '',
-            service: '',
-            general: ''
+            general: '',
+            generalKey: ''
         };
 
         function showScreen(screenId) {
             const screens = [
-                'screenMainMenu', 
-                'screenComprar', 
-                'screenAssistencia', 
-                'screenWhatsapp', 
-                'screenLocalizacao', 
+                'screenMainMenu',
+                'screenWhatsapp',
+                'screenLocalizacao',
                 'screenAvaliacao'
             ];
-
+            
             screens.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.add('hidden');
+                const screenEl = document.getElementById(id);
+                if (screenEl) {
+                    if (id === screenId) {
+                        screenEl.classList.remove('hidden');
+                    } else {
+                        screenEl.classList.add('hidden');
+                    }
+                }
             });
 
-            const targetScreen = document.getElementById(screenId);
-            if (targetScreen) {
-                targetScreen.classList.remove('hidden');
+            if (screenId === 'screenWhatsapp') {
+                resetToMainSubjects();
+                showStep(1);
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showStep(stepNumber) {
+            currentStep = stepNumber;
+            for (let i = 1; i <= 4; i++) {
+                const stepEl = document.getElementById(`waStep${i}`);
+                if (stepEl) {
+                    if (i === stepNumber) {
+                        stepEl.classList.remove('hidden');
+                    } else {
+                        stepEl.classList.add('hidden');
+                    }
+                }
+            }
+
+            // Atualiza barra de progresso e indicador de topo
+            const progressEl = document.getElementById('waProgressBar');
+            if (progressEl) {
+                progressEl.style.width = `${(stepNumber / 4) * 100}%`;
+            }
+
+            const indicatorText = document.getElementById('waStepIndicatorText');
+            if (indicatorText) {
+                indicatorText.textContent = `Etapa ${stepNumber} de 4`;
+            }
+
+            if (stepNumber === 4) {
+                updateSummary();
+            }
+        }
+
+        function nextStep(fromStep) {
+            if (fromStep === 1 && !selectedSubject) {
+                showToast('⚠️ Escolha uma das opções para continuar!');
+                return;
+            }
+            if (fromStep === 3 && !selectedSellers.general) {
+                showToast('⚠️ Escolha um atendente para continuar!');
+                return;
+            }
+            if (fromStep < 4) {
+                showStep(fromStep + 1);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep === 1) {
+                const subBtns = document.getElementById('accessorySubBtns');
+                if (subBtns && !subBtns.classList.contains('hidden')) {
+                    resetToMainSubjects();
+                    return;
+                }
+                showScreen('screenMainMenu');
+                return;
+            }
+
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
+            }
+        }
+
+        function handleMainSubject(subject, btnElement) {
+            if (subject === 'Acessórios') {
+                document.getElementById('subjectBtns').classList.add('hidden');
+                document.getElementById('accessorySubBtns').classList.remove('hidden');
+                document.getElementById('waStep1Title').textContent = 'Qual Acessório?';
+                document.getElementById('waStep1Sub').textContent = 'Selecione o tipo de acessório desejado';
+            } else {
+                setSubject(subject, btnElement);
+            }
+        }
+
+        function resetToMainSubjects() {
+            const subjBtns = document.getElementById('subjectBtns');
+            const subBtns = document.getElementById('accessorySubBtns');
+            const otherContainer = document.getElementById('accOtherInputContainer');
+
+            if (subjBtns) subjBtns.classList.remove('hidden');
+            if (subBtns) subBtns.classList.add('hidden');
+            if (otherContainer) otherContainer.classList.add('hidden');
+
+            const titleEl = document.getElementById('waStep1Title');
+            const subEl = document.getElementById('waStep1Sub');
+            if (titleEl) titleEl.textContent = 'O que você procura?';
+            if (subEl) subEl.textContent = 'Selecione uma opção para continuar';
+        }
+
+        function setAccessory(accName, btnElement) {
+            selectedSubject = `Acessórios - ${accName}`;
+            
+            document.querySelectorAll('.acc-btn').forEach(b => {
+                b.classList.remove('bg-amber-400/20', 'border-amber-400', 'text-amber-300', 'gold-border-glow');
+                b.classList.add('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
+            });
+            btnElement.classList.remove('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
+            btnElement.classList.add('bg-amber-400/20', 'border-amber-400', 'text-amber-300', 'gold-border-glow');
+
+            document.getElementById('accOtherInputContainer').classList.add('hidden');
+
+            updateGeneralWhatsappLink();
+            
+            setTimeout(() => {
+                nextStep(1);
+            }, 250);
+        }
+
+        function toggleAccessoryOther(btnElement) {
+            document.querySelectorAll('.acc-btn').forEach(b => {
+                b.classList.remove('bg-amber-400/20', 'border-amber-400', 'text-amber-300', 'gold-border-glow');
+                b.classList.add('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
+            });
+            btnElement.classList.remove('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
+            btnElement.classList.add('bg-amber-400/20', 'border-amber-400', 'text-amber-300', 'gold-border-glow');
+
+            const otherContainer = document.getElementById('accOtherInputContainer');
+            otherContainer.classList.remove('hidden');
+            const inputField = document.getElementById('accOtherText');
+            if (inputField) inputField.focus();
+        }
+
+        function confirmAccessoryOther() {
+            const inputField = document.getElementById('accOtherText');
+            const detail = inputField ? inputField.value.trim() : '';
+
+            if (!detail) {
+                showToast('⚠️ Descreva qual acessório você procura!');
+                return;
+            }
+
+            selectedSubject = `Acessórios - Outros (${detail})`;
+            updateGeneralWhatsappLink();
+            nextStep(1);
+        }
+
+        function setSubject(subject, btnElement) {
+            selectedSubject = subject;
+            document.querySelectorAll('.subj-btn').forEach(b => {
+                b.classList.remove('bg-amber-400/20', 'border-amber-400', 'text-amber-300', 'gold-border-glow');
+                b.classList.add('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
+            });
+            btnElement.classList.remove('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
+            btnElement.classList.add('bg-amber-400/20', 'border-amber-400', 'text-amber-300', 'gold-border-glow');
+            
+            updateGeneralWhatsappLink();
+            
+            setTimeout(() => {
+                nextStep(1);
+            }, 250);
         }
 
         function setSeller(type, sellerKey, btnElement) {
@@ -587,15 +686,9 @@
             if (!sellerObj) return;
 
             selectedSellers[type] = sellerObj.phone;
+            selectedSellers[`${type}Key`] = sellerKey;
 
-            // Atualiza classe visual dos botões do tipo correspondente
-            const selectorMap = {
-                buy: '.seller-btn-buy',
-                service: '.seller-btn-service',
-                general: '.seller-btn-general'
-            };
-
-            const selector = selectorMap[type];
+            const selector = '.seller-btn-general';
             document.querySelectorAll(selector).forEach(btn => {
                 btn.classList.remove('bg-amber-400/20', 'border-amber-400', 'text-amber-300', 'gold-border-glow');
                 btn.classList.add('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
@@ -604,15 +697,35 @@
             btnElement.classList.remove('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
             btnElement.classList.add('bg-amber-400/20', 'border-amber-400', 'text-amber-300', 'gold-border-glow');
 
-            // Atualiza os links dinamicamente
-            if (type === 'buy') updateBuyLink();
-            if (type === 'service') updateServiceLink();
-            if (type === 'general') updateGeneralWhatsappLink();
+            updateGeneralWhatsappLink();
+
+            // Avança automaticamente após selecionar o atendente
+            setTimeout(() => {
+                nextStep(3);
+            }, 250);
+        }
+
+        function updateSummary() {
+            const nameInput = document.getElementById('wName');
+            const name = nameInput ? nameInput.value.trim() : '';
+
+            const summarySubjectEl = document.getElementById('summarySubject');
+            const summaryNameEl = document.getElementById('summaryName');
+            const summarySellerEl = document.getElementById('summarySeller');
+
+            if (summarySubjectEl) summarySubjectEl.textContent = selectedSubject || 'Não selecionado';
+            if (summaryNameEl) summaryNameEl.textContent = name || 'Não informado';
+            
+            if (summarySellerEl) {
+                const sellerKey = selectedSellers.generalKey;
+                const sellerObj = STORE_CONFIG.sellers[sellerKey];
+                summarySellerEl.textContent = sellerObj ? sellerObj.name : 'Não escolhido';
+            }
         }
 
         function validateSeller(type) {
             if (!selectedSellers[type]) {
-                showToast('⚠️ Escolha Vinícius, Marta ou Keila antes de continuar!');
+                showToast('⚠️ Escolha Vinícius, Guadalupe ou Keila antes de continuar!');
                 return false;
             }
             return true;
@@ -626,68 +739,26 @@
             return true;
         }
 
-        function setBrand(brand, btnElement) {
-            selectedBrand = brand;
-            document.querySelectorAll('.b-btn').forEach(b => {
-                b.classList.remove('bg-amber-400/20', 'border-amber-400', 'text-amber-300');
-                b.classList.add('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
-            });
-            btnElement.classList.remove('bg-neutral-900', 'border-neutral-800', 'text-neutral-300');
-            btnElement.classList.add('bg-amber-400/20', 'border-amber-400', 'text-amber-300');
-            updateBuyLink();
-        }
-
-        function updateBuyLink() {
-            if (!selectedSellers.buy) return;
-            const name = document.getElementById('cName').value.trim();
-            const model = document.getElementById('cModel').value.trim();
-            const modelStr = model ? ` (${model})` : '';
-            const greeting = name ? `Olá! Me chamo *${encodeURIComponent(name)}*` : `Olá!`;
-
-            const msg = `${greeting}, gostaria de consultar o preço e disponibilidade do celular: *${encodeURIComponent(selectedBrand)}${encodeURIComponent(modelStr)}*.`;
-            document.getElementById('buyWhatsappBtn').href = `https://wa.me/${selectedSellers.buy}?text=${msg}`;
-        }
-
-        function appendDefect(text) {
-            const textarea = document.getElementById('aDefect');
-            if (!textarea) return;
-            if (textarea.value.trim().length === 0) {
-                textarea.value = text;
-            } else if (!textarea.value.includes(text)) {
-                textarea.value += `, ${text}`;
-            }
-            updateServiceLink();
-        }
-
-        function updateServiceLink() {
-            if (!selectedSellers.service) return;
-            const name = document.getElementById('aName').value.trim();
-            const model = document.getElementById('aModel').value.trim();
-            const defect = document.getElementById('aDefect').value.trim();
-
-            const greeting = name ? `Olá! Me chamo *${encodeURIComponent(name)}*` : `Olá!`;
-            const msg = `${greeting}, gostaria de um orçamento de assistência para o aparelho *${encodeURIComponent(model || 'Não informado')}*.%0A%0A*Defeito informado:* ${encodeURIComponent(defect || 'Não informado')}.`;
-            document.getElementById('serviceWhatsappBtn').href = `https://wa.me/${selectedSellers.service}?text=${msg}`;
-        }
-
         function updateGeneralWhatsappLink() {
             if (!selectedSellers.general) return;
-            const name = document.getElementById('wName').value.trim();
-            const customMsg = document.getElementById('wMessage').value.trim();
+            const nameInput = document.getElementById('wName');
+            const msgInput = document.getElementById('wMessage');
+            const name = nameInput ? nameInput.value.trim() : '';
+            const customMsg = msgInput ? msgInput.value.trim() : '';
 
-            let msg = '';
-            if (name) {
-                msg = `Olá! Me chamo *${encodeURIComponent(name)}* e gostaria de atendimento.`;
-                if (customMsg) {
-                    msg += `%0A%0A*Mensagem:* ${encodeURIComponent(customMsg)}`;
-                }
-            } else if (customMsg) {
-                msg = `Olá! Vim pelo site. ${encodeURIComponent(customMsg)}`;
-            } else {
-                msg = `Olá! Vim pelo site e gostaria de tirar umas dúvidas.`;
+            const greeting = name ? `Olá! Me chamo *${encodeURIComponent(name)}*` : `Olá!`;
+            const subjectStr = selectedSubject ? ` sobre *${encodeURIComponent(selectedSubject)}*` : ``;
+
+            let msg = `${greeting}, gostaria de atendimento${subjectStr}.`;
+
+            if (customMsg) {
+                msg += `%0A%0A*Observação:* ${encodeURIComponent(customMsg)}`;
             }
 
-            document.getElementById('generalWhatsappBtn').href = `https://wa.me/${selectedSellers.general}?text=${msg}`;
+            const btn = document.getElementById('generalWhatsappBtn');
+            if (btn) {
+                btn.href = `https://wa.me/${selectedSellers.general}?text=${msg}`;
+            }
         }
 
         function showToast(message) {
